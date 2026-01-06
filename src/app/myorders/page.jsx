@@ -1,13 +1,14 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./myOrders.scss";
-import { StoreContext } from "@/src/context/StoreContext";
 import axios from "axios";
 import { assets } from "@/src/assets/assets";
+import useStore from "@/src/store/useStore";
 
 export default function Page() {
-  const { url, token } = useContext(StoreContext);
+  const url = useStore((state) => state.url);
+  const token = useStore((state) => state.token);
   const [data, setData] = useState([]);
 
   const fetchOrders = async () => {

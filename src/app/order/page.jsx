@@ -1,14 +1,17 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./PlaceOrder.scss";
-import { StoreContext } from "@/src/context/StoreContext";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import useStore from "@/src/store/useStore";
 
 export default function Page() {
-  const { getTotalCartAmount, token, food_list, cartItems, url } =
-    useContext(StoreContext);
+  const getTotalCartAmount = useStore((state) => state.getTotalCartAmount);
+  const token = useStore((state) => state.token);
+  const food_list = useStore((state) => state.food_list);
+  const cartItems = useStore((state) => state.cartItems);
+  const url = useStore((state) => state.url);
   const [data, setData] = useState({
     firstName: "",
     lastName: "",

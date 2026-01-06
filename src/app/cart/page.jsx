@@ -1,13 +1,15 @@
 "use client";
 
-import { useContext } from "react";
 import "./Cart.scss";
-import { StoreContext } from "@/src/context/StoreContext";
+import useStore from "@/src/store/useStore";
 import { useRouter } from "next/navigation";
 
 export default function Page() {
-  const { cartItems, food_list, removeFromCart, getTotalCartAmount, url } =
-    useContext(StoreContext);
+  const cartItems = useStore((state) => state.cartItems);
+  const food_list = useStore((state) => state.food_list);
+  const removeFromCart = useStore((state) => state.removeFromCart);
+  const getTotalCartAmount = useStore((state) => state.getTotalCartAmount);
+  const url = useStore((state) => state.url);
   const router = useRouter();
 
   return (

@@ -1,11 +1,12 @@
 "use client";
 
-import { useContext, useState, useEffect } from "react";
-import { StoreContext } from "@/src/context/StoreContext";
+import { useState, useEffect } from "react";
 import "./Account.scss";
+import useStore from "@/src/store/useStore";
 
 export default function Page() {
-  const { token, url } = useContext(StoreContext);
+  const token = useStore((state) => state.token);
+  const url = useStore((state) => state.url);
   const [user, setUser] = useState(null);
 
   useEffect(() => {

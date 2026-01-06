@@ -3,12 +3,12 @@
 import React, { useEffect, useState } from "react";
 import "./LoginPopup.scss";
 import { assets } from "@/src/assets/assets";
-import { useContext } from "react";
-import { StoreContext } from "../../context/StoreContext";
+import useStore from "@/src/store/useStore";
 import axios from "axios";
 
 const LoginPopup = ({ setShowLogin }) => {
-  const { url, setToken } = useContext(StoreContext);
+  const url = useStore((state) => state.url);
+  const setToken = useStore((state) => state.setToken);
 
   const [currState, setCurrState] = useState("Đăng nhập");
   const [data, setData] = useState({

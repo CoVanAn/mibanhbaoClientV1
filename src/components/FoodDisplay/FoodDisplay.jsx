@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useContext } from "react";
+import React from "react";
 import "./FoodDisplay.css";
-import { StoreContext } from "../../context/StoreContext";
+import useStore from "@/src/store/useStore";
 import FoodItem from "../FoodItem/FoodItem";
 // import { food_list } from '../../assets/assets'
 
 const FoodDisplay = ({ category }) => {
-  const { food_list } = useContext(StoreContext);
+  const food_list = useStore((state) => state.food_list);
 
   return (
     <div className="food-display" id="food-display">

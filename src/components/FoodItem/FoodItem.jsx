@@ -1,16 +1,14 @@
 "use client";
 
-import React, { useContext } from "react";
+import React from "react";
 import "./FoodItem.css";
 import { assets } from "@/src/assets/assets";
-import { StoreContext } from "../../context/StoreContext";
+import useStore from "@/src/store/useStore";
 const FoodItem = ({ id, name, price, description, image }) => {
-  const {
-    addToCart,
-    cartItems = {},
-    url,
-    removeFromCart,
-  } = useContext(StoreContext);
+  const addToCart = useStore((state) => state.addToCart);
+  const removeFromCart = useStore((state) => state.removeFromCart);
+  const cartQuantity = useStore((state) => state.cartItems[id] || 0);
+  const url = useStore((state) => state.url);
 
   return (
     <div className="food-item">
@@ -20,7 +18,7 @@ const FoodItem = ({ id, name, price, description, image }) => {
           src={url + "/images/" + image}
           alt=""
         />
-        {!(cartItems && cartItems[id]) ? (
+        {cartQuantity === 0 ? (
           <img
             className="add"
             onClick={() => addToCart(id)}
@@ -37,7 +35,7 @@ const FoodItem = ({ id, name, price, description, image }) => {
               src={assets.remove_icon_red}
               alt=""
             />
-            <p>{cartItems[id] || 0}</p>
+            <p>{cartQuantity}</p>
             <img
               onClick={() => {
                 addToCart(id);

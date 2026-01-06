@@ -1,16 +1,16 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./Header.scss";
-import { assets } from "@/src/assets/assets";
-import { StoreContext } from "../../context/StoreContext";
+import useStore from "@/src/store/useStore";
 import { useRouter } from "next/navigation";
 
 const Header = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
-  const { getTotalCartAmount, token, setToken } = useContext(StoreContext);
+  const token = useStore((state) => state.token);
+  const setToken = useStore((state) => state.setToken);
 
   const router = useRouter();
 
@@ -63,7 +63,7 @@ const Header = ({ setShowLogin }) => {
               {/* <div className='header-profile' onClick={() => setShowProfileDropdown(!showProfileDropdown)}> */}
               <span
                 className="header-login-btn"
-                onClick={() => navigate("/account")}
+                onClick={() => router.push("/account")}
               >
                 Tài khoản
               </span>
