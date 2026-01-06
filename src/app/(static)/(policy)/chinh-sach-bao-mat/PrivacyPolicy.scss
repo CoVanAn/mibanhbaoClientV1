@@ -1,0 +1,36 @@
+@use '../../../../styles/variables' as *;
+
+.privacy-policy-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 16px;
+  border-radius: 12px;
+  font-family: $font-family-main;
+  p {
+    font-size: $font-size-md;
+    color: $text-main;
+    line-height: 1.6;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 32px;
+    font-size: $font-size-lg;
+    color: $primary;
+  }  
+  
+  .policy-section {
+    h2 {
+      font-size: $font-size-md;
+      margin-bottom: 10px;
+    }
+    ul {
+      li {
+        list-style-type: none;
+        margin-bottom: 8px;
+        font-size: $font-size-md;
+        color: $text-main;
+      }
+    }
+  }
+
+}  

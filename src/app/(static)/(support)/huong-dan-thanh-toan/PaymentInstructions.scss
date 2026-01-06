@@ -1,0 +1,31 @@
+@use '../../../../styles/variables' as *;
+
+.paymentinstructions-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 32px;
+  border-radius: 12px;
+  font-family: $font-family-main;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 32px;
+    font-size: $font-size-lg;
+    color: $primary;
+  }
+
+  ul {
+    padding-left: 20px;
+    li {
+      margin-bottom: 8px;
+      font-size: $font-size-md;
+      list-style-type: none;
+      color: $text-main;
+    }
+  }
+  p {
+    font-size: $font-size-md;
+    color: $text-main;
+    line-height: 1.6;
+  }
+}

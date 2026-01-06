@@ -1,0 +1,45 @@
+@use './variables' as variables;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: variables.$font-family-main;
+}
+body {
+  min-height: 100vh;
+  background: variables.$bg-light;
+  color: variables.$text-main;
+  font-size: variables.$font-size-base;
+}
+a{
+  text-decoration: none;
+  color: inherit;
+}
+.app {
+  width: 100%;
+  margin: auto;
+  min-height: 800px;
+}
+
+/* Container for content with max-width */
+.container {
+  max-width: 1110px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Full width sections */
+.full-width {
+  width: 100%;
+}
+
+@keyframes fadeIn{
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}

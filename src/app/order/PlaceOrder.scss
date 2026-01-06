@@ -1,0 +1,53 @@
+.place-order{
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 50px;
+    margin-top: 100px;
+    padding: 20px;
+    border: 1px solid lightgray;
+    border-radius: 15px;
+    background-color: whitesmoke;
+    color: gray;
+    font-size: 14px;
+}
+
+.place-order-left p{
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 50px;
+}
+
+.place-order-left{
+    width: 100%;
+    max-width: max(30%, 500px);
+}
+
+.place-order-left title{
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 50px;
+}
+
+.place-order-left input{
+    display: flex;
+    width: 100%;
+    padding: 10px;
+    gap: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    outline-color: tomato;
+}
+
+.place-order-left .multi-fields{
+    display: flex;
+    gap: 10px;
+}
+
+.place-order-right{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: max(30%, 500px);
+}

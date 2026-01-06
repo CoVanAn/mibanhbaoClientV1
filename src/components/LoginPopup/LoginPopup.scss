@@ -1,0 +1,92 @@
+
+@use '../../styles/variables' as *;
+
+.login-popup {
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: grid;
+
+    &-container {
+        place-self: center;
+        width: max(23vw, 300px);
+        color: $text-main;
+        background-color: $bg-light;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        padding: 25px 30px;
+        border-radius: 8px;
+        font-size: $font-size-sm;
+        animation: fadeIn 0.5s;
+
+        .login-popup-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: $text-main;
+            img {
+                width: 16px;
+                cursor: pointer;
+            }
+        }
+
+        .login-popup-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            input {
+                padding: 10px;
+                border: 1px solid $text-muted;
+                border-radius: 5px;
+                font-size: $font-size-sm;
+            }
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: $primary;
+            color: $text-white;
+            font-size: $font-size-sm;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+            &:hover {
+                background-color: $primary-dark;
+            }
+        }
+
+        span {
+            color: $primary;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    }
+
+    &-condition {
+        display: flex;
+        align-items: start;
+        gap: 5px;
+        margin-top: -10px;
+        font-size: 12px;
+        input {
+            cursor: pointer;
+            margin-top: 2px;
+        }
+    }
+
+    .error-message {
+        color: $primary;
+        font-size: 13px;
+        text-align: center;
+        margin: 10px 0;
+        padding: 8px;
+        background-color: $primary-lighter;
+        border: 1px solid $primary-light;
+        border-radius: 5px;
+    }
+}

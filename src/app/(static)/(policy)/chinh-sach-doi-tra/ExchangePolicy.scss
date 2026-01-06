@@ -1,0 +1,37 @@
+@use '../../../../styles/variables' as *;
+
+.exchange-policy-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 16px;
+  border-radius: 12px;
+  font-family: $font-family-main;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 32px;
+    font-size: $font-size-lg;
+    color: $primary;
+  }
+
+  p {
+    font-size: $font-size-md;
+    color: $text-main;
+    line-height: 1.6;
+  }
+
+  .policy-section {
+    h2 {
+      font-size: $font-size-md;
+    }
+
+    ul {
+      li {
+        list-style-type: none;
+        font-size: $font-size-md;
+        color: $text-main;
+      }
+    }
+  }
+
+}

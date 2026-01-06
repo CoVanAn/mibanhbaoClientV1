@@ -1,0 +1,35 @@
+
+@use '../../../../styles/variables' as *;
+.termsofservice-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 16px;
+  font-family: $font-family-main;
+  h1 {
+    text-align: center;
+    margin-bottom: 32px;
+    font-size: $font-size-lg;
+    color: $primary;
+  }
+  li {
+    list-style-type: none;
+    font-size: $font-size-md;
+    margin-bottom: 18px;
+  }
+  ul {
+    margin-top: 8px;
+    
+    li {
+      margin-bottom: 8px;
+      font-size: $font-size-md;
+      list-style-type: none;
+      color: $text-main;
+    }
+  }
+  p {
+    margin-top: 16px;
+    font-size: $font-size-md;
+    color: $text-main;
+    line-height: 1.6;
+  }
+}
