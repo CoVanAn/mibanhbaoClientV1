@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import "./ExploreMenu.css";
+import "./ExploreMenu.scss";
 import { menu_list } from "@/src/assets/assets";
 
 const ExploreMenu = ({ category, setCategory }) => {
