@@ -14,28 +14,29 @@ const StoreContextProvider = (props) => {
   const [token, setToken] = useState("");
   const [food_list, setFoodList] = useState([]);
 
-  const addToCart = async (id) => {
-    if (!cartItems[id]) {
-      setCartItems((prev) => {
-        return {
-          ...prev,
-          [id]: 1,
-        };
-      });
-    } else {
-      setCartItems((prev) => {
-        return {
-          ...prev,
-          [id]: prev[id] + 1,
-        };
-      });
-    }
-    if (token) {
-      await axios.post(
-        url + "/api/cart/add",
-        { itemId: id },
-        { headers: { token } }
-      );
+  const addToCart = async (id, quantity = 1) => {
+    if (!id || quantity <= 0) return;
+
+    setCartItems((prev) => {
+      const existing = prev[id] ?? 0;
+      return {
+        ...prev,
+        [id]: existing + quantity,
+      };
+    });
+
+    if (token && quantity > 0) {
+      try {
+        for (let i = 0; i < quantity; i += 1) {
+          await axios.post(
+            url + "/api/cart/add",
+            { itemId: id },
+            { headers: { token } }
+          );
+        }
+      } catch (error) {
+        console.error("Failed to update cart on server", error);
+      }
     }
   };
 
