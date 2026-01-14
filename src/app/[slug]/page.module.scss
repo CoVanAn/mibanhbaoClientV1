@@ -284,15 +284,19 @@
   flex-direction: column;
   gap: 1.25rem;
   margin-top: 1.5rem;
+  max-width: 600px;
 }
 
 .variantOptions {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  // display: flex;
+  flex-wrap: wrap;
   gap: 0.8rem;
 }
 
 .variantCard {
+  max-width: 500px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 20px;
   background: #fff;

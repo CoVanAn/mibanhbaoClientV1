@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import ExploreMenu from "@/src/components/ExploreMenu/ExploreMenu";
-import FeaturedProduct from "@/src/components/FeaturedProduct/FeaturedProduct";
+import FeaturedProduct, {
+  FeaturedProductsSection,
+} from "@/src/components/FeaturedProduct/FeaturedProduct";
 import FoodDisplay from "@/src/components/FoodDisplay/FoodDisplay";
 import Slider from "@/src/components/Slider/Slider";
 
@@ -15,6 +17,7 @@ export default function Page() {
       <ExploreMenu category={category} setCategory={setCategory} />
       <FoodDisplay category={category} />
       <FeaturedProduct />
+      <FeaturedProductsSection />
     </div>
   );
 }

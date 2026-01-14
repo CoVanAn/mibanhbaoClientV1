@@ -25,11 +25,18 @@
 
 .powder-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .powder-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .powder-card {
+  max-width: 450px;
   border-radius: 26px;
   padding: 1rem;
   display: flex;
@@ -101,6 +108,10 @@
     justify-content: center;
     color: vars.$text-muted;
     font-weight: 600;
+  }
+  @media (max-width: 1024px) {
+    max-width: 400px;
+    padding: 0.5rem;
   }
 }
 

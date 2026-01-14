@@ -107,7 +107,7 @@ const VariantSelector = ({ variants }: VariantSelectorProps) => {
     <div className={styles.variantSelector}>
       <div className={styles.variantOptions}>
         {variants.map((variant) => {
-          const variantStock = Math.max(variant.quantity ?? 0, 0);
+          // const variantStock = Math.max(variant.quantity ?? 0, 0);
           const isActive = variant.id === selectedVariant?.id;
           return (
             <button
