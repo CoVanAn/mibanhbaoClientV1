@@ -120,7 +120,7 @@ export const VI_TRANSLATIONS = {
 };
 
 // Helper function to format currency
-export const formatCurrency = (amount) => {
+export const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: 'VND',
@@ -129,6 +129,6 @@ export const formatCurrency = (amount) => {
 };
 
 // Helper function to format number with thousands separator
-export const formatNumber = (number) => {
+export const formatNumber = (number: number) => {
   return new Intl.NumberFormat('vi-VN').format(number);
 };

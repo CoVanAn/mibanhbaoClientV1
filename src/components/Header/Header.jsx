@@ -2,15 +2,14 @@
 
 import { useContext, useEffect, useState } from "react";
 import "./Header.scss";
-import { assets } from "@/src/assets/assets";
 import { StoreContext } from "../../context/StoreContext";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Header = ({ setShowLogin }) => {
-  const [menu, setMenu] = useState("home");
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
-  const { getTotalCartAmount, token, setToken } = useContext(StoreContext);
+  const { token, setToken } = useContext(StoreContext);
 
   const router = useRouter();
 
@@ -61,12 +60,9 @@ const Header = ({ setShowLogin }) => {
           ) : (
             <>
               {/* <div className='header-profile' onClick={() => setShowProfileDropdown(!showProfileDropdown)}> */}
-              <span
-                className="header-login-btn"
-                onClick={() => navigate("/account")}
-              >
+              <Link className="header-login-btn" href="/account">
                 Tài khoản
-              </span>
+              </Link>
               {/* {showProfileDropdown && (
                     <ul className='header-profile-dropdown'>
                       <li onClick={() => {navigate('/myorders'); setShowProfileDropdown(false)}}>

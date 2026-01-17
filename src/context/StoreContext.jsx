@@ -5,13 +5,17 @@ import { createContext, useEffect, useState } from "react";
 
 export const StoreContext = createContext(null);
 
-// const linkApi = "https://apisubject-backend.onrender.com"
 const linkApi = "http://localhost:4000";
+
+const readTokenFromStorage = () => {
+  if (typeof window === "undefined") return "";
+  return localStorage.getItem("token") ?? "";
+};
 
 const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
   const url = linkApi;
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(readTokenFromStorage);
   const [food_list, setFoodList] = useState([]);
 
   const addToCart = async (id, quantity = 1) => {
@@ -93,17 +97,17 @@ const StoreContextProvider = (props) => {
     // const data = await response.json()
     // setFoodList(data)
 
-    const response = await axios.get(`${url}/api/food/list`);
+    // const response = await axios.get(`${url}/api/food/list`);
     setFoodList(response.data);
   };
 
   useEffect(() => {
     async function fetchData() {
       await fetchFoodList();
-      const token = localStorage.getItem("token");
-      if (token) {
-        setToken(token);
-        await loadCartData(token);
+      const storedToken = readTokenFromStorage();
+      if (storedToken) {
+        setToken(storedToken);
+        await loadCartData(storedToken);
       }
     }
     fetchData();
