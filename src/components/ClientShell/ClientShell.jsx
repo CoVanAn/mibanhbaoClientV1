@@ -9,23 +9,9 @@ import useStore from "@/src/store/useStore";
 
 const ClientShell = ({ children }) => {
   const [showLogin, setShowLogin] = useState(false);
-  const fetchFoodList = useStore((state) => state.fetchFoodList);
   const loadCartData = useStore((state) => state.loadCartData);
   const handleGoogleLogin = useStore((state) => state.handleGoogleLogin);
   const setToken = useStore((state) => state.setToken);
-
-  useEffect(() => {
-    const initialize = async () => {
-      await fetchFoodList();
-      if (typeof window === "undefined") return;
-      const storedToken = localStorage.getItem("token");
-      if (storedToken) {
-        setToken(storedToken);
-        await loadCartData(storedToken);
-      }
-    };
-    initialize();
-  }, [fetchFoodList, loadCartData, setToken]);
 
   useEffect(() => {
     handleGoogleLogin();

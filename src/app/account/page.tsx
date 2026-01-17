@@ -1,13 +1,7 @@
 "use client";
 
-import {
-  ChangeEvent,
-  FormEvent,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import { StoreContext } from "@/src/context/StoreContext";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import useStore from "@/src/store/useStore";
 import ProfileSection from "./ProfileSection";
 import PasswordSection from "./PasswordSection";
 import AddressSection from "./AddressSection";
@@ -31,25 +25,38 @@ const initialAddressForm: AddressForm = {
   district: "",
   ward: "",
 };
-const initialPasswordForm: PasswordForm = { currentPassword: "", newPassword: "" };
+const initialPasswordForm: PasswordForm = {
+  currentPassword: "",
+  newPassword: "",
+};
 
 export default function Page() {
-  const { token, url } = useContext(StoreContext);
+  const token = useStore((state) => state.token);
+  const url = useStore((state) => state.url);
   const [user, setUser] = useState<User | null>(null);
-  const [profileForm, setProfileForm] = useState<ProfileForm>(initialProfileForm);
-  const [profileMessage, setProfileMessage] = useState<StatusMessage | null>(null);
+  const [profileForm, setProfileForm] =
+    useState<ProfileForm>(initialProfileForm);
+  const [profileMessage, setProfileMessage] = useState<StatusMessage | null>(
+    null
+  );
   const [isProfileSaving, setIsProfileSaving] = useState(false);
   const [profileLoading, setProfileLoading] = useState(false);
 
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [addressesLoading, setAddressesLoading] = useState(false);
-  const [addressForm, setAddressForm] = useState<AddressForm>(initialAddressForm);
+  const [addressForm, setAddressForm] =
+    useState<AddressForm>(initialAddressForm);
   const [editingAddressId, setEditingAddressId] = useState<string | null>(null);
-  const [addressMessage, setAddressMessage] = useState<StatusMessage | null>(null);
+  const [addressMessage, setAddressMessage] = useState<StatusMessage | null>(
+    null
+  );
   const [isAddressSaving, setIsAddressSaving] = useState(false);
 
-  const [passwordForm, setPasswordForm] = useState<PasswordForm>(initialPasswordForm);
-  const [passwordMessage, setPasswordMessage] = useState<StatusMessage | null>(null);
+  const [passwordForm, setPasswordForm] =
+    useState<PasswordForm>(initialPasswordForm);
+  const [passwordMessage, setPasswordMessage] = useState<StatusMessage | null>(
+    null
+  );
   const [isPasswordSaving, setIsPasswordSaving] = useState(false);
 
   const fetchUserProfile = async () => {
@@ -90,7 +97,10 @@ export default function Page() {
       const res = await fetch(`${url}/api/user/addresses`, {
         headers: { token },
       });
-      const data = (await res.json()) as { addresses?: Address[]; message?: string };
+      const data = (await res.json()) as {
+        addresses?: Address[];
+        message?: string;
+      };
       if (res.ok) {
         setAddresses(Array.isArray(data.addresses) ? data.addresses : []);
         setAddressMessage(null);
@@ -147,7 +157,8 @@ export default function Page() {
         text: "Đã lưu thông tin tài khoản",
       });
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Không thể cập nhật hồ sơ";
+      const message =
+        error instanceof Error ? error.message : "Không thể cập nhật hồ sơ";
       setProfileMessage({ type: "error", text: message });
     } finally {
       setIsProfileSaving(false);
@@ -215,7 +226,8 @@ export default function Page() {
       resetAddressForm();
       await fetchAddresses();
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Không thể lưu địa chỉ";
+      const message =
+        error instanceof Error ? error.message : "Không thể lưu địa chỉ";
       setAddressMessage({ type: "error", text: message });
     } finally {
       setIsAddressSaving(false);
@@ -250,7 +262,8 @@ export default function Page() {
       setAddressMessage({ type: "success", text: "Địa chỉ đã được xóa" });
       await fetchAddresses();
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Không thể xóa địa chỉ";
+      const message =
+        error instanceof Error ? error.message : "Không thể xóa địa chỉ";
       setAddressMessage({ type: "error", text: message });
     }
   };
@@ -296,7 +309,8 @@ export default function Page() {
       });
       setPasswordForm(initialPasswordForm);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Không thể đổi mật khẩu";
+      const message =
+        error instanceof Error ? error.message : "Không thể đổi mật khẩu";
       setPasswordMessage({ type: "error", text: message });
     } finally {
       setIsPasswordSaving(false);

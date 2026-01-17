@@ -2,14 +2,15 @@
 
 import { useEffect, useState } from "react";
 import "./Header.scss";
-import { StoreContext } from "../../context/StoreContext";
+import useStore from "@/src/store/useStore";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const Header = ({ setShowLogin }) => {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
-  const { token, setToken } = useContext(StoreContext);
+  const token = useStore((state) => state.token);
+  const setToken = useStore((state) => state.setToken);
   const router = useRouter();
 
   const logout = () => {

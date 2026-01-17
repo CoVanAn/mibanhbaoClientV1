@@ -1,7 +1,7 @@
 "use client";
 
-import { ChangeEvent, useContext, useEffect, useMemo, useState } from "react";
-import { StoreContext } from "@/src/context/StoreContext";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import useStore from "@/src/store/useStore";
 import styles from "./page.module.scss";
 
 const formatCurrency = (value: number | null | undefined) =>
@@ -23,10 +23,6 @@ type VariantSelectorProps = {
   variants: VariantOption[];
 };
 
-type StoreContextValue = {
-  addToCart: (variantId: string, quantity: number) => Promise<void>;
-};
-
 const VariantSelector = ({ variants }: VariantSelectorProps) => {
   const [selectedVariantId, setSelectedVariantId] = useState(
     variants[0]?.id ?? ""
@@ -39,11 +35,7 @@ const VariantSelector = ({ variants }: VariantSelectorProps) => {
     "idle"
   );
 
-  const storeContext = useContext(StoreContext) as StoreContextValue | null;
-  if (!storeContext) {
-    throw new Error("StoreContext is not available");
-  }
-  const { addToCart } = storeContext;
+  const addToCart = useStore((state) => state.addToCart);
 
   const selectedVariant = useMemo(
     () =>
