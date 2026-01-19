@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
+import useStore from "@/src/store/useStore";
 import "./FeaturedProduct.scss";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-const CATEGORY_NAME = "Bột bánh bao trộn sẵn";
 
 const currencyFormatter = new Intl.NumberFormat("vi-VN", {
   style: "currency",
@@ -13,7 +11,7 @@ const currencyFormatter = new Intl.NumberFormat("vi-VN", {
   maximumFractionDigits: 0,
 });
 
-const slugify = (value) =>
+const slugify = (value: any) =>
   typeof value === "string"
     ? value
         .toLowerCase()
@@ -23,9 +21,9 @@ const slugify = (value) =>
         .replace(/^-|-$/g, "")
     : "";
 
-const renderProductCards = (products) =>
+const renderProductCards = (products: any[]) =>
   products
-    .map((product) => {
+    .map((product: any) => {
       const price = product.currentPrice ?? product.price ?? null;
       const linkTarget =
         product.slug ?? product.id ?? product._id ?? slugify(product.name);
@@ -79,6 +77,13 @@ function ProductSection({
   loading,
   error,
   emptyMessage,
+}: {
+  title: string;
+  ariaLabel: string;
+  products: any[];
+  loading: boolean;
+  error: string | null;
+  emptyMessage?: string;
 }) {
   let statusNode = null;
   if (loading) {
@@ -87,7 +92,9 @@ function ProductSection({
     statusNode = <p className="powder-grid__status">{error}</p>;
   } else if (!products.length) {
     statusNode = (
-      <p className="powder-grid__status">{emptyMessage ?? "Không có sản phẩm"}</p>
+      <p className="powder-grid__status">
+        {emptyMessage ?? "Không có sản phẩm"}
+      </p>
     );
   }
 
@@ -104,107 +111,52 @@ function ProductSection({
 }
 
 export default function FeaturedProduct({ limit = 8 }) {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const powderProducts = useStore((state: any) => state.powderProducts);
+  const powderLoading = useStore((state: any) => state.powderLoading);
+  const powderError = useStore((state: any) => state.powderError);
+  const fetchPowderProducts = useStore(
+    (state: any) => state.fetchPowderProducts,
+  );
 
   useEffect(() => {
     const controller = new AbortController();
-
-    const loadProducts = async () => {
-      try {
-        const categoriesRes = await fetch(
-          `${API_URL}/api/category/list?includeInactive=1`,
-          { signal: controller.signal }
-        );
-        if (!categoriesRes.ok) {
-          throw new Error("Không thể tải danh mục");
-        }
-        const categories = await categoriesRes.json();
-        const targetCategory = categories.find(
-          (category) => category.name?.trim() === CATEGORY_NAME
-        );
-        if (!targetCategory) {
-          throw new Error("Danh mục bột bánh bao pha sẵn chưa được cấu hình");
-        }
-
-        const productsRes = await fetch(
-          `${API_URL}/api/product/list?categoryId=${targetCategory.id}&limit=${limit}`,
-          { signal: controller.signal }
-        );
-        if (!productsRes.ok) {
-          throw new Error("Không thể tải sản phẩm");
-        }
-        const payload = await productsRes.json();
-        setProducts(Array.isArray(payload) ? payload : []);
-      } catch (err) {
-        if (controller.signal.aborted) return;
-        console.error(err);
-        setError(err instanceof Error ? err.message : "Lỗi tải dữ liệu");
-      } finally {
-        if (!controller.signal.aborted) {
-          setLoading(false);
-        }
-      }
-    };
-
-    loadProducts();
+    fetchPowderProducts(limit, controller.signal);
     return () => controller.abort();
-  }, [limit]);
+  }, [fetchPowderProducts, limit]);
 
   return (
     <ProductSection
       title="Bột bánh bao trộn sẵn"
       ariaLabel="Danh mục bột bánh bao"
-      products={products}
-      loading={loading}
-      error={error}
+      products={powderProducts}
+      loading={powderLoading}
+      error={powderError}
       emptyMessage="Hiện chưa có sản phẩm phù hợp."
     />
   );
 }
 
 export function FeaturedProductsSection({ limit = 8 }) {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const featuredProducts = useStore((state: any) => state.featuredProducts);
+  const featuredLoading = useStore((state: any) => state.featuredLoading);
+  const featuredError = useStore((state: any) => state.featuredError);
+  const fetchFeaturedProducts = useStore(
+    (state: any) => state.fetchFeaturedProducts,
+  );
 
   useEffect(() => {
     const controller = new AbortController();
-
-    const loadProducts = async () => {
-      try {
-        const productsRes = await fetch(
-          `${API_URL}/api/product/featured?limit=${limit}`,
-          { signal: controller.signal }
-        );
-        if (!productsRes.ok) {
-          throw new Error("Không thể tải sản phẩm nổi bật");
-        }
-        const payload = await productsRes.json();
-        setProducts(Array.isArray(payload) ? payload : []);
-      } catch (err) {
-        if (controller.signal.aborted) return;
-        console.error(err);
-        setError(err instanceof Error ? err.message : "Lỗi tải dữ liệu");
-      } finally {
-        if (!controller.signal.aborted) {
-          setLoading(false);
-        }
-      }
-    };
-
-    loadProducts();
+    fetchFeaturedProducts(limit, controller.signal);
     return () => controller.abort();
-  }, [limit]);
+  }, [fetchFeaturedProducts, limit]);
 
   return (
     <ProductSection
       title="Sản phẩm nổi bật"
       ariaLabel="Danh sách sản phẩm nổi bật"
-      products={products}
-      loading={loading}
-      error={error}
+      products={featuredProducts}
+      loading={featuredLoading}
+      error={featuredError}
       emptyMessage="Chưa có sản phẩm nổi bật nào."
     />
   );

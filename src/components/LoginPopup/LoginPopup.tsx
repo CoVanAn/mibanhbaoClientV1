@@ -6,9 +6,9 @@ import { assets } from "@/src/assets/assets";
 import useStore from "@/src/store/useStore";
 import axios from "axios";
 
-const LoginPopup = ({ setShowLogin }) => {
-  const url = useStore((state) => state.url);
-  const setToken = useStore((state) => state.setToken);
+const LoginPopup = ({ setShowLogin }: any) => {
+  const url = useStore((state: any) => state.url);
+  const setToken = useStore((state: any) => state.setToken);
 
   const [currState, setCurrState] = useState("Đăng nhập");
   const [data, setData] = useState({
@@ -22,11 +22,11 @@ const LoginPopup = ({ setShowLogin }) => {
     console.log(data);
   }, [data]);
 
-  const onhandleChange = (e) => {
+  const onhandleChange = (e: any) => {
     setData((data) => ({ ...data, [e.target.name]: e.target.value }));
   };
 
-  const onLogin = async (e) => {
+  const onLogin = async (e: any) => {
     e.preventDefault();
     setErrorMessage(""); // Clear previous error
 
@@ -64,7 +64,7 @@ const LoginPopup = ({ setShowLogin }) => {
         if (currState === "Đăng nhập") {
           if (message === "User not found") {
             setErrorMessage(
-              "Email không tồn tại. Vui lòng kiểm tra lại hoặc đăng ký tài khoản mới."
+              "Email không tồn tại. Vui lòng kiểm tra lại hoặc đăng ký tài khoản mới.",
             );
           } else if (message === "Invalid credentials") {
             setErrorMessage("Mật khẩu không đúng. Vui lòng thử lại.");
@@ -75,7 +75,7 @@ const LoginPopup = ({ setShowLogin }) => {
           setErrorMessage(message || "Đăng ký thất bại");
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login error:", error);
       console.error("Error details:", error.response?.data);
       console.error("Error status:", error.response?.status);
@@ -86,7 +86,7 @@ const LoginPopup = ({ setShowLogin }) => {
         if (currState === "Đăng nhập") {
           if (errorMsg === "User not found") {
             setErrorMessage(
-              "Email không tồn tại. Vui lòng kiểm tra lại hoặc đăng ký tài khoản mới."
+              "Email không tồn tại. Vui lòng kiểm tra lại hoặc đăng ký tài khoản mới.",
             );
           } else if (errorMsg === "Invalid credentials") {
             setErrorMessage("Mật khẩu không đúng. Vui lòng thử lại.");
@@ -119,7 +119,7 @@ const LoginPopup = ({ setShowLogin }) => {
             alt=""
           />
         </div>
-        <div action="" className="login-popup-inputs">
+        <div className="login-popup-inputs">
           {currState === "Đăng nhập" ? (
             <> </>
           ) : (

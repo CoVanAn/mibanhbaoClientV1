@@ -4,12 +4,11 @@ import React from "react";
 import "./FoodItem.css";
 import { assets } from "@/src/assets/assets";
 import useStore from "@/src/store/useStore";
-const FoodItem = ({ id, name, price, description, image }) => {
-  const addToCart = useStore((state) => state.addToCart);
-  const removeFromCart = useStore((state) => state.removeFromCart);
-  const cartQuantity = useStore((state) => state.cartItems[id] || 0);
-  const url = useStore((state) => state.url);
-
+const FoodItem = ({ id, name, price, description, image }: any) => {
+  const addToCart = useStore((state: any) => state.addToCart);
+  const removeFromCart = useStore((state: any) => state.removeFromCart);
+  const cartQuantity = useStore((state: any) => state.cartItems[id] || 0);
+  const url = useStore((state: any) => state.url);
   return (
     <div className="food-item">
       <div className="food-item-img-container">

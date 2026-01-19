@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./Navbar.scss";
 import { assets } from "@/src/assets/assets";
 import { useRouter } from "next/navigation";
@@ -43,7 +43,7 @@ const Navbar = () => {
             src={assets.logo}
             alt="Logo"
             className="main-logo"
-            onClick={() => navigate("/")}
+            onClick={() => router.push("/")}
           />
         </div>
       </div>

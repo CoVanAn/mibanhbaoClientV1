@@ -4,7 +4,13 @@ import React from "react";
 import "./ExploreMenu.scss";
 import { menu_list } from "@/src/assets/assets";
 
-const ExploreMenu = ({ category, setCategory }) => {
+const ExploreMenu = ({
+  category,
+  setCategory,
+}: {
+  category: string;
+  setCategory: React.Dispatch<React.SetStateAction<string>>;
+}) => {
   return (
     <div className="explore-menu" id="explore-menu">
       <div className="explore-menu-list">
@@ -12,7 +18,7 @@ const ExploreMenu = ({ category, setCategory }) => {
           <div
             onClick={() =>
               setCategory((prev) =>
-                prev === menu.menu_name ? "All" : menu.menu_name
+                prev === menu.menu_name ? "All" : menu.menu_name,
               )
             }
             key={index}

@@ -7,12 +7,11 @@ import Footer from "@/src/components/Footer/Footer";
 import LoginPopup from "@/src/components/LoginPopup/LoginPopup";
 import useStore from "@/src/store/useStore";
 
-const ClientShell = ({ children }) => {
+const ClientShell = ({ children }: { children: React.ReactNode }) => {
   const [showLogin, setShowLogin] = useState(false);
-  const loadCartData = useStore((state) => state.loadCartData);
-  const handleGoogleLogin = useStore((state) => state.handleGoogleLogin);
-  const setToken = useStore((state) => state.setToken);
-
+  const loadCartData = useStore((state: any) => state.loadCartData);
+  const handleGoogleLogin = useStore((state: any) => state.handleGoogleLogin);
+  const setToken = useStore((state: any) => state.setToken);
   useEffect(() => {
     handleGoogleLogin();
   }, [handleGoogleLogin]);

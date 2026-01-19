@@ -1,42 +1,21 @@
-import { create } from "zustand";
 import axios from "axios";
+import { API_URL } from "@/src/store/constants";
 
-const linkApi = "http://localhost:4000";
-
-const readTokenFromStorage = () => {
-  if (typeof window === "undefined") return "";
-  return localStorage.getItem("token") ?? "";
-};
-
-const useStore = create((set, get) => ({
-  url: linkApi,
-  token: readTokenFromStorage(),
-  food_list: [],
+const createCartSlice = (set: any, get: any) => ({
   cartItems: {},
 
-  setToken: (tokenValue) => {
-    if (typeof window !== "undefined") {
-      if (tokenValue) {
-        localStorage.setItem("token", tokenValue);
-      } else {
-        localStorage.removeItem("token");
-      }
-    }
-    set({ token: tokenValue });
-  },
-
-  setCartItems: (items) => {
+  setCartItems: (items: any) => {
     set({ cartItems: items });
   },
 
-  loadCartData: async (tokenValue) => {
+  loadCartData: async (tokenValue: string) => {
     if (!tokenValue) {
       set({ cartItems: {} });
       return;
     }
     try {
       const response = await axios.post(
-        `${linkApi}/api/cart/get`,
+        `${API_URL}/api/cart/get`,
         {},
         { headers: { token: tokenValue } }
       );
@@ -51,9 +30,9 @@ const useStore = create((set, get) => ({
     }
   },
 
-  addToCart: async (id, quantity = 1) => {
+  addToCart: async (id: string, quantity: number = 1) => {
     if (!id || quantity <= 0) return;
-    set((state) => {
+    set((state: any) => {
       const updated = { ...state.cartItems };
       updated[id] = (updated[id] || 0) + quantity;
       return { cartItems: updated };
@@ -63,7 +42,7 @@ const useStore = create((set, get) => ({
       try {
         for (let i = 0; i < quantity; i += 1) {
           await axios.post(
-            `${linkApi}/api/cart/add`,
+            `${API_URL}/api/cart/add`,
             { itemId: id },
             { headers: { token } }
           );
@@ -74,9 +53,9 @@ const useStore = create((set, get) => ({
     }
   },
 
-  removeFromCart: async (id) => {
+  removeFromCart: async (id: string) => {
     if (!id) return;
-    set((state) => {
+    set((state: any) => {
       const updated = { ...state.cartItems };
       const current = updated[id] || 0;
       if (current <= 1) {
@@ -90,7 +69,7 @@ const useStore = create((set, get) => ({
     if (token) {
       try {
         await axios.post(
-          `${linkApi}/api/cart/remove`,
+          `${API_URL}/api/cart/remove`,
           { itemId: id },
           { headers: { token } }
         );
@@ -100,25 +79,13 @@ const useStore = create((set, get) => ({
     }
   },
 
-  handleGoogleLogin: async () => {
-    if (typeof window === "undefined") return;
-    const params = new URLSearchParams(window.location.search);
-    const tokenParam = params.get("token");
-    if (tokenParam) {
-      set({ token: tokenParam });
-      localStorage.setItem("token", tokenParam);
-      await get().loadCartData(tokenParam);
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-  },
-
   getTotalCartAmount: () => {
     const { cartItems, food_list } = get();
     let total = 0;
     Object.keys(cartItems || {}).forEach((itemId) => {
       const quantity = cartItems[itemId];
       if (quantity > 0) {
-        const itemInfo = (food_list || []).find((item) => item._id === itemId);
+        const itemInfo = (food_list || []).find((item: any) => item._id === itemId);
         if (itemInfo) {
           total += itemInfo.price * quantity;
         }
@@ -126,6 +93,6 @@ const useStore = create((set, get) => ({
     });
     return total;
   },
-}));
+});
 
-export default useStore;
+export default createCartSlice;

@@ -6,11 +6,11 @@ import useStore from "@/src/store/useStore";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-const Header = ({ setShowLogin }) => {
+const Header = ({ setShowLogin }: any) => {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
-  const token = useStore((state) => state.token);
-  const setToken = useStore((state) => state.setToken);
+  const token = useStore((state: any) => state.token);
+  const setToken = useStore((state: any) => state.setToken);
   const router = useRouter();
 
   const logout = () => {
@@ -21,7 +21,7 @@ const Header = ({ setShowLogin }) => {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: any) => {
       if (showProfileDropdown && !event.target.closest(".navbar-profile")) {
         setShowProfileDropdown(false);
       }

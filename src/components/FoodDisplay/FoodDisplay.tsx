@@ -1,18 +1,16 @@
 "use client";
 
-import React from "react";
 import "./FoodDisplay.css";
 import useStore from "@/src/store/useStore";
 import FoodItem from "../FoodItem/FoodItem";
-// import { food_list } from '../../assets/assets'
 
-const FoodDisplay = ({ category }) => {
-  const food_list = useStore((state) => state.food_list);
+const FoodDisplay = ({ category }: any) => {
+  const food_list = useStore((state: any) => state.food_list);
 
   return (
     <div className="food-display" id="food-display">
       <div className="food-display-list">
-        {(food_list || []).map((item, index) => {
+        {(food_list || []).map((item: any, index: number) => {
           if (category === "All" || item.category == category) {
             return (
               <FoodItem

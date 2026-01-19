@@ -3,7 +3,7 @@
 // hooks/useIsMobile.js
 import { useState, useEffect } from "react";
 
-function getInitialState(breakpoint) {
+function getInitialState(breakpoint: number) {
   if (typeof window === "undefined") {
     return false;
   }
