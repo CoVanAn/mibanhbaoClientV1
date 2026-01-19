@@ -3,24 +3,21 @@
 .account {
   width: 100%;
   min-height: 70vh;
-  background: #f9f7f2;
   color: vars.$text-main;
   padding: 40px 0 60px;
 
   &-wrapper {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 1rem;
     display: flex;
     flex-direction: column;
-    gap: 24px;
   }
 
   &-hero {
     background: #fff;
     border-radius: 18px;
-    padding: 28px 32px 26px;
-    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.06);
+    padding: 28px 1rem 26px;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -144,7 +141,9 @@
   color: #fff;
   background: linear-gradient(120deg, vars.$primary, vars.$primary-light);
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 
   &:disabled {
     opacity: 0.6;

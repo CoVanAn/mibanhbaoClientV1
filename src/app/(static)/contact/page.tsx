@@ -11,11 +11,13 @@ export default function Page() {
     message: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     alert("Thông tin đã được gửi! Cảm ơn bạn đã liên hệ.");
     setForm({ name: "", email: "", phone: "", message: "" });
@@ -90,7 +92,6 @@ export default function Page() {
           width="100%"
           height="410"
           style={{ border: 0, borderRadius: 4 }}
-          allowFullScreen=""
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
         ></iframe>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import VariantSelector from "./VariantSelector";
+import VariantSelector from "./Variant";
 import styles from "./page.module.scss";
 
 type Thumbnail = {

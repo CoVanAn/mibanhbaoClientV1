@@ -1,33 +1,23 @@
-export type StatusMessage = { type: "error" | "success" | "info"; text: string };
+import { z } from "zod";
+import {
+  addressFormSchema,
+  addressSchema,
+  passwordFormSchema,
+  profileFormSchema,
+  statusMessageSchema,
+  userSchema,
+} from "./schemas";
 
-export type ProfileForm = { name: string; email: string; phone: string };
+export type StatusMessage = z.infer<typeof statusMessageSchema>;
+export type ProfileForm = z.infer<typeof profileFormSchema>;
+export type AddressForm = z.infer<typeof addressFormSchema>;
+export type PasswordForm = z.infer<typeof passwordFormSchema>;
+export type User = z.infer<typeof userSchema>;
+export type Address = z.infer<typeof addressSchema>;
 
-export type AddressForm = {
-  name: string;
-  phone: string;
-  company: string;
-  addressLine: string;
-  province: string;
-  district: string;
-  ward: string;
-};
-
-export type PasswordForm = { currentPassword: string; newPassword: string };
-
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-  phone?: string | null;
-};
-
-export type Address = {
-  id: string;
-  name: string;
-  phone: string;
-  company?: string | null;
-  addressLine: string;
-  province: string;
-  district: string;
-  ward: string;
+export {
+  profileFormSchema,
+  addressFormSchema,
+  passwordFormSchema,
+  statusMessageSchema,
 };

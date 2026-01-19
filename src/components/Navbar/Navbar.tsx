@@ -20,23 +20,7 @@ const Navbar = () => {
   }, [slides.length]);
 
   return (
-    <>
-      {/* Top Bar */}
-      {/* <div className='top-bar'>
-        <div className='top-bar-container'>
-          <div className='top-bar-left'>
-            <span>Hotline: 0942 5533 42</span>
-            <span>Email: hotro@mibanhbao.vn</span>
-          </div>
-          <div className='top-bar-right'>
-            <span>Tài khoản</span>
-            <span>Đăng xuất</span>
-            <span>Liên hệ</span>
-          </div>
-        </div>
-      </div> */}
-
-      {/* Logo Section */}
+    <div className="navbar-container">
       <div className="logo-section">
         <div className="logo-container">
           <img
@@ -49,7 +33,7 @@ const Navbar = () => {
       </div>
 
       {/* Navigation Bar */}
-      <hr style={{ border: "1px solid #eee" }} />
+      {/* <hr style={{ border: "1px solid #eee" }} /> */}
       <div className="nav-bar">
         <div className="nav-container">
           <div className="nav-left">
@@ -131,42 +115,7 @@ const Navbar = () => {
           onClick={() => setSidebarOpen(false)}
         ></div>
       )}
-
-      {/* <div className='slider-section'>
-        <div className='slider-container'>
-          {slides.map((slide, index) => (
-            <div
-              key={index}
-              className={`slider-item ${index === currentSlide ? 'active' : ''}`}
-            >
-              <img src={slide} alt={`Slider ${index + 1}`} />
-            </div>
-          ))}
-
-          <div className='slider-dots'>
-            {slides.map((_, index) => (
-              <span
-                key={index}
-                className={`dot ${index === currentSlide ? 'active' : ''}`}
-                onClick={() => setCurrentSlide(index)}
-              ></span>
-            ))}
-          </div>
-        </div>
-      </div> */}
-
-      {/* Brand Section */}
-      {/* <div className='brand-section'>
-        <div className='brand-container'>
-          <img src={assets.img_brand_1} alt="Brand 1" />
-          <img src={assets.img_brand_2} alt="Brand 2" />
-          <img src={assets.img_brand_3} alt="Brand 3" />
-          <img src={assets.img_brand_4} alt="Brand 4" />
-          <img src={assets.img_brand_5} alt="Brand 5" />
-          <img src={assets.img_brand_6} alt="Brand 6" />
-        </div>
-      </div> */}
-    </>
+    </div>
   );
 };
 

@@ -59,7 +59,7 @@ const Header = ({ setShowLogin }: any) => {
             </>
           ) : (
             <>
-              <Link className="header-login-btn" href="/account">
+              <Link href="/account" className="header-login-btn">
                 Tài khoản
               </Link>
               {/* {showProfileDropdown && (

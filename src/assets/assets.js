@@ -4,9 +4,9 @@ const withPath = (fileName) => `${baseAssetsPath}/${fileName}`;
 
 export const assets = {
   logo: withPath("logo.png"),
-  basket_icon: withPath("basket_icon.png"),
+  basket_icon: withPath("basket3.svg"),
   header_img: withPath("header_img.png"),
-  search_icon: withPath("search_icon.png"),
+  search_icon: withPath("search.svg"),
   rating_starts: withPath("rating_starts.png"),
   add_icon_green: withPath("add_icon_green.png"),
   add_icon_white: withPath("add_icon_white.png"),

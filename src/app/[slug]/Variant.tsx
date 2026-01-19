@@ -25,23 +25,23 @@ type VariantSelectorProps = {
 
 const VariantSelector = ({ variants }: VariantSelectorProps) => {
   const [selectedVariantId, setSelectedVariantId] = useState(
-    variants[0]?.id ?? ""
+    variants[0]?.id ?? "",
   );
   const [quantity, setQuantity] = useState(() =>
-    variants[0]?.quantity && variants[0].quantity > 0 ? 1 : 0
+    variants[0]?.quantity && variants[0].quantity > 0 ? 1 : 0,
   );
   const [statusMessage, setStatusMessage] = useState("");
   const [status, setStatus] = useState<"idle" | "adding" | "success" | "error">(
-    "idle"
+    "idle",
   );
 
-  const addToCart = useStore((state) => state.addToCart);
+  const addToCart = useStore((state: any) => state.addToCart);
 
   const selectedVariant = useMemo(
     () =>
       variants.find((variant) => variant.id === selectedVariantId) ??
       variants[0],
-    [selectedVariantId, variants]
+    [selectedVariantId, variants],
   );
 
   const availableStock = Math.max(selectedVariant?.quantity ?? 0, 0);
