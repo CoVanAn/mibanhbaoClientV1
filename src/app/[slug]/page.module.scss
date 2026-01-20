@@ -31,6 +31,9 @@
 
 .heroInfo h1 {
   font-size: 2.5rem;
+  @media screen and (max-width: 480px) {
+    font-size: 1.8rem;
+  }
 }
 .thumbnailButton {
   padding: 0;
@@ -132,7 +135,9 @@
   object-fit: cover;
   border-radius: 24px;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
 }
 
 .heroImage:hover {
@@ -305,7 +310,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .variantCard:hover {

@@ -85,6 +85,9 @@ const ProductDetailContent = async ({ params }: ProductDetailProps) => {
           <p>{product.description}</p>
         )}
       </div>
+      <Link href="/products" className={styles.secondaryButton}>
+        Xem danh mục
+      </Link>
     </main>
   );
 };

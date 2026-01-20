@@ -38,7 +38,7 @@ const ProductHero = ({
 }: ProductHeroProps) => {
   const initialImage = useMemo(
     () => defaultImage || thumbnails[0]?.url || "",
-    [defaultImage, thumbnails]
+    [defaultImage, thumbnails],
   );
   const [mainImage, setMainImage] = useState(initialImage);
 
@@ -71,21 +71,6 @@ const ProductHero = ({
 
   return (
     <section className={styles.hero}>
-      <div className={styles.heroInfo}>
-        <p className={styles.categoryTag}>{categoryLabel}</p>
-        <h1>{name}</h1>
-        <div className={styles.heroBadges}>
-          {isFeatured && <span className={styles.badge}>Nổi bật</span>}
-          {isActive && <span className={styles.badgeActive}>Đang bán</span>}
-        </div>
-        <p className={styles.description}>{description}</p>
-        <VariantSelector variants={variants} />
-        <div className={styles.ctaGroup}>
-          <Link href="/products" className={styles.secondaryButton}>
-            Xem danh mục
-          </Link>
-        </div>
-      </div>
       <div className={styles.heroMedia}>
         {displayImage ? (
           <img
@@ -140,6 +125,18 @@ const ProductHero = ({
           </div>
         </div>
       )}
+      <div className={styles.heroInfo}>
+        <p className={styles.categoryTag}>{categoryLabel}</p>
+        <h1>{name}</h1>
+        <div className={styles.heroBadges}>
+          {isFeatured && <span className={styles.badge}>Nổi bật</span>}
+          {isActive && <span className={styles.badgeActive}>Đang bán</span>}
+        </div>
+        <p className={styles.description}>{description}</p>
+        <VariantSelector variants={variants} />
+        <div className={styles.ctaGroup}>
+        </div>
+      </div>
     </section>
   );
 };

@@ -6,7 +6,7 @@ import {
   profileFormSchema,
   statusMessageSchema,
   userSchema,
-} from "./schemas";
+} from "../../schema/account.schema";
 
 export type StatusMessage = z.infer<typeof statusMessageSchema>;
 export type ProfileForm = z.infer<typeof profileFormSchema>;
