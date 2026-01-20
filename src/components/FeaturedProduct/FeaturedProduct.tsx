@@ -1,74 +1,31 @@
 "use client";
 
 import { useEffect } from "react";
-import Link from "next/link";
 import useStore from "@/src/store/useStore";
 import "./FeaturedProduct.scss";
-
-const currencyFormatter = new Intl.NumberFormat("vi-VN", {
-  style: "currency",
-  currency: "VND",
-  maximumFractionDigits: 0,
-});
-
-const slugify = (value: any) =>
-  typeof value === "string"
-    ? value
-        .toLowerCase()
-        .trim()
-        .replace(/[^\p{L}\p{N}]+/gu, "-")
-        .replace(/-+/g, "-")
-        .replace(/^-|-$/g, "")
-    : "";
+import {
+  ProductCard,
+  resolveProductSlug,
+  buildProductKey,
+} from "../Products/Product";
 
 const renderProductCards = (products: any[]) =>
   products
     .map((product: any) => {
-      const price = product.currentPrice ?? product.price ?? null;
-      const linkTarget =
-        product.slug ?? product.id ?? product._id ?? slugify(product.name);
+      const linkTarget = resolveProductSlug(product);
       if (!linkTarget) {
         console.warn("Missing slug/id on product", product);
         return null;
       }
       return (
-        <Link
-          key={`${product.id ?? product.slug ?? product._id}-${linkTarget}`}
-          href={`/${linkTarget}`}
-          className="powder-card"
-          aria-label={product.name}
-        >
-          <div className="powder-card__media">
-            {product.isFeatured && (
-              <span className="powder-card__badge">Nổi bật</span>
-            )}
-            {product.image ? (
-              <img src={product.image} alt={product.name} loading="lazy" />
-            ) : (
-              <div className="powder-card__placeholder">
-                Hình ảnh đang cập nhật
-              </div>
-            )}
-          </div>
-          <div className="powder-card__body">
-            <p className="powder-card__title">{product.name}</p>
-            <div className="powder-card__price">
-              <span>
-                {price != null
-                  ? currencyFormatter.format(price)
-                  : "Liên hệ để biết giá"}
-              </span>
-              {product.price &&
-                product.currentPrice != null &&
-                product.currentPrice < product.price && (
-                  <del>{currencyFormatter.format(product.price)}</del>
-                )}
-            </div>
-          </div>
-        </Link>
+        <ProductCard
+          key={buildProductKey(product, linkTarget)}
+          product={product}
+        />
       );
     })
     .filter(Boolean);
+// .filter(Boolean);
 
 function ProductSection({
   title,
