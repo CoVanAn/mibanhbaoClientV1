@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import VariantSelector from "./Variant";
+import VariantSelector from "./ProductVariant";
 import styles from "./page.module.scss";
+import { ProductDetailType } from "../../schema/product.schema";
 
 type Thumbnail = {
   id: string;
@@ -14,7 +14,7 @@ type ProductHeroProps = {
   categoryLabel: string;
   name: string;
   description?: string;
-  defaultImage?: string;
+  defaultImage?: string | null;
   thumbnails: Thumbnail[];
   variants: Array<{
     id: string;
@@ -134,8 +134,7 @@ const ProductHero = ({
         </div>
         <p className={styles.description}>{description}</p>
         <VariantSelector variants={variants} />
-        <div className={styles.ctaGroup}>
-        </div>
+        <div className={styles.ctaGroup}></div>
       </div>
     </section>
   );

@@ -6,8 +6,8 @@ import { ProductSummary, fetchProductList } from "@/src/queries/product";
 import { CategorySummary, fetchCategories } from "@/src/queries/category";
 import { ProductFilterDrawer, ProductFilterPanel } from "./ProductFilters";
 import { ProductGridSection } from "./ProductDisplay";
-import { SortOption } from "./productsConstants";
-import "./ProductsCatalog.scss";
+import { SortOption } from "./type";
+import styles from "./page.module.scss";
 
 export default function ProductsCatalog() {
   const [products, setProducts] = useState<ProductSummary[]>([]);
@@ -116,8 +116,8 @@ export default function ProductsCatalog() {
   };
 
   return (
-    <div className="products-page">
-      <div className="products-layout">
+    <div className={styles.productsPage}>
+      <div className={styles.productsLayout}>
         {!isTabletOrDown && <ProductFilterPanel {...filterProps} />}
 
         <ProductGridSection

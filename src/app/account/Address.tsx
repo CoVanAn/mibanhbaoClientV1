@@ -13,6 +13,7 @@ import {
   fetchAddresses,
   saveAddress,
 } from "@/src/queries/account";
+import styles from "./page.module.scss";
 
 const initialAddressForm: AddressForm = {
   name: "",
@@ -22,6 +23,12 @@ const initialAddressForm: AddressForm = {
   province: "",
   district: "",
   ward: "",
+};
+
+const getStatusVariantClass = (type?: string) => {
+  if (type === "success") return styles.accountStatusSuccess;
+  if (type === "error") return styles.accountStatusError;
+  return "";
 };
 
 const AddressSection = () => {
@@ -127,15 +134,15 @@ const AddressSection = () => {
   if (!token) return null;
 
   return (
-    <section className="account-card account-addresses" id="address-section">
-      <div className="account-card-header">
+    <section className={styles.accountCard} id="address-section">
+      <div className={styles.accountCardHeader}>
         <div>
           <h2>Địa chỉ giao hàng</h2>
           <p>Thêm nhiều địa chỉ để chọn khi bạn tạo đơn mới.</p>
         </div>
         <button
           type="button"
-          className="text-button"
+          className={styles.textButton}
           onClick={resetAddressForm}
         >
           {editingAddressId ? "Thêm địa chỉ khác" : "Thêm địa chỉ mới"}
@@ -143,16 +150,20 @@ const AddressSection = () => {
       </div>
 
       {addressMessage && (
-        <p className={`account-status ${addressMessage.type}`}>
+        <p
+          className={`${styles.accountStatus} ${getStatusVariantClass(
+            addressMessage.type,
+          )}`}
+        >
           {addressMessage.text}
         </p>
       )}
 
       <form
-        className="account-form account-address-form"
+        className={`${styles.accountForm} ${styles.accountAddressForm}`}
         onSubmit={handleAddressSubmit}
       >
-        <div className="account-form-grid">
+        <div className={styles.accountFormGrid}>
           <label>
             <span>Người nhận</span>
             <input
@@ -218,8 +229,12 @@ const AddressSection = () => {
           </label>
         </div>
 
-        <div className="account-form-actions">
-          <button type="submit" className="primary" disabled={isAddressSaving}>
+        <div className={styles.accountFormActions}>
+          <button
+            type="submit"
+            className={styles.primaryButton}
+            disabled={isAddressSaving}
+          >
             {isAddressSaving
               ? "Đang lưu..."
               : editingAddressId
@@ -229,7 +244,7 @@ const AddressSection = () => {
           {editingAddressId && (
             <button
               type="button"
-              className="text-button"
+              className={styles.textButton}
               onClick={resetAddressForm}
             >
               Hủy chỉnh sửa
@@ -238,35 +253,38 @@ const AddressSection = () => {
         </div>
       </form>
 
-      <div className="address-list">
+      <div className={styles.accountAddresses}>
         {addressesLoading ? (
-          <p className="account-status info">Đang tải danh sách địa chỉ…</p>
+          <p className={styles.accountStatus}>Đang tải danh sách địa chỉ…</p>
         ) : addresses.length > 0 ? (
-          <ul>
+          <ul className={styles.accountAddressesList}>
             {addresses.map((address) => (
-              <li key={address.id} className="address-item">
+              <li key={address.id} className={styles.accountAddressItem}>
                 <div>
-                  <p className="address-meta">
+                  <p className={styles.accountAddressMeta}>
                     <strong>{address.name}</strong> · {address.phone}
                   </p>
                   {address.company && (
-                    <p className="address-company">{address.company}</p>
+                    <p className={styles.accountAddressCompany}>
+                      {address.company}
+                    </p>
                   )}
-                  <p className="address-line">
+                  <p className={styles.accountAddressLine}>
                     {address.addressLine}, {address.ward}, {address.district},{" "}
                     {address.province}
                   </p>
                 </div>
-                <div className="address-actions">
+                <div className={styles.accountAddressActions}>
                   <button
                     type="button"
+                    className={styles.textButton}
                     onClick={() => handleEditAddress(address)}
                   >
                     Sửa
                   </button>
                   <button
                     type="button"
-                    className="text-button"
+                    className={styles.textButton}
                     onClick={() => handleDeleteAddress(address.id)}
                   >
                     Xóa
@@ -276,7 +294,7 @@ const AddressSection = () => {
             ))}
           </ul>
         ) : (
-          <p className="account-status info">Bạn chưa thêm địa chỉ nào.</p>
+          <p className={styles.accountStatus}>Bạn chưa thêm địa chỉ nào.</p>
         )}
       </div>
     </section>

@@ -5,6 +5,7 @@ import useStore from "@/src/store/useStore";
 import { useAccountContext } from "./AccountContext";
 import { ProfileForm, StatusMessage, profileFormSchema } from "./types";
 import { fetchUserProfile, updateUserProfile } from "@/src/queries/account";
+import styles from "./page.module.scss";
 
 const initialProfileForm: ProfileForm = { name: "", email: "", phone: "" };
 
@@ -87,8 +88,8 @@ const ProfileSection = () => {
   if (!token) return null;
 
   return (
-    <section className="account-card" id="profile-section">
-      <div className="account-card-header">
+    <section className={styles.accountCard} id="profile-section">
+      <div className={styles.accountCardHeader}>
         <div>
           <h2>Thông tin tài khoản</h2>
           <p>Thông tin sẽ được dùng khi bạn đặt hàng hoặc liên hệ.</p>
@@ -96,12 +97,20 @@ const ProfileSection = () => {
       </div>
 
       {profileMessage && (
-        <p className={`account-status ${profileMessage.type}`}>
+        <p
+          className={`${styles.accountStatus} ${
+            profileMessage.type === "success"
+              ? styles.accountStatusSuccess
+              : profileMessage.type === "error"
+                ? styles.accountStatusError
+                : ""
+          }`}
+        >
           {profileMessage.text}
         </p>
       )}
 
-      <form className="account-form" onSubmit={handleProfileSubmit}>
+      <form className={styles.accountForm} onSubmit={handleProfileSubmit}>
         <label>
           <span>Họ và tên</span>
           <input
@@ -135,7 +144,11 @@ const ProfileSection = () => {
         </label>
         <button
           type="submit"
-          className="primary"
+          className={`${styles.primaryButton} ${
+            isProfileSaving || profileLoading
+              ? styles.primaryButtonDisabled
+              : ""
+          }`}
           disabled={isProfileSaving || profileLoading}
         >
           {isProfileSaving ? "Đang lưu..." : "Lưu thông tin"}

@@ -6,7 +6,8 @@ import {
   buildProductKey,
   resolveProductSlug,
 } from "../../components/Products/Product";
-import { sortOptions, SortOption } from "./productsConstants";
+import { sortOptions, SortOption } from "./type";
+import styles from "./page.module.scss";
 
 type ProductGridSectionProps = {
   sortedProducts: ProductSummary[];
@@ -34,28 +35,25 @@ export function ProductGridSection({
   )?.label;
 
   return (
-    <div className="product-grid-section">
-      <div className="grid-header">
+    <section className={styles.productGridSection}>
+      <div className={styles.gridHeader}>
         <div>
-          <p className="grid-title">{activeCategoryName}</p>
-          <p className="grid-subtitle">
-            Hiển thị {sortedProducts.length} món ・ {sortLabel}
-          </p>
+          <p className={styles.gridTitle}>{activeCategoryName}</p>
         </div>
         {isTabletOrDown && (
-          <div className="mobile-filter-status">
-            <span className="status-pill">
+          <div className={styles.mobileFilterStatus}>
+            <span className={styles.statusPill}>
               {isFiltering ? activeCategoryName : "Tất cả"}
             </span>
-            <span className="status-pill">{sortLabel}</span>
+            <span className={styles.statusPill}>{sortLabel}</span>
           </div>
         )}
       </div>
 
       {isTabletOrDown && (
-        <div className="sort-row">
+        <div className={styles.sortRow}>
           <button
-            className="filter-trigger"
+            className={styles.filterTrigger}
             type="button"
             onClick={openFilters}
           >
@@ -64,13 +62,15 @@ export function ProductGridSection({
         </div>
       )}
 
-      {isLoading && <p className="loading">Đang tải sản phẩm...</p>}
-      {error && <p className="error-message">{error}</p>}
+      {isLoading && <p className={styles.loading}>Đang tải sản phẩm...</p>}
+      {error && <p className={styles.errorMessage}>{error}</p>}
       {!isLoading && !error && sortedProducts.length === 0 && (
-        <p className="no-products">Chưa có sản phẩm phù hợp với bộ lọc.</p>
+        <p className={styles.noProducts}>
+          Chưa có sản phẩm phù hợp với bộ lọc.
+        </p>
       )}
 
-      <div className="product-grid">
+      <div className={styles.productGrid}>
         {sortedProducts.map((product) => {
           const slug = resolveProductSlug(product);
           if (!slug) return null;
@@ -82,6 +82,6 @@ export function ProductGridSection({
           );
         })}
       </div>
-    </div>
+    </section>
   );
 }

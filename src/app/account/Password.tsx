@@ -4,10 +4,17 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import useStore from "@/src/store/useStore";
 import { PasswordForm, StatusMessage, passwordFormSchema } from "./types";
 import { changePassword } from "@/src/queries/account";
+import styles from "./page.module.scss";
 
 const initialPasswordForm: PasswordForm = {
   currentPassword: "",
   newPassword: "",
+};
+
+const getStatusVariantClass = (type?: string) => {
+  if (type === "success") return styles.accountStatusSuccess;
+  if (type === "error") return styles.accountStatusError;
+  return "";
 };
 
 const PasswordSection = () => {
@@ -59,8 +66,8 @@ const PasswordSection = () => {
   if (!token) return null;
 
   return (
-    <section className="account-card" id="password-section">
-      <div className="account-card-header">
+    <section className={styles.accountCard} id="password-section">
+      <div className={styles.accountCardHeader}>
         <div>
           <h2>Đổi mật khẩu</h2>
           <p>Chỉ áp dụng cho tài khoản đã từng tạo mật khẩu Mi Bánh Bao.</p>
@@ -68,12 +75,16 @@ const PasswordSection = () => {
       </div>
 
       {passwordMessage && (
-        <p className={`account-status ${passwordMessage.type}`}>
+        <p
+          className={`${styles.accountStatus} ${getStatusVariantClass(
+            passwordMessage.type,
+          )}`}
+        >
           {passwordMessage.text}
         </p>
       )}
 
-      <form className="account-form" onSubmit={handlePasswordSubmit}>
+      <form className={styles.accountForm} onSubmit={handlePasswordSubmit}>
         <label>
           <span>Mật khẩu hiện tại</span>
           <input
@@ -98,7 +109,7 @@ const PasswordSection = () => {
         </label>
         <button
           type="submit"
-          className="primary ghost"
+          className={`${styles.primaryButton} ${styles.primaryGhost}`}
           disabled={isPasswordSaving}
         >
           {isPasswordSaving ? "Đang đổi..." : "Cập nhật mật khẩu"}
