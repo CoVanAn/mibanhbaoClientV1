@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import "./LoginPopup.scss";
 import { assets } from "@/src/assets/assets";
 import useStore from "@/src/store/useStore";
-import axios from "axios";
+import { authAPI, setAccessToken } from "@/src/lib/api";
 
 const LoginPopup = ({ setShowLogin }: any) => {
   const url = useStore((state: any) => state.url);
@@ -41,26 +41,25 @@ const LoginPopup = ({ setShowLogin }: any) => {
       return;
     }
 
-    let newUrl = url;
-    if (currState === "Đăng nhập") {
-      newUrl = `${url}/api/user/login`;
-    } else {
-      newUrl = `${url}/api/user/register`;
-    }
-
-    console.log("Sending request to:", newUrl);
-    console.log("Data being sent:", data);
-
     try {
-      const response = await axios.post(newUrl, data);
-      console.log("Response:", response.data);
+      let response;
 
-      if (response.data.success) {
-        setToken(response.data.token);
-        localStorage.setItem("token", response.data.token);
+      if (currState === "Đăng nhập") {
+        response = await authAPI.login(data.email, data.password);
+      } else {
+        response = await authAPI.register(data.name, data.email, data.password);
+      }
+
+      console.log("Response:", response);
+
+      if (response.success) {
+        // Set access token in store and axios interceptor
+        setToken(response.accessToken);
+        setAccessToken(response.accessToken);
+        // Refresh token is automatically stored in HttpOnly cookie by server
         setShowLogin(false);
       } else {
-        const message = response.data.message;
+        const message = response.message;
         if (currState === "Đăng nhập") {
           if (message === "User not found") {
             setErrorMessage(

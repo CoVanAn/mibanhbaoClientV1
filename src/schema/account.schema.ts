@@ -62,3 +62,5 @@ export const addressSchema = z.object({
   district: z.string(),
   ward: z.string(),
 });
+
+export type AddressSchemaType = z.TypeOf<typeof addressSchema>;

@@ -7,7 +7,11 @@ import { ProfileForm, StatusMessage, profileFormSchema } from "./types";
 import { fetchUserProfile, updateUserProfile } from "@/src/queries/account";
 import styles from "./page.module.scss";
 
-const initialProfileForm: ProfileForm = { name: "", email: "", phone: "" };
+const initialProfileForm: ProfileForm = {
+  name: "",
+  email: "",
+  phone: "",
+};
 
 const ProfileSection = () => {
   const token = useStore((state: any) => state.token);
@@ -28,7 +32,7 @@ const ProfileSection = () => {
     const loadProfile = async () => {
       setProfileLoading(true);
       try {
-        const userData = await fetchUserProfile(token, url);
+        const userData = await fetchUserProfile();
         if (!isMounted) return;
         setUser(userData);
         setProfileForm({
@@ -70,7 +74,7 @@ const ProfileSection = () => {
     }
     setIsProfileSaving(true);
     try {
-      const updated = await updateUserProfile(token, url, parsed.data);
+      const updated = await updateUserProfile(parsed.data);
       setUser(updated);
       setProfileMessage({
         type: "success",

@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import VariantSelector from "./ProductVariant";
 import styles from "./page.module.scss";
-import { ProductDetailType } from "../../schema/product.schema";
 
 type Thumbnail = {
   id: string;

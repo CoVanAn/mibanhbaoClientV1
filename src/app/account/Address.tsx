@@ -13,6 +13,7 @@ import {
   fetchAddresses,
   saveAddress,
 } from "@/src/queries/account";
+
 import styles from "./page.module.scss";
 
 const initialAddressForm: AddressForm = {
@@ -48,7 +49,7 @@ const AddressSection = () => {
     if (!token) return;
     setAddressesLoading(true);
     try {
-      const data = await fetchAddresses(token, url);
+      const data = await fetchAddresses();
       setAddresses(data);
       setAddressMessage(null);
     } catch (error) {
@@ -86,7 +87,7 @@ const AddressSection = () => {
     }
     setIsAddressSaving(true);
     try {
-      await saveAddress(token, url, parsed.data, editingAddressId ?? undefined);
+      await saveAddress(parsed.data, editingAddressId ?? undefined);
       setAddressMessage({
         type: "success",
         text: editingAddressId
@@ -121,7 +122,7 @@ const AddressSection = () => {
   const handleDeleteAddress = async (id: string) => {
     if (!window.confirm("Bạn chắc chắn muốn xóa địa chỉ này?")) return;
     try {
-      await deleteAddress(token, url, id);
+      await deleteAddress(id);
       setAddressMessage({ type: "success", text: "Địa chỉ đã được xóa" });
       await loadAddresses();
     } catch (error) {
