@@ -44,8 +44,6 @@ const PasswordSection = () => {
     setIsPasswordSaving(true);
     try {
       await changePassword(
-        token,
-        url,
         parsed.data.currentPassword,
         parsed.data.newPassword,
       );

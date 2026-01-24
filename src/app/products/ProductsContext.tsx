@@ -1,15 +1,37 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import useIsMobile from "@/src/hooks/useIsMobile";
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { ProductSummary, fetchProductList } from "@/src/queries/product";
 import { CategorySummary, fetchCategories } from "@/src/queries/category";
-import { ProductFilterDrawer, ProductFilterPanel } from "./ProductFilters";
-import { ProductGridSection } from "./ProductDisplay";
-import { SortOption } from "./type";
-import styles from "./page.module.scss";
+import { SortOption } from "./types";
 
-export default function ProductsCatalog() {
+interface ProductsContextType {
+  products: ProductSummary[];
+  categories: CategorySummary[];
+  selectedCategoryId: number | null;
+  sortOption: SortOption;
+  isLoading: boolean;
+  error: string | null;
+  sortedProducts: ProductSummary[];
+  activeCategoryName: string;
+  isFiltering: boolean;
+  handleCategoryChange: (categoryId: number | null) => void;
+  handleSortChange: (option: SortOption) => void;
+}
+
+export const ProductsContext = createContext<ProductsContextType | null>(null);
+
+export const ProductsProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [products, setProducts] = useState<ProductSummary[]>([]);
   const [categories, setCategories] = useState<CategorySummary[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
@@ -17,9 +39,7 @@ export default function ProductsCatalog() {
   );
   const [sortOption, setSortOption] = useState<SortOption>("newest");
   const [isLoading, setIsLoading] = useState(true);
-  const [filtersOpen, setFiltersOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const isTabletOrDown = useIsMobile(1024);
 
   const loadProducts = useCallback(async () => {
     setIsLoading(true);
@@ -58,12 +78,6 @@ export default function ProductsCatalog() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!isTabletOrDown) {
-      setFiltersOpen(false);
-    }
-  }, [isTabletOrDown]);
-
   const sortedProducts = useMemo(() => {
     const list = [...products];
     switch (sortOption) {
@@ -91,50 +105,29 @@ export default function ProductsCatalog() {
 
   const handleCategoryChange = (categoryId: number | null) => {
     setSelectedCategoryId(categoryId);
-    if (isTabletOrDown) {
-      setFiltersOpen(false);
-    }
   };
 
   const handleSortChange = (option: SortOption) => {
     setSortOption(option);
-    if (isTabletOrDown) {
-      setFiltersOpen(false);
-    }
   };
 
-  const openFilters = () => setFiltersOpen(true);
-  const closeFilters = () => setFiltersOpen(false);
-
-  const filterProps = {
+  const value: ProductsContextType = {
+    products,
     categories,
     selectedCategoryId,
-    handleCategoryChange,
     sortOption,
+    isLoading,
+    error,
+    sortedProducts,
+    activeCategoryName,
+    isFiltering,
+    handleCategoryChange,
     handleSortChange,
-    closeFilters,
   };
 
   return (
-    <div className={styles.productsPage}>
-      <div className={styles.productsLayout}>
-        {!isTabletOrDown && <ProductFilterPanel {...filterProps} />}
-
-        <ProductGridSection
-          sortedProducts={sortedProducts}
-          isLoading={isLoading}
-          error={error}
-          isTabletOrDown={isTabletOrDown}
-          isFiltering={isFiltering}
-          activeCategoryName={activeCategoryName}
-          sortOption={sortOption}
-          openFilters={openFilters}
-        />
-      </div>
-
-      {isTabletOrDown && filtersOpen && (
-        <ProductFilterDrawer {...filterProps} />
-      )}
-    </div>
+    <ProductsContext.Provider value={value}>
+      {children}
+    </ProductsContext.Provider>
   );
-}
+};

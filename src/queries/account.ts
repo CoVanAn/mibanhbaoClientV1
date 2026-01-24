@@ -71,21 +71,15 @@ export async function deleteAddress(id: string) {
 }
 
 export async function changePassword(
-  token: string,
-  url: string,
   currentPassword: string,
   newPassword: string,
-) {
-  const response = await fetch(`${url}/api/user/change-password`, {
-    method: "POST",
-    headers: buildHeaders(token),
-    body: JSON.stringify({
-      currentPassword,
-      newPassword,
-    }),
+): Promise<void> {
+  const response = await apiClient.post("/api/user/change-password", {
+    currentPassword,
+    newPassword,
   });
-  const payload = (await response.json()) as { message?: string };
-  if (!response.ok) {
+  const payload = response.data as { message?: string };
+  if (!response.data.success) {
     throw new Error(payload.message || "Không thể đổi mật khẩu");
   }
 }

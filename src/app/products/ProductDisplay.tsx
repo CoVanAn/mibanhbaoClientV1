@@ -1,35 +1,38 @@
 "use client";
 
-import { ProductSummary } from "@/src/queries/product";
+import { useContext, useState, useEffect } from "react";
+import useIsMobile from "@/src/hooks/useIsMobile";
+import { ProductsContext } from "./ProductsContext";
 import {
   ProductCard,
   buildProductKey,
   resolveProductSlug,
 } from "../../components/Products/Product";
-import { sortOptions, SortOption } from "./type";
+import { sortOptions } from "./types";
 import styles from "./page.module.scss";
 
-type ProductGridSectionProps = {
-  sortedProducts: ProductSummary[];
-  isLoading: boolean;
-  error: string | null;
-  isTabletOrDown: boolean;
-  isFiltering: boolean;
-  activeCategoryName: string;
-  sortOption: SortOption;
-  openFilters: () => void;
-};
+export function ProductGridSection() {
+  const context = useContext(ProductsContext);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const isTabletOrDown = useIsMobile(1024);
 
-export function ProductGridSection({
-  sortedProducts,
-  isLoading,
-  error,
-  isTabletOrDown,
-  isFiltering,
-  activeCategoryName,
-  sortOption,
-  openFilters,
-}: ProductGridSectionProps) {
+  useEffect(() => {
+    if (!isTabletOrDown) {
+      setFiltersOpen(false);
+    }
+  }, [isTabletOrDown]);
+
+  if (!context) return null;
+
+  const {
+    sortedProducts,
+    isLoading,
+    error,
+    isFiltering,
+    activeCategoryName,
+    sortOption,
+  } = context;
+
   const sortLabel = sortOptions.find(
     (option) => option.value === sortOption,
   )?.label;
@@ -55,7 +58,7 @@ export function ProductGridSection({
           <button
             className={styles.filterTrigger}
             type="button"
-            onClick={openFilters}
+            onClick={() => setFiltersOpen(true)}
           >
             Chọn bộ lọc
           </button>

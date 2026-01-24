@@ -1,42 +1,27 @@
 "use client";
 
-import { CategorySummary } from "@/src/queries/category";
-import { sortOptions, SortOption } from "./type";
+import { useContext, useEffect, useState } from "react";
+import useIsMobile from "@/src/hooks/useIsMobile";
+import { ProductsContext } from "./ProductsContext";
+import { sortOptions } from "./types";
 import styles from "./page.module.scss";
 
-type BaseFilterProps = {
-  categories: CategorySummary[];
-  selectedCategoryId: number | null;
-  handleCategoryChange: (categoryId: number | null) => void;
-  sortOption: SortOption;
-  handleSortChange: (option: SortOption) => void;
-  closeFilters: () => void;
-};
+function FilterControls({ isTablet }: { isTablet: boolean }) {
+  const context = useContext(ProductsContext);
+  if (!context) return null;
 
-type FilterControlsProps = BaseFilterProps & { isTablet: boolean };
+  const {
+    categories,
+    selectedCategoryId,
+    handleCategoryChange,
+    sortOption,
+    handleSortChange,
+  } = context;
 
-function FilterControls({
-  categories,
-  selectedCategoryId,
-  handleCategoryChange,
-  sortOption,
-  handleSortChange,
-  isTablet,
-  closeFilters,
-}: FilterControlsProps) {
   return (
     <div className={styles.filterContent}>
       <div className={styles.filterHeader}>
         <h3>Bộ lọc</h3>
-        {isTablet && (
-          <button
-            type="button"
-            className={styles.filterClose}
-            onClick={closeFilters}
-          >
-            Đóng
-          </button>
-        )}
       </div>
 
       <div className={styles.filterGroup}>
@@ -87,22 +72,36 @@ function FilterControls({
   );
 }
 
-export function ProductFilterPanel(props: BaseFilterProps) {
+export function ProductFilterPanel() {
   return (
-    <aside className={styles.filterPanel}>
-      <FilterControls {...props} isTablet={false} />
+    <aside className={styles.filtersPanel}>
+      <FilterControls isTablet={false} />
     </aside>
   );
 }
 
-export function ProductFilterDrawer(props: BaseFilterProps) {
+export function ProductFilterDrawer() {
+  const [isOpen, setIsOpen] = useState(false);
+  const isTabletOrDown = useIsMobile(1024);
+
+  useEffect(() => {
+    if (!isTabletOrDown) {
+      setIsOpen(false);
+    }
+  }, [isTabletOrDown]);
+
+  if (!isTabletOrDown || !isOpen) return null;
+
   return (
-    <div className={styles.filtersDrawerOverlay} onClick={props.closeFilters}>
+    <div
+      className={styles.filtersDrawerOverlay}
+      onClick={() => setIsOpen(false)}
+    >
       <div
         className={styles.filtersDrawer}
         onClick={(event) => event.stopPropagation()}
       >
-        <FilterControls {...props} isTablet />
+        <FilterControls isTablet />
       </div>
     </div>
   );

@@ -5,10 +5,10 @@ const ProductVariantSchema = z.object({
   name: z.string().nullable().optional(),
   sku: z.string().nullable().optional(),
   isActive: z.boolean(),
-  price: z.number().nullable(),
-  currentPrice: z.number().nullable(),
-  quantity: z.number().nullable(),
-  safetyStock: z.number().nullable(),
+  price: z.coerce.number().nullable(),
+  currentPrice: z.coerce.number().nullable(),
+  quantity: z.coerce.number().nullable(),
+  safetyStock: z.coerce.number().nullable(),
 });
 
 const ProductImageSchema = z.object({
@@ -33,8 +33,8 @@ export const ProductDetailSchema = z.object({
   isActive: z.boolean(),
   image: z.string().nullable().optional(),
   images: z.array(ProductImageSchema),
-  price: z.number().nullable(),
-  currentPrice: z.number().nullable(),
+  price: z.coerce.number().nullable(),
+  currentPrice: z.coerce.number().nullable(),
   variants: z.array(ProductVariantSchema),
   categories: z.array(ProductCategorySchema),
 });
@@ -48,8 +48,8 @@ export const ProductSummarySchema = z.object({
   name: z.string(),
   description: z.string().nullable().optional(),
   image: z.string().nullable().optional(),
-  price: z.number().nullable(),
-  currentPrice: z.number().nullable(),
+  price: z.coerce.number().nullable(),
+  currentPrice: z.coerce.number().nullable(),
   createdAt: z.string().nullable(),
   categoryIds: z.array(z.number()),
   categoryNames: z.array(z.string()),

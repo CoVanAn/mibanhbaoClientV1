@@ -36,11 +36,27 @@ const parseProductList = (payload: unknown): ProductSummary[] => {
 };
 
 export async function fetchProductBySlug(slug: string): Promise<ProductDetailData> {
-  const response = await fetch(`${API_URL}/api/product/${encodeURIComponent(slug)}`, {
-    cache: "no-store",
-  });
-  const payload = await assertSuccess(response);
-  return parseProductDetail(payload);
+  try {
+    const url = `${API_URL}/api/product/${encodeURIComponent(slug)}`;
+    console.log("[fetchProductBySlug] Fetching:", url);
+    
+    const response = await fetch(url, {
+      cache: "no-store",
+    });
+    
+    console.log("[fetchProductBySlug] Response status:", response.status);
+    
+    const payload = await assertSuccess(response);
+    console.log("[fetchProductBySlug] Payload:", JSON.stringify(payload).slice(0, 200));
+    
+    const result = parseProductDetail(payload);
+    console.log("[fetchProductBySlug] Parsed successfully");
+    
+    return result;
+  } catch (error) {
+    console.error("[fetchProductBySlug] Error:", error);
+    throw error;
+  }
 }
 
 export async function fetchProductList(
