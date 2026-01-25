@@ -1,25 +1,26 @@
+"use client";
+
+import { useContext } from "react";
+import { ProductDetailContext } from "./ProductContent";
 import styles from "./page.module.scss";
 
-type ProductDescriptionSectionProps = {
-  description?: string;
-  content?: string;
-};
+export default function ProductDescriptionSection() {
+  const context = useContext(ProductDetailContext);
+  if (!context) return null;
 
-const ProductDescriptionSection = ({
-  description,
-  content,
-}: ProductDescriptionSectionProps) => (
-  <section className={styles.detailPanel}>
-    <h2>Giới thiệu sản phẩm</h2>
-    {content ? (
-      <div
-        className={styles.richText}
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
-    ) : (
-      <p>{description}</p>
-    )}
-  </section>
-);
+  const { product } = context;
 
-export default ProductDescriptionSection;
+  return (
+    <section className={styles.detailPanel}>
+      <h2>Giới thiệu sản phẩm</h2>
+      {product.content ? (
+        <div
+          className={styles.richText}
+          dangerouslySetInnerHTML={{ __html: product.content }}
+        />
+      ) : (
+        <p>{product.description}</p>
+      )}
+    </section>
+  );
+}

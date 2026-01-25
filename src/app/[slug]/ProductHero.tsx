@@ -1,40 +1,22 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { ProductDetailContext } from "./ProductContent";
 import VariantSelector from "./ProductVariant";
 import styles from "./page.module.scss";
 
-type Thumbnail = {
-  id: string;
-  url: string;
-};
+export default function ProductHero() {
+  const context = useContext(ProductDetailContext);
+  if (!context) return null;
 
-type ProductHeroProps = {
-  categoryLabel: string;
-  name: string;
-  description?: string;
-  defaultImage?: string | null;
-  thumbnails: Thumbnail[];
-  variants: Array<{
-    id: string;
-    name?: string;
-    price?: number | null;
-    quantity?: number | null;
-  }>;
-  isFeatured?: boolean;
-  isActive?: boolean;
-};
+  const {
+    product,
+    categoryLabel,
+    thumbnails,
+    variants,
+    mainImage: defaultImage,
+  } = context;
 
-const ProductHero = ({
-  categoryLabel,
-  name,
-  description,
-  defaultImage,
-  thumbnails,
-  variants,
-  isFeatured,
-  isActive,
-}: ProductHeroProps) => {
   const initialImage = useMemo(
     () => defaultImage || thumbnails[0]?.url || "",
     [defaultImage, thumbnails],
@@ -74,7 +56,7 @@ const ProductHero = ({
         {displayImage ? (
           <img
             src={displayImage}
-            alt={name}
+            alt={product.name}
             className={styles.heroImage}
             loading="lazy"
             onClick={openPreview}
@@ -94,7 +76,7 @@ const ProductHero = ({
             >
               <img
                 src={image.url}
-                alt={name}
+                alt={product.name}
                 className={styles.thumbnail}
                 loading="lazy"
               />
@@ -117,7 +99,7 @@ const ProductHero = ({
             </button>
             <img
               src={displayImage}
-              alt={name}
+              alt={product.name}
               className={styles.imagePreview}
               loading="lazy"
             />
@@ -126,17 +108,17 @@ const ProductHero = ({
       )}
       <div className={styles.heroInfo}>
         <p className={styles.categoryTag}>{categoryLabel}</p>
-        <h1>{name}</h1>
+        <h1>{product.name}</h1>
         <div className={styles.heroBadges}>
-          {isFeatured && <span className={styles.badge}>Nổi bật</span>}
-          {isActive && <span className={styles.badgeActive}>Đang bán</span>}
+          {product.isFeatured && <span className={styles.badge}>Nổi bật</span>}
+          {product.isActive && (
+            <span className={styles.badgeActive}>Đang bán</span>
+          )}
         </div>
-        <p className={styles.description}>{description}</p>
+        <p className={styles.description}>{product.description}</p>
         <VariantSelector variants={variants} />
         <div className={styles.ctaGroup}></div>
       </div>
     </section>
   );
-};
-
-export default ProductHero;
+}

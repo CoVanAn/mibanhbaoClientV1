@@ -1,8 +1,10 @@
-import Link from "next/link";
-import styles from "./page.module.scss";
+import { fetchProductBySlug } from "@/src/queries/product";
+import { ProductDetailProvider } from "./ProductContent";
+import ProductNotFound from "./ProductNotFound";
 import ProductHero from "./ProductHero";
 import ProductDescriptionSection from "./ProductDescription";
-import { getProductDetailData } from "./type";
+import BackToCatalog from "./BackToCatalog";
+import styles from "./page.module.scss";
 
 export const dynamic = "force-dynamic";
 
@@ -10,44 +12,28 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export default async function ProductDetailPage({ params }: PageProps) {
-  const detail = await getProductDetailData(params);
+export default async function Page({ params }: PageProps) {
+  const { slug } = await params;
 
-  if (!detail) {
-    return (
-      <main className={styles.productPage}>
-        <div className={styles.notFound}>
-          <p>Không tìm thấy sản phẩm</p>
-          <h1>Xin lỗi, sản phẩm đang được cập nhật.</h1>
-          <Link href="/" className={styles.primaryButton}>
-            Quay lại trang chủ
-          </Link>
-        </div>
-      </main>
-    );
+  let product;
+  try {
+    product = await fetchProductBySlug(slug);
+  } catch (error) {
+    console.error("Unable to load product", error);
+    return <ProductNotFound />;
   }
 
-  const { product, categoryLabel, thumbnails, variants, mainImage } = detail;
+  if (!product) {
+    return <ProductNotFound />;
+  }
 
   return (
-    <main className={styles.productPage}>
-      <ProductHero
-        categoryLabel={categoryLabel}
-        name={product.name}
-        description={product.description}
-        defaultImage={mainImage}
-        thumbnails={thumbnails}
-        variants={variants}
-        isFeatured={product.isFeatured}
-        isActive={product.isActive}
-      />
-      <ProductDescriptionSection
-        content={product.content}
-        description={product.description}
-      />
-      <Link href="/products" className={styles.backToCatalog}>
-        ← Quay lại danh mục sản phẩm
-      </Link>
-    </main>
+    <ProductDetailProvider product={product}>
+      <main className={styles.productPage}>
+        <ProductHero />
+        <ProductDescriptionSection />
+        <BackToCatalog />
+      </main>
+    </ProductDetailProvider>
   );
 }
