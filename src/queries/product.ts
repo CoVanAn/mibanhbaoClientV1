@@ -1,4 +1,4 @@
-import { API_URL } from "@/src/constants/api";
+import apiClient from "@/src/lib/api";
 import {
   ProductDetailSchema,
   ProductListSchema,
@@ -7,14 +7,6 @@ import type { ProductDetailData, ProductSummary } from "@/src/schema/product.sch
 
 type FetchProductListOptions = {
   categoryId?: number | null;
-};
-
-const assertSuccess = async (response: Response) => {
-  const payload = await response.json().catch(() => null);
-  if (!response.ok) {
-    throw new Error(payload?.message ?? "Không thể tải dữ liệu sản phẩm");
-  }
-  return payload;
 };
 
 const parseProductDetail = (payload: unknown): ProductDetailData => {
@@ -36,27 +28,8 @@ const parseProductList = (payload: unknown): ProductSummary[] => {
 };
 
 export async function fetchProductBySlug(slug: string): Promise<ProductDetailData> {
-  try {
-    const url = `${API_URL}/api/product/${encodeURIComponent(slug)}`;
-    console.log("[fetchProductBySlug] Fetching:", url);
-    
-    const response = await fetch(url, {
-      cache: "no-store",
-    });
-    
-    console.log("[fetchProductBySlug] Response status:", response.status);
-    
-    const payload = await assertSuccess(response);
-    console.log("[fetchProductBySlug] Payload:", JSON.stringify(payload).slice(0, 200));
-    
-    const result = parseProductDetail(payload);
-    console.log("[fetchProductBySlug] Parsed successfully");
-    
-    return result;
-  } catch (error) {
-    console.error("[fetchProductBySlug] Error:", error);
-    throw error;
-  }
+  const response = await apiClient.get(`/api/product/${encodeURIComponent(slug)}`);
+  return parseProductDetail(response.data);
 }
 
 export async function fetchProductList(
@@ -67,10 +40,9 @@ export async function fetchProductList(
     params.append("categoryId", String(options.categoryId));
   }
   const query = params.toString();
-  const url = `${API_URL}/api/product/list${query ? `?${query}` : ""}`;
-  const response = await fetch(url, { cache: "no-store" });
-  const payload = await assertSuccess(response);
-  return parseProductList(payload);
+  const url = `/api/product/list${query ? `?${query}` : ""}`;
+  const response = await apiClient.get(url);
+  return parseProductList(response.data);
 }
 
 export type { ProductSummary } from "@/src/schema/product.schema";

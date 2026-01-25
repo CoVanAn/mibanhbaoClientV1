@@ -1,14 +1,11 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import { ProductSummary, fetchProductList } from "@/src/queries/product";
-import { CategorySummary, fetchCategories } from "@/src/queries/category";
+import { createContext, useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchProductList } from "@/src/queries/product";
+import { fetchCategories } from "@/src/queries/category";
+import type { ProductSummary } from "@/src/queries/product";
+import type { CategorySummary } from "@/src/queries/category";
 import { SortOption } from "./types";
 
 interface ProductsContextType {
@@ -32,51 +29,28 @@ export const ProductsProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [products, setProducts] = useState<ProductSummary[]>([]);
-  const [categories, setCategories] = useState<CategorySummary[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
     null,
   );
   const [sortOption, setSortOption] = useState<SortOption>("newest");
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  const loadProducts = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await fetchProductList({
-        categoryId: selectedCategoryId ?? undefined,
-      });
-      setProducts(data);
-    } catch (fetchError) {
-      console.error("fetchProductList", fetchError);
-      setError("Không thể tải danh sách sản phẩm. Vui lòng thử lại sau.");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [selectedCategoryId]);
+  // Fetch products with React Query
+  const {
+    data: products = [],
+    isLoading: isLoadingProducts,
+    error: productsError,
+  } = useQuery({
+    queryKey: ["products", selectedCategoryId],
+    queryFn: () => fetchProductList({ categoryId: selectedCategoryId }),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
 
-  useEffect(() => {
-    void loadProducts();
-  }, [loadProducts]);
-
-  useEffect(() => {
-    let isMounted = true;
-    (async () => {
-      try {
-        const data = await fetchCategories();
-        if (isMounted) {
-          setCategories(data);
-        }
-      } catch (fetchError) {
-        console.error("fetchCategories", fetchError);
-      }
-    })();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  // Fetch categories with React Query
+  const { data: categories = [] } = useQuery({
+    queryKey: ["categories"],
+    queryFn: fetchCategories,
+    staleTime: 10 * 60 * 1000, // 10 minutes - categories change rarely
+  });
 
   const sortedProducts = useMemo(() => {
     const list = [...products];
@@ -116,8 +90,8 @@ export const ProductsProvider = ({
     categories,
     selectedCategoryId,
     sortOption,
-    isLoading,
-    error,
+    isLoading: isLoadingProducts,
+    error: productsError?.message ?? null,
     sortedProducts,
     activeCategoryName,
     isFiltering,

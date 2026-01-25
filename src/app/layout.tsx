@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.scss";
 import ClientShell from "@/src/components/ClientShell/ClientShell";
+import { Providers } from "@/src/lib/providers";
 
 export const metadata: Metadata = {
   title: "Mi Bánh Bao",
@@ -14,8 +15,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi">
-      <body >
-        <ClientShell>{children}</ClientShell>
+      <body>
+        <Providers>
+          <ClientShell>{children}</ClientShell>
+        </Providers>
       </body>
     </html>
   );
