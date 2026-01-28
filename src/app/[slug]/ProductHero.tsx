@@ -116,7 +116,7 @@ export default function ProductHero() {
           )}
         </div>
         <p className={styles.description}>{product.description}</p>
-        <VariantSelector variants={variants} />
+        <VariantSelector variants={variants} productId={product.id} />
         <div className={styles.ctaGroup}></div>
       </div>
     </section>

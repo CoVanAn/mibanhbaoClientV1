@@ -26,7 +26,7 @@
 .powder-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 @media (max-width: 1024px) {
@@ -47,9 +47,9 @@
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
-  &:hover {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  }
+  // &:hover {
+  //   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  // }
   &__media {
     position: relative;
     border-radius: 20px;
@@ -127,5 +127,8 @@
 @media (max-width: 720px) {
   .powder-showcase {
     padding: 1.5rem 1rem;
+    &__header h2 {
+      font-size: 2rem;
+    }
   }
 }

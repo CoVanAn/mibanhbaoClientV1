@@ -1,0 +1,163 @@
+@import "@/src/styles/variables";
+
+.summary {
+  padding: $spacing-xl $spacing-2xl;
+  border-top: 2px solid $color-border;
+  background: $color-bg-secondary;
+}
+
+.couponInput {
+  display: flex;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-lg;
+}
+
+.input {
+  flex: 1;
+  padding: $spacing-md $spacing-md;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  font-size: $font-size-14;
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+  }
+}
+
+.applyBtn {
+  background: $color-primary;
+  color: $color-white;
+  border: none;
+  padding: $spacing-md $spacing-xl;
+  border-radius: $radius-md;
+  cursor: pointer;
+  font-size: $font-size-14;
+  font-weight: $font-weight-medium;
+  transition: background $transition-normal;
+
+  &:hover:not(:disabled) {
+    background: $color-primary-hover;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.couponApplied {
+  @include flex-between;
+  background: rgba($color-success, 0.1);
+  padding: $spacing-md;
+  border-radius: $radius-md;
+  margin-bottom: $spacing-lg;
+}
+
+.couponInfo {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  font-size: $font-size-14;
+  color: darken($color-success, 20%);
+  font-weight: $font-weight-medium;
+
+  svg {
+    color: $color-success;
+  }
+}
+
+.couponValue {
+  margin-left: auto;
+  font-weight: $font-weight-semibold;
+}
+
+.removeBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: $spacing-xs;
+  border-radius: $radius-sm;
+  color: $color-text-tertiary;
+  transition: all $transition-normal;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: $color-error;
+  }
+}
+
+.error {
+  margin: -#{$spacing-sm} 0 $spacing-md;
+  font-size: $font-size-12;
+  color: $color-error;
+}
+
+.totals {
+  margin-bottom: $spacing-xl;
+}
+
+.row {
+  @include flex-between;
+  align-items: center;
+  padding: $spacing-sm 0;
+  font-size: $font-size-14;
+  color: $color-text-tertiary;
+}
+
+.discount {
+  color: $color-success;
+  font-weight: $font-weight-semibold;
+}
+
+.shipping {
+  font-size: $font-size-13;
+  font-style: italic;
+}
+
+.divider {
+  height: 1px;
+  background: $color-border;
+  margin: $spacing-md 0;
+}
+
+.total {
+  padding: $spacing-md 0 0;
+  font-size: $font-size-18;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+
+  span:last-child {
+    color: $color-primary;
+  }
+}
+
+.checkoutBtn {
+  width: 100%;
+  background: $color-primary;
+  color: $color-white;
+  border: none;
+  padding: $spacing-lg;
+  border-radius: $radius-lg;
+  cursor: pointer;
+  font-size: $font-size-16;
+  font-weight: $font-weight-semibold;
+  transition: background $transition-normal;
+
+  &:hover:not(:disabled) {
+    background: $color-primary-hover;
+    @include hover-lift;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.note {
+  margin: $spacing-md 0 0;
+  font-size: $font-size-12;
+  color: $color-text-disabled;
+  text-align: center;
+}

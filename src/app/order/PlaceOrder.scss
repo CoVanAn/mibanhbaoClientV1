@@ -1,53 +1,75 @@
-.place-order{
+@import "@/src/styles/variables";
+
+.place-order {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: $spacing-5xl;
+  margin-top: 100px;
+  padding: $spacing-xl;
+  border: 1px solid $color-border;
+  border-radius: $radius-xl;
+  background-color: $color-bg-tertiary;
+  color: $color-text-tertiary;
+  font-size: $font-size-14;
+}
+
+.place-order-left {
+  width: 100%;
+  max-width: max(30%, 500px);
+
+  p {
+    font-size: $font-size-20;
+    font-weight: $font-weight-semibold;
+    margin-bottom: $spacing-5xl;
+  }
+
+  title {
+    font-size: $font-size-20;
+    font-weight: $font-weight-semibold;
+    margin-bottom: $spacing-5xl;
+  }
+
+  input {
     display: flex;
-    align-items: start;
-    justify-content: space-between;
-    gap: 50px;
-    margin-top: 100px;
-    padding: 20px;
-    border: 1px solid lightgray;
-    border-radius: 15px;
-    background-color: whitesmoke;
-    color: gray;
-    font-size: 14px;
-}
-
-.place-order-left p{
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 50px;
-}
-
-.place-order-left{
     width: 100%;
-    max-width: max(30%, 500px);
-}
+    padding: $spacing-md;
+    gap: $spacing-md;
+    border-radius: $radius-md;
+    margin-bottom: $spacing-lg;
+    outline-color: $color-primary;
+    border: 1px solid $color-border;
+    
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+    }
+  }
 
-.place-order-left title{
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 50px;
-}
-
-.place-order-left input{
+  .multi-fields {
     display: flex;
-    width: 100%;
-    padding: 10px;
-    gap: 10px;
-    border-radius: 6px;
-    margin-bottom: 15px;
-    outline-color: tomato;
+    gap: $spacing-md;
+  }
 }
 
-.place-order-left .multi-fields{
-    display: flex;
-    gap: 10px;
+.place-order-right {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+  width: 100%;
+  max-width: max(30%, 500px);
 }
 
-.place-order-right{
-    display: flex;
+@include tablet {
+  .place-order {
     flex-direction: column;
-    gap: 20px;
-    width: 100%;
-    max-width: max(30%, 500px);
+    gap: $spacing-3xl;
+    margin-top: $spacing-5xl;
+  }
+
+  .place-order-left,
+  .place-order-right {
+    max-width: 100%;
+  }
 }

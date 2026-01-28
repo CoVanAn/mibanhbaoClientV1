@@ -55,31 +55,15 @@ const Header = ({ setShowLogin }: any) => {
               >
                 Đăng ký
               </span>
-              {/* <span>Liên hệ</span> */}
             </>
           ) : (
             <>
               <Link href="/account" className="header-login-btn">
                 Tài khoản
               </Link>
-              {/* {showProfileDropdown && (
-                    <ul className='header-profile-dropdown'>
-                      <li onClick={() => {navigate('/myorders'); setShowProfileDropdown(false)}}>
-                        <img src={assets.bag_icon} alt="" />
-                        <p>Đơn hàng của tôi</p>
-                      </li>
-                      <hr />
-                      <li onClick={() => {logout(); setShowProfileDropdown(false)}}>
-                        <img src={assets.logout_icon} alt="" />
-                        <p>Đăng xuất</p>
-                      </li>
-                    </ul>
-                  )} */}
-              {/* </div> */}
               <span className="login-btn" onClick={logout}>
                 Đăng xuất
               </span>
-              {/* <span className='login-btn'>Liên hệ</span> */}
             </>
           )}
         </div>

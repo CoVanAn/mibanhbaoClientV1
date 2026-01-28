@@ -20,10 +20,6 @@ function FilterControls({ isTablet }: { isTablet: boolean }) {
 
   return (
     <div className={styles.filterContent}>
-      <div className={styles.filterHeader}>
-        <h3>Bộ lọc</h3>
-      </div>
-
       <div className={styles.filterGroup}>
         <p className={styles.filterTitle}>Danh mục</p>
         <div className={styles.categoryList}>

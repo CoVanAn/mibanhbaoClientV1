@@ -13,11 +13,11 @@
     transform 0.2s ease,
     box-shadow 0.2s ease;
   &:hover {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
   }
   &__media {
     position: relative;
-    border-radius: 20px;
+    border-radius: 1rem;
     overflow: hidden;
     img {
       width: 100%;
@@ -34,18 +34,17 @@
     padding: 0.2rem 0.7rem;
     border-radius: 12px;
     font-size: 0.8rem;
-    font-weight: 600;
     z-index: 1;
   }
   &__body {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: 1rem;
   }
 
   &__title {
-    font-weight: 600;
     color: vars.$text-main;
+    font-weight: 500;
     font-size: 1rem;
   }
 

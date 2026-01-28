@@ -1,0 +1,60 @@
+@import "@/src/styles/variables";
+
+.toastContainer {
+  position: fixed;
+  top: $spacing-xl;
+  right: $spacing-xl;
+  z-index: $z-index-tooltip;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  pointer-events: none;
+}
+
+.toast {
+  padding: $spacing-md $spacing-xl;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-lg;
+  font-size: $font-size-14;
+  font-weight: $font-weight-medium;
+  max-width: 350px;
+  animation: slideIn $transition-slow;
+  pointer-events: auto;
+
+  &.success {
+    background-color: $color-success;
+    color: $color-white;
+  }
+
+  &.error {
+    background-color: $color-error;
+    color: $color-white;
+  }
+
+  &.info {
+    background-color: $color-info;
+    color: $color-white;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@include tablet {
+  .toastContainer {
+    left: $spacing-xl;
+    right: $spacing-xl;
+  }
+
+  .toast {
+    max-width: 100%;
+  }
+}

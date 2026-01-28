@@ -1,14 +1,27 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import "./LoginPopup.scss";
 import { assets } from "@/src/assets/assets";
 import useStore from "@/src/store/useStore";
 import { authAPI, setAccessToken } from "@/src/lib/api";
+import { useMergeGuestCart } from "@/src/queries/cart";
+
+// Helper function to get cookie value
+const getCookie = (name: string): string | null => {
+  if (typeof document === "undefined") return null;
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(";").shift() || null;
+  return null;
+};
 
 const LoginPopup = ({ setShowLogin }: any) => {
+  const queryClient = useQueryClient();
   const url = useStore((state: any) => state.url);
   const setToken = useStore((state: any) => state.setToken);
+  const mergeGuestCart = useMergeGuestCart();
 
   const [currState, setCurrState] = useState("Đăng nhập");
   const [data, setData] = useState({
@@ -56,9 +69,30 @@ const LoginPopup = ({ setShowLogin }: any) => {
         // Set access token in store and axios interceptor
         setToken(response.accessToken);
         setAccessToken(response.accessToken);
-        // Refresh token is automatically stored in HttpOnly cookie by server
+
+        // Merge guest cart if exists (only on login, not register)
+        if (currState === "Đăng nhập") {
+          const guestToken = getCookie("guestToken");
+          if (guestToken) {
+            try {
+              await mergeGuestCart.mutateAsync(guestToken);
+              console.log("Guest cart merged successfully");
+            } catch (mergeError) {
+              console.error("Failed to merge guest cart:", mergeError);
+              // Don't show error to user, just log it
+            }
+          }
+        }
+
+        // Refetch cart after successful login/register
+        console.log("Login/Register successful, refetching cart...");
+        await queryClient.invalidateQueries({ queryKey: ["cart"] });
+
         setShowLogin(false);
-      } else {
+      }
+
+      // Refresh token is automatically stored in HttpOnly cookie by server
+      else {
         const message = response.message;
         if (currState === "Đăng nhập") {
           if (message === "User not found") {

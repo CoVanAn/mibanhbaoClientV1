@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import "./Navbar.scss";
 import { assets } from "@/src/assets/assets";
 import { useRouter } from "next/navigation";
+import { useCart } from "@/src/queries/cart";
+import Link from "next/link";
 
 const Navbar = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -18,6 +20,9 @@ const Navbar = () => {
 
     return () => clearInterval(interval);
   }, [slides.length]);
+
+  const { data: cart } = useCart();
+  const itemCount = cart?.totalItems || 0;
 
   return (
     <div className="navbar-container">
@@ -56,9 +61,14 @@ const Navbar = () => {
             <div className="nav-icon">
               <img src={assets.search_icon} alt="Tìm kiếm" />
             </div>
-            <div className="nav-icon">
+            <Link href="/cart" className="nav-icon">
+              {itemCount > 0 && (
+                <span className="badge">
+                  {itemCount > 99 ? "99+" : itemCount}
+                </span>
+              )}
               <img src={assets.basket_icon} alt="Giỏ hàng" />
-            </div>
+            </Link>
           </div>
         </div>
       </div>

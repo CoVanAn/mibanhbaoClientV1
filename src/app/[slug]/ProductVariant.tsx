@@ -1,7 +1,8 @@
 "use client";
 
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
-import useStore from "@/src/store/useStore";
+import { useAddToCart } from "@/src/queries/cart";
+import { useToast } from "@/src/components/common/Toast";
 import styles from "./page.module.scss";
 
 const formatCurrency = (value: number | null | undefined) =>
@@ -21,9 +22,10 @@ type VariantOption = {
 
 type VariantSelectorProps = {
   variants: VariantOption[];
+  productId?: number;
 };
 
-const VariantSelector = ({ variants }: VariantSelectorProps) => {
+const VariantSelector = ({ variants, productId }: VariantSelectorProps) => {
   const [selectedVariantId, setSelectedVariantId] = useState(
     variants[0]?.id ?? "",
   );
@@ -35,7 +37,8 @@ const VariantSelector = ({ variants }: VariantSelectorProps) => {
     "idle",
   );
 
-  const addToCart = useStore((state: any) => state.addToCart);
+  const addToCart = useAddToCart();
+  const toast = useToast();
 
   const selectedVariant = useMemo(
     () =>
@@ -80,18 +83,31 @@ const VariantSelector = ({ variants }: VariantSelectorProps) => {
   };
 
   const handleAddToCart = async () => {
-    if (!selectedVariant || !canOrder || quantity <= 0) return;
+    if (!selectedVariant || !canOrder || quantity <= 0 || !productId) return;
     setStatus("adding");
     setStatusMessage("");
 
     try {
-      await addToCart(selectedVariant.id, quantity);
+      await addToCart.mutateAsync({
+        productId,
+        variantId: Number(selectedVariant.id),
+        quantity,
+      });
       setStatus("success");
-      setStatusMessage(`Đã thêm ${quantity} vào giỏ hàng`);
-    } catch (error) {
+      setStatusMessage(`Thêm giỏ hàng`);
+      // toast.success(`Đã thêm ${quantity} sản phẩm vào giỏ hàng`);
+
+      // Reset message after 3 seconds
+      setTimeout(() => {
+        setStatusMessage("");
+        setStatus("idle");
+      }, 3000);
+    } catch (error: any) {
       console.error("Add to cart failed", error);
       setStatus("error");
-      setStatusMessage("Không thể thêm vào giỏ hàng. Vui lòng thử lại.");
+      const errorMsg = error.response?.data?.message || "Vui lòng thử lại.";
+      setStatusMessage(errorMsg);
+      toast.error(errorMsg);
     }
   };
 

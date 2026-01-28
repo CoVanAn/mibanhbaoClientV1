@@ -1,10 +1,14 @@
+@use "../../styles/variables" as *;
+
 .productsPage {
-  padding: 2.5rem 1rem 4rem;
-  background: #fdfaf6;
+  width: 100%;
+  max-width: 1110px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+  gap: 2.5rem;
 }
 
 .productsHero {
-  max-width: 1200px;
   margin: 0 auto 2rem;
   display: flex;
   align-items: flex-start;
@@ -63,8 +67,12 @@
 
 .filterContent {
   display: flex;
+  width: 100%;
+  max-width: 240px;
   flex-direction: column;
   gap: 1.25rem;
+  font-size: $font-size-base;
+  font-weight: 600;
 }
 
 .filterHeader {
@@ -101,8 +109,8 @@
 }
 
 .categoryList {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 0.4rem;
 }
 
@@ -110,22 +118,25 @@
 .sortButton {
   border: 1px solid transparent;
   background: #fff;
-  border-radius: 999px;
+  border-radius: 20px;
   padding: 0.55rem 0.8rem;
   font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  text-align: left;
+  font-size: $font-size-base;
 }
 
 .categoryItem:hover,
 .sortButton:hover {
-  border-color: #f2b705;
+  border-color: $primary;
 }
 
 .categoryItemActive,
 .sortButtonActive {
-  background: #f2b705;
-  color: #2d1b0f;
+  // background: $primary;
+  // color: $text-white;
+  color: $primary;
   border-color: transparent;
 }
 
@@ -150,7 +161,8 @@
 .gridTitle {
   margin: 0;
   font-size: 1.6rem;
-  font-weight: 700;
+  font-weight: 600;
+  color: $text-main;
 }
 
 .gridSubtitle {
@@ -183,16 +195,19 @@
 .loading,
 .errorMessage,
 .noProducts {
-  text-align: center;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #555;
   margin: 1rem 0;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 .productGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.25rem;
+  // gap: 1rem;
 }
 
 .productCard {

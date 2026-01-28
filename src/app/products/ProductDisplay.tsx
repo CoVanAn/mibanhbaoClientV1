@@ -68,9 +68,9 @@ export function ProductGridSection() {
       {isLoading && <p className={styles.loading}>Đang tải sản phẩm...</p>}
       {error && <p className={styles.errorMessage}>{error}</p>}
       {!isLoading && !error && sortedProducts.length === 0 && (
-        <p className={styles.noProducts}>
-          Chưa có sản phẩm phù hợp với bộ lọc.
-        </p>
+        <div className={styles.noProducts}>
+          <p>Hiện tại danh mục đang tạm thời hết sản phẩm!</p>
+        </div>
       )}
 
       <div className={styles.productGrid}>

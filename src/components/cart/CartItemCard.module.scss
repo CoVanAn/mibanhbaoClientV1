@@ -1,0 +1,203 @@
+@import "@/src/styles/variables";
+
+.cartItem {
+  display: grid;
+  grid-template-columns: $cart-item-image-desktop 2fr 1fr 150px 1fr;
+  gap: $grid-gap-lg;
+  align-items: center;
+  padding: $spacing-xl 0;
+  background: $color-bg-primary;
+  border-bottom: 1px solid $color-border-light;
+  position: relative;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  @include tablet {
+    grid-template-columns: $cart-item-image-mobile 1fr;
+    gap: $spacing-md;
+    padding: $spacing-lg 0;
+    border-bottom: 1px solid $color-border-light;
+  }
+}
+
+.image {
+  width: $cart-item-image-desktop;
+  height: $cart-item-image-desktop;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  background: $color-bg-primary;
+  border: 1px solid $color-border;
+
+  .img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @include tablet {
+    width: $cart-item-image-mobile;
+    height: $cart-item-image-mobile;
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  min-width: 0;
+
+  @include tablet {
+    gap: $spacing-xs;
+  }
+}
+
+.name {
+  margin: 0;
+  font-size: $font-size-15;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis(2);
+
+  @include tablet {
+    font-size: $font-size-14;
+  }
+}
+
+.variant {
+  margin: 0;
+  font-size: $font-size-13;
+  color: $color-text-secondary;
+
+  @include tablet {
+    font-size: $font-size-12;
+  }
+}
+
+.price {
+  margin: 0;
+  font-size: $font-size-14;
+  font-weight: $font-weight-semibold;
+  color: $color-primary-light;
+
+  @include tablet {
+    display: none;
+  }
+}
+
+.removeLink {
+  margin: $spacing-xs 0 0;
+  font-size: $font-size-13;
+  color: $color-primary;
+  cursor: pointer;
+  text-decoration: underline;
+
+  &:hover {
+    color: $color-primary-hover;
+  }
+
+  @include tablet {
+    display: none;
+  }
+}
+
+.unitPrice {
+  text-align: center;
+  font-size: $font-size-15;
+  font-weight: $font-weight-semibold;
+  color: $color-primary;
+
+  @include tablet {
+    display: none;
+  }
+}
+
+.unavailable {
+  margin: $spacing-xs 0 0;
+  font-size: $font-size-xs;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.lowStock {
+  margin: $spacing-xs 0 0;
+  font-size: $font-size-xs;
+  color: $color-warning;
+  font-weight: $font-weight-medium;
+}
+
+.actions {
+  @include flex-center;
+  gap: $spacing-md;
+
+  @include tablet {
+    grid-column: 1 / 3;
+    justify-content: flex-start;
+    gap: $spacing-sm;
+  }
+}
+
+.quantity {
+  @include flex-center;
+  gap: $spacing-sm;
+  background: $color-bg-primary;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  padding: $spacing-xs;
+}
+
+.quantityBtn {
+  @include button-reset;
+  padding: $spacing-xs;
+  border-radius: $radius-sm;
+  @include flex-center;
+  transition: background $transition-normal;
+
+  &:hover:not(:disabled) {
+    background: $color-bg-tertiary;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.quantityValue {
+  min-width: 24px;
+  text-align: center;
+  font-size: $font-size-14;
+  font-weight: $font-weight-medium;
+}
+
+.removeBtn {
+  @include button-reset;
+  padding: $spacing-sm;
+  border-radius: $radius-sm;
+  color: $color-text-tertiary;
+  transition: all $transition-normal;
+
+  &:hover:not(:disabled) {
+    color: $color-primary;
+    background: $color-primary-lighter;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.subtotal {
+  text-align: right;
+  font-size: $font-size-16;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+
+  @include tablet {
+    margin-top: -3.8rem;
+    grid-column: 1 / 3;
+    font-size: $font-size-15;
+  }
+}

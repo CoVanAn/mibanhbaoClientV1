@@ -1,0 +1,164 @@
+// @import "@/src/styles/variables";
+@use "../../styles/variables" as *;
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: $z-index-modal-backdrop;
+  animation: fadeIn $transition-fast;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 450px;
+  background: $color-white;
+  z-index: $z-index-modal;
+  display: flex;
+  flex-direction: column;
+  animation: slideIn $transition-fast;
+  box-shadow: $shadow-xl;
+}
+
+.header {
+  padding: $spacing-xl $spacing-2xl;
+  border-bottom: 1px solid $color-border;
+  @include flex-between;
+  align-items: center;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+
+  h2 {
+    margin: 0;
+    font-size: $font-size-20;
+    font-weight: $font-weight-semibold;
+  }
+
+  svg {
+    color: $color-primary;
+  }
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: $spacing-sm;
+  border-radius: $radius-full;
+  transition: background $transition-normal;
+
+  &:hover {
+    background: $color-bg-tertiary;
+  }
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.loading {
+  flex: 1;
+  @include flex-center;
+  color: $color-text-disabled;
+}
+
+.empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-lg;
+  padding: $spacing-4xl;
+
+  svg {
+    color: $color-border-dark;
+  }
+
+  p {
+    color: $color-text-disabled;
+    font-size: $font-size-16;
+  }
+}
+
+.continueBtn {
+  background: $color-primary;
+  color: $color-white;
+  border: none;
+  padding: $spacing-md $spacing-2xl;
+  border-radius: $radius-lg;
+  cursor: pointer;
+  font-size: $font-size-14;
+  font-weight: $font-weight-medium;
+  transition: background $transition-normal;
+
+  &:hover {
+    background: $color-primary-hover;
+    @include hover-lift;
+  }
+}
+
+.clearAll {
+  margin: $spacing-lg $spacing-2xl $spacing-sm;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  background: none;
+  border: 1px solid $color-primary;
+  color: $color-primary;
+  padding: $spacing-sm $spacing-lg;
+  border-radius: $radius-md;
+  cursor: pointer;
+  font-size: $font-size-13;
+  transition: all $transition-normal;
+
+  &:hover {
+    background: rgba($color-primary, 0.05);
+  }
+}
+
+.items {
+  flex: 1;
+  padding: $spacing-lg $spacing-2xl;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@include tablet {
+  .drawer {
+    max-width: 100%;
+  }
+}

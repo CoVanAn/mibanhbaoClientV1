@@ -1,0 +1,149 @@
+@import "@/src/styles/variables";
+
+.cartPage {
+  min-height: 100vh;
+  background: $color-bg-secondary;
+  padding: $spacing-xl $spacing-lg;
+}
+
+.container {
+  max-width: $container-xl;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.header {
+  @include flex-between;
+  margin-bottom: $spacing-3xl;
+
+  h1 {
+    font-size: $font-size-24;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+  }
+
+  @include tablet {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-lg;
+
+    h1 {
+      font-size: $font-size-24;
+    }
+  }
+}
+
+.clearBtn {
+  @include flex-center;
+  gap: $spacing-sm;
+  padding: $spacing-md $spacing-xl;
+  background: transparent;
+  border: 1px solid $color-border-medium;
+  border-radius: $radius-lg;
+  color: $color-text-secondary;
+  cursor: pointer;
+  font-size: $font-size-14;
+  transition: all $transition-slow;
+  width: 200px;
+  justify-content: center;
+
+  &:hover {
+    background: #fee;
+    border-color: $color-error;
+    color: $color-error;
+  }
+
+  @include tablet {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-3xl;
+  align-items: start;
+
+  .sidebar {
+    position: static;
+    order: 2;
+  }
+
+  .items {
+    order: 1;
+  }
+}
+
+.items {
+  @include card;
+
+  @include tablet {
+    padding: $spacing-xl $spacing-lg;
+  }
+}
+
+.itemsHeader {
+  display: none;
+}
+
+.loading {
+  @include flex-center;
+  min-height: 400px;
+  color: $color-text-secondary;
+
+  h2 {
+    font-size: $font-size-20;
+    font-weight: $font-weight-normal;
+  }
+}
+
+.empty {
+  @include flex-center;
+  flex-direction: column;
+  min-height: 60vh;
+  text-align: center;
+  gap: $spacing-xl;
+
+  svg {
+    color: $color-text-disabled;
+    margin-bottom: $spacing-xl;
+  }
+
+  h2 {
+    font-size: $font-size-24;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    margin-bottom: $spacing-md;
+  }
+
+  p {
+    font-size: $font-size-16;
+    color: $color-text-secondary;
+    margin-bottom: $spacing-3xl;
+  }
+}
+
+.continueBtn {
+  display: inline-block;
+  padding: $spacing-md $spacing-4xl;
+  background: $primary;
+  color: $color-white;
+  border: none;
+  border-radius: $radius-lg;
+  font-size: $font-size-16;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all $transition-normal;
+
+  &:hover {
+    background: $primary-hover;
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+  }
+}
+
+.sidebar {
+  position: static;
+}
