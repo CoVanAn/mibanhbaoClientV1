@@ -120,20 +120,6 @@ export function ProductGridSection() {
 
   return (
     <section className={styles.productGridSection}>
-      {/* <div className={styles.gridHeader}>
-        <div>
-          <p className={styles.gridTitle}>{activeCategoryName}</p>
-        </div>
-        {isTabletOrDown && (
-          <div className={styles.mobileFilterStatus}>
-            <span className={styles.statusPill}>
-              {isFiltering ? activeCategoryName : "Tất cả"}
-            </span>
-            <span className={styles.statusPill}>{sortLabel}</span>
-          </div>
-        )}
-      </div> */}
-
       {isTabletOrDown && (
         <div className={styles.sortRow}>
           <button
