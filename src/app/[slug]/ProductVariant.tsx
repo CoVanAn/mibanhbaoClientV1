@@ -2,7 +2,7 @@
 
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { useAddToCart } from "@/src/queries/cart";
-import { useToast } from "@/src/components/common/Toast";
+import { useToast } from "@/src/components/common/Toast/Toast";
 import styles from "./page.module.scss";
 
 const formatCurrency = (value: number | null | undefined) =>

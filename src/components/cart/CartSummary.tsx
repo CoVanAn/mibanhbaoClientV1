@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Tag, X } from "lucide-react";
 import { Cart, useApplyCoupon, useRemoveCoupon } from "@/src/queries/cart";
-import { useToast } from "@/src/components/common/Toast";
+import { useToast } from "@/src/components/common/Toast/Toast";
 import styles from "./CartSummary.module.scss";
 
 interface CartSummaryProps {

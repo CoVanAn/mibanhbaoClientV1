@@ -8,7 +8,7 @@ import {
   useRemoveCartItem,
   CartItem,
 } from "@/src/queries/cart";
-import { useToast } from "@/src/components/common/Toast";
+import { useToast } from "@/src/components/common/Toast/Toast";
 import styles from "./CartItemCard.module.scss";
 
 interface CartItemCardProps {

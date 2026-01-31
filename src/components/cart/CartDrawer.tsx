@@ -3,7 +3,7 @@
 import React from "react";
 import { X, ShoppingCart, Trash2 } from "lucide-react";
 import { useCart, useClearCart } from "@/src/queries/cart";
-import { useToast } from "@/src/components/common/Toast";
+import { useToast } from "@/src/components/common/Toast/Toast";
 import { CartItemCard } from "./CartItemCard";
 import { CartSummary } from "./CartSummary";
 import styles from "./CartDrawer.module.scss";
