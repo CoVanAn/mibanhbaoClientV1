@@ -1,0 +1,52 @@
+@use "../../../styles/variables" as *;
+
+.productGridSection {
+  flex: 1;
+  margin: 0;
+}
+
+.sortRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.85rem;
+}
+
+.filterTrigger {
+  border: none;
+  background: linear-gradient(135deg, #e67e22, #d35400);
+  color: #fff;
+  border-radius: 24px;
+  padding: 0.9rem 1.5rem;
+  font-weight: 600;
+  box-shadow: 0 15px 35px rgba(211, 84, 0, 0.3);
+  cursor: pointer;
+}
+
+.loading,
+.errorMessage,
+.noProducts {
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  margin: 1rem 0;
+  font-size: 1rem;
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 1024px) {
+  .productGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .productGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

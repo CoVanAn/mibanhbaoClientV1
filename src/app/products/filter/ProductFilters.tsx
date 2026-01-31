@@ -2,9 +2,9 @@
 
 import { useContext, useEffect, useState } from "react";
 import useIsMobile from "@/src/hooks/useIsMobile";
-import { ProductsContext } from "./ProductsContext";
-import { sortOptions } from "./types";
-import styles from "./page.module.scss";
+import { ProductsContext } from "../ProductsContext";
+import { sortOptions } from "../types";
+import styles from "./ProductFilters.module.scss";
 
 function FilterControls({ isTablet }: { isTablet: boolean }) {
   const context = useContext(ProductsContext);

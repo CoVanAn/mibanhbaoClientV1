@@ -1,0 +1,119 @@
+@use "../../../styles/variables" as *;
+
+.filtersPanel {
+  flex: 0 0 280px;
+  padding: 1rem;
+  top: 2rem;
+  align-self: flex-start;
+}
+
+.filterContent {
+  display: flex;
+  width: 100%;
+  max-width: 240px;
+  flex-direction: column;
+  gap: 1.25rem;
+  font-size: $font-size-base;
+  font-weight: 600;
+}
+
+.filterHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filterHeader h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.filterClose {
+  border: none;
+  background: transparent;
+  color: #b46635;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filterTitle {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #777;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.categoryList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.categoryItem,
+.sortButton {
+  border: 1px solid transparent;
+  background: #fff;
+  border-radius: 20px;
+  padding: 0.55rem 0.8rem;
+  font-size: $font-size-base;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.categoryItem:hover,
+.sortButton:hover {
+  border-color: $primary;
+}
+
+.categoryItemActive,
+.sortButtonActive {
+  color: $primary;
+  border-color: transparent;
+}
+
+.sortOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.filtersDrawerOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 12, 12, 0.55);
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  z-index: 120;
+}
+
+.filtersDrawer {
+  width: min(360px, 100%);
+  background: #fff;
+  border-radius: 24px;
+  padding: 1.5rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 1024px) {
+  .filtersPanel {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .filtersDrawer {
+    width: 100%;
+    border-radius: 20px;
+  }
+}

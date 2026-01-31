@@ -2,14 +2,14 @@
 
 import { useContext, useState, useEffect } from "react";
 import useIsMobile from "@/src/hooks/useIsMobile";
-import { ProductsContext } from "./ProductsContext";
+import { ProductsContext } from "../ProductsContext";
 import {
   ProductCard,
   buildProductKey,
   resolveProductSlug,
-} from "../../components/Products/Product";
-import { Pagination } from "../../components/common/Pagination/Pagination";
-import styles from "./page.module.scss";
+} from "../../../components/Products/Product";
+import { Pagination } from "../../../components/common/Pagination/Pagination";
+import styles from "./ProductDisplay.module.scss";
 
 export function ProductGridSection() {
   const context = useContext(ProductsContext);
