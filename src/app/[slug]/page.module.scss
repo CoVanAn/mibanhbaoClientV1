@@ -7,7 +7,7 @@
   padding: 3rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 1rem;
 }
 
 .hero {
@@ -84,7 +84,8 @@
 }
 
 .description {
-  color: vars.$text-muted;
+  margin: 0 1rem;
+  color: vars.$color-text-secondary;
   line-height: 1.6;
 }
 
@@ -263,10 +264,7 @@
 }
 
 .detailPanel {
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 2rem;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+  padding: 1rem 2rem;
   @media screen and (max-width: 768px) {
     box-shadow: none;
     padding: 0px;
@@ -280,7 +278,7 @@
 }
 
 .richText {
-  color: vars.$text-muted;
+  color: vars.$color-text-secondary;
   line-height: 1.7;
 }
 

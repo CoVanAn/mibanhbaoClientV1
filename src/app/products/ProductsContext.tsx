@@ -1,12 +1,16 @@
 "use client";
 
-import { createContext, useMemo, useState } from "react";
+import { createContext, useMemo, useState, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
 import { fetchProductList } from "@/src/queries/product";
 import { fetchCategories } from "@/src/queries/category";
 import type { ProductSummary } from "@/src/queries/product";
 import type { CategorySummary } from "@/src/queries/category";
+import type { PaginationData } from "@/src/schema/product.schema";
 import { SortOption } from "./types";
+
+const PRODUCTS_PER_PAGE = 9;
 
 interface ProductsContextType {
   products: ProductSummary[];
@@ -18,8 +22,12 @@ interface ProductsContextType {
   sortedProducts: ProductSummary[];
   activeCategoryName: string;
   isFiltering: boolean;
+  // Pagination
+  currentPage: number;
+  pagination: PaginationData | null;
   handleCategoryChange: (categoryId: number | null) => void;
   handleSortChange: (option: SortOption) => void;
+  handlePageChange: (page: number) => void;
 }
 
 export const ProductsContext = createContext<ProductsContextType | null>(null);
@@ -29,6 +37,13 @@ export const ProductsProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  // Read page from URL, default to 1
+  const pageFromUrl = Number(searchParams.get("page")) || 1;
+  const currentPage = pageFromUrl > 0 ? pageFromUrl : 1;
+
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
     null,
   );
@@ -36,14 +51,21 @@ export const ProductsProvider = ({
 
   // Fetch products with React Query
   const {
-    data: products = [],
+    data: productData,
     isLoading: isLoadingProducts,
     error: productsError,
   } = useQuery({
-    queryKey: ["products", selectedCategoryId],
-    queryFn: () => fetchProductList({ categoryId: selectedCategoryId }),
+    queryKey: ["products", selectedCategoryId, currentPage],
+    queryFn: () => fetchProductList({ 
+      categoryId: selectedCategoryId,
+      page: currentPage,
+      limit: PRODUCTS_PER_PAGE,
+    }),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
+
+  const products = productData?.data ?? [];
+  const pagination = productData?.pagination ?? null;
 
   // Fetch categories with React Query
   const { data: categories = [] } = useQuery({
@@ -77,12 +99,31 @@ export const ProductsProvider = ({
     categories.find((cat) => cat.id === selectedCategoryId)?.name || "Tất cả";
   const isFiltering = Boolean(selectedCategoryId);
 
+  // Update URL with new page number
+  const updatePageInUrl = useCallback((page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (page === 1) {
+      params.delete("page"); // Remove ?page=1 to keep URL clean
+    } else {
+      params.set("page", String(page));
+    }
+    const queryString = params.toString();
+    router.push(queryString ? `/products?${queryString}` : "/products", { scroll: false });
+  }, [router, searchParams]);
+
   const handleCategoryChange = (categoryId: number | null) => {
     setSelectedCategoryId(categoryId);
+    updatePageInUrl(1); // Reset to page 1 when category changes
   };
 
   const handleSortChange = (option: SortOption) => {
     setSortOption(option);
+  };
+
+  const handlePageChange = (page: number) => {
+    updatePageInUrl(page);
+    // Scroll to top when changing page
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const value: ProductsContextType = {
@@ -95,8 +136,11 @@ export const ProductsProvider = ({
     sortedProducts,
     activeCategoryName,
     isFiltering,
+    currentPage,
+    pagination,
     handleCategoryChange,
     handleSortChange,
+    handlePageChange,
   };
 
   return (

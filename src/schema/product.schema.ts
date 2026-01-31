@@ -62,3 +62,19 @@ export type ProductSummary = z.infer<typeof ProductSummarySchema>;
 
 export const ProductListSchema = z.array(ProductSummarySchema);
 export type ProductListData = z.infer<typeof ProductListSchema>;
+
+// Pagination response schema
+export const PaginationSchema = z.object({
+  page: z.number(),
+  limit: z.number(),
+  total: z.number(),
+  totalPages: z.number(),
+});
+
+export const PaginatedProductListSchema = z.object({
+  data: z.array(ProductSummarySchema),
+  pagination: PaginationSchema,
+});
+
+export type PaginationData = z.infer<typeof PaginationSchema>;
+export type PaginatedProductListData = z.infer<typeof PaginatedProductListSchema>;

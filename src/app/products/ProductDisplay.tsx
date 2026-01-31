@@ -11,6 +11,86 @@ import {
 import { sortOptions } from "./types";
 import styles from "./page.module.scss";
 
+function Pagination() {
+  const context = useContext(ProductsContext);
+  if (!context || !context.pagination) return null;
+
+  const { currentPage, pagination, handlePageChange } = context;
+  const { totalPages, total } = pagination;
+
+  if (totalPages <= 1) return null;
+
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    const maxVisible = 5;
+
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
+
+      if (currentPage > 3) {
+        pages.push("...");
+      }
+
+      const start = Math.max(2, currentPage - 1);
+      const end = Math.min(totalPages - 1, currentPage + 1);
+
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+
+      if (currentPage < totalPages - 2) {
+        pages.push("...");
+      }
+
+      pages.push(totalPages);
+    }
+
+    return pages;
+  };
+
+  return (
+    <div className={styles.pagination}>
+      <button
+        className={styles.paginationBtn}
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        aria-label="Trang trước"
+      >
+        ‹
+      </button>
+
+      {getPageNumbers().map((page, index) =>
+        typeof page === "number" ? (
+          <button
+            key={page}
+            className={`${styles.paginationBtn} ${currentPage === page ? styles.active : ""}`}
+            onClick={() => handlePageChange(page)}
+          >
+            {page}
+          </button>
+        ) : (
+          <span key={`ellipsis-${index}`} className={styles.paginationEllipsis}>
+            {page}
+          </span>
+        ),
+      )}
+
+      <button
+        className={styles.paginationBtn}
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        aria-label="Trang sau"
+      >
+        ›
+      </button>
+    </div>
+  );
+}
+
 export function ProductGridSection() {
   const context = useContext(ProductsContext);
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -31,6 +111,7 @@ export function ProductGridSection() {
     isFiltering,
     activeCategoryName,
     sortOption,
+    pagination,
   } = context;
 
   const sortLabel = sortOptions.find(
@@ -39,7 +120,7 @@ export function ProductGridSection() {
 
   return (
     <section className={styles.productGridSection}>
-      <div className={styles.gridHeader}>
+      {/* <div className={styles.gridHeader}>
         <div>
           <p className={styles.gridTitle}>{activeCategoryName}</p>
         </div>
@@ -51,7 +132,7 @@ export function ProductGridSection() {
             <span className={styles.statusPill}>{sortLabel}</span>
           </div>
         )}
-      </div>
+      </div> */}
 
       {isTabletOrDown && (
         <div className={styles.sortRow}>
@@ -85,6 +166,8 @@ export function ProductGridSection() {
           );
         })}
       </div>
+
+      {!isLoading && !error && sortedProducts.length > 0 && <Pagination />}
     </section>
   );
 }

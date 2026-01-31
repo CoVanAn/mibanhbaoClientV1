@@ -4,7 +4,7 @@
   width: 100%;
   max-width: 1110px;
   margin: 0 auto;
-  padding: 3rem 1rem;
+  padding: 2rem 1rem;
   gap: 2.5rem;
 }
 
@@ -148,15 +148,16 @@
 
 .productGridSection {
   flex: 1;
+  margin: 0;
 }
 
-.gridHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-}
+// .gridHeader {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: flex-start;
+//   gap: 1rem;
+//   margin-bottom: 1.25rem;
+// }
 
 .gridTitle {
   margin: 0;
@@ -205,6 +206,9 @@
 }
 
 .productGrid {
+  // margin: 0;
+  // padding: 0;
+  // list-style: none;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   // gap: 1rem;
@@ -347,5 +351,59 @@
   .filtersDrawer {
     width: 100%;
     border-radius: 20px;
+  }
+}
+
+// Pagination styles
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  padding: 1rem 0;
+}
+
+.paginationBtn {
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &.active {
+    background: $primary;
+    border-color: transparent;
+    color: #fff;
+  }
+}
+
+.paginationEllipsis {
+  padding: 0 0.25rem;
+  color: #999;
+}
+
+@media (max-width: 480px) {
+  .pagination {
+    gap: 0.35rem;
+  }
+
+  .paginationBtn {
+    min-width: 36px;
+    height: 36px;
+    font-size: 0.875rem;
   }
 }

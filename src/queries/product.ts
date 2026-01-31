@@ -2,11 +2,18 @@ import apiClient from "@/src/lib/api";
 import {
   ProductDetailSchema,
   ProductListSchema,
+  PaginatedProductListSchema,
 } from "@/src/schema/product.schema";
-import type { ProductDetailData, ProductSummary } from "@/src/schema/product.schema";
+import type { 
+  ProductDetailData, 
+  ProductSummary,
+  PaginatedProductListData,
+} from "@/src/schema/product.schema";
 
 type FetchProductListOptions = {
   categoryId?: number | null;
+  page?: number;
+  limit?: number;
 };
 
 const parseProductDetail = (payload: unknown): ProductDetailData => {
@@ -18,10 +25,10 @@ const parseProductDetail = (payload: unknown): ProductDetailData => {
   return parsed.data;
 };
 
-const parseProductList = (payload: unknown): ProductSummary[] => {
-  const parsed = ProductListSchema.safeParse(payload);
+const parsePaginatedProductList = (payload: unknown): PaginatedProductListData => {
+  const parsed = PaginatedProductListSchema.safeParse(payload);
   if (!parsed.success) {
-    console.error("Unexpected product list shape", parsed.error);
+    console.error("Unexpected paginated product list shape", parsed.error);
     throw new Error("Không thể tải danh sách sản phẩm");
   }
   return parsed.data;
@@ -34,15 +41,21 @@ export async function fetchProductBySlug(slug: string): Promise<ProductDetailDat
 
 export async function fetchProductList(
   options?: FetchProductListOptions,
-): Promise<ProductSummary[]> {
+): Promise<PaginatedProductListData> {
   const params = new URLSearchParams();
   if (options?.categoryId) {
     params.append("categoryId", String(options.categoryId));
   }
+  if (options?.page) {
+    params.append("page", String(options.page));
+  }
+  if (options?.limit) {
+    params.append("limit", String(options.limit));
+  }
   const query = params.toString();
   const url = `/api/product/list${query ? `?${query}` : ""}`;
   const response = await apiClient.get(url);
-  return parseProductList(response.data);
+  return parsePaginatedProductList(response.data);
 }
 
 export type { ProductSummary } from "@/src/schema/product.schema";
