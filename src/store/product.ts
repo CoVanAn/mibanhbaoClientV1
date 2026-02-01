@@ -46,8 +46,10 @@ const createProductSlice = (set: any) => ({
         throw new Error("Không thể tải sản phẩm");
       }
       const payload = await productsRes.json();
+      // API returns { data: [...], pagination: {...} }
+      const products = payload?.data ?? payload;
       set({
-        powderProducts: Array.isArray(payload) ? payload : [],
+        powderProducts: Array.isArray(products) ? products : [],
         powderError: "",
       });
     } catch (error) {
