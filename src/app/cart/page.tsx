@@ -1,10 +1,10 @@
 "use client";
 
 import { useCart, useClearCart } from "@/src/queries/cart";
-import { CartItemCard, CartSummary } from "@/src/components/cart";
+import { CartItemCard, CartSummary } from "@/src/components/features/cart";
 import { ShoppingCart, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useToast } from "@/src/components/common/Toast/Toast";
+import { useToast } from "@/src/components/common/toast/Toast";
 import styles from "./Cart.module.scss";
 
 export default function CartPage() {

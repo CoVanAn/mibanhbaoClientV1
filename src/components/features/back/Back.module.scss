@@ -1,0 +1,14 @@
+@use "../../../styles/variables" as vars;
+
+.backToCatalog {
+  display: inline-block;
+  margin-top: 2rem;
+  color: vars.$primary;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.2s ease;
+}
+
+.backToCatalog:hover {
+  transform: translateX(-4px);
+}

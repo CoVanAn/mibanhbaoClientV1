@@ -1,4 +1,4 @@
-@use "../../styles/variables" as vars;
+@use "../../../styles/variables" as vars;
 
 .productPage {
   width: 100%;
@@ -10,8 +10,18 @@
   gap: 1rem;
 }
 
-.primaryButton,
-.secondaryButton {
+.notFound {
+  padding: 3rem;
+  border-radius: 24px;
+  background: #ffffff;
+  text-align: center;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.primaryButton {
   border-radius: 999px;
   padding: 0.95rem 1.8rem;
   font-weight: 600;
@@ -19,29 +29,13 @@
   text-transform: uppercase;
   font-size: 0.9rem;
   transition: transform 0.2s ease;
-}
-
-.primaryButton {
   background: vars.$primary;
   color: vars.$text-white;
   border: none;
+  display: inline-block;
+  text-decoration: none;
 }
 
-.secondaryButton {
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  color: vars.$text-main;
-  background: #fff;
-}
-
-.primaryButton:hover,
-.secondaryButton:hover {
+.primaryButton:hover {
   transform: translateY(-2px);
-}
-
-@media (max-width: 600px) {
-  .primaryButton,
-  .secondaryButton {
-    width: 100%;
-    text-align: center;
-  }
 }

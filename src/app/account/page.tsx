@@ -1,10 +1,10 @@
 "use client";
 
 import useStore from "@/src/store/useStore";
-import AccountHero from "./AccountHero";
-import ProfileSection from "./Profile";
-import PasswordSection from "./Password";
-import AddressSection from "./Address";
+import { AccountHero } from "./hero";
+import { ProfileSection } from "./profile";
+import { PasswordSection } from "./password";
+import { AddressSection } from "./address";
 import { AccountProvider } from "./AccountContext";
 import styles from "./page.module.scss";
 

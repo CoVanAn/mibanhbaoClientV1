@@ -1,9 +1,9 @@
 import { fetchProductBySlug } from "@/src/queries/product";
 import { ProductDetailProvider } from "./ProductContent";
-import ProductNotFound from "./ProductNotFound";
-import ProductHero from "./ProductHero";
-import ProductDescriptionSection from "./ProductDescription";
-import BackToCatalog from "./BackToCatalog";
+import ProductNotFound from "../../components/common/not-found/NotFound";
+import { ProductHero } from "./hero";
+import { ProductDescription } from "./description";
+import { BackToCatalog } from "../../components/features/back";
 import styles from "./page.module.scss";
 
 export const dynamic = "force-dynamic";
@@ -31,7 +31,7 @@ export default async function Page({ params }: PageProps) {
     <ProductDetailProvider product={product}>
       <main className={styles.productPage}>
         <ProductHero />
-        <ProductDescriptionSection />
+        <ProductDescription />
         <BackToCatalog />
       </main>
     </ProductDetailProvider>

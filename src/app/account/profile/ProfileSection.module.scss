@@ -1,0 +1,97 @@
+@use "@/src/styles/_variables.scss" as vars;
+
+.accountCard {
+  background: #fff;
+  border-radius: 18px;
+  padding: 24px;
+  border: 1px solid #ece9e4;
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.04);
+}
+
+.accountCardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.accountForm {
+  display: grid;
+  gap: 12px;
+}
+
+.accountForm label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: vars.$text-muted;
+}
+
+.accountForm input {
+  border: 1px solid #e1ded8;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 1rem;
+  font-family: inherit;
+  background: #fff;
+  transition: border 0.2s ease;
+}
+
+.accountForm input:focus {
+  outline: none;
+  border-color: vars.$primary;
+  box-shadow: 0 0 0 3px rgba(160, 6, 5, 0.1);
+}
+
+.accountStatus {
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+  background: #f1f1f6;
+  color: vars.$text-muted;
+}
+
+.accountStatusSuccess {
+  background: #ebf9ef;
+  color: #1c7a4b;
+}
+
+.accountStatusError {
+  background: #fbecea;
+  color: #a00404;
+}
+
+.accountFormActions {
+  margin-top: 8px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.primaryButton {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(120deg, vars.$primary, vars.$primary-light);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.primaryButtonDisabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .accountCard {
+    padding: 20px;
+  }
+}

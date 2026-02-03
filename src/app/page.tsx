@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import ExploreMenu from "@/src/components/ExploreMenu/ExploreMenu";
+import ExploreMenu from "@/src/components/features/exploreMenu/ExploreMenu";
 import FeaturedProduct, {
   FeaturedProductsSection,
-} from "@/src/components/FeaturedProduct/FeaturedProduct";
-import FoodDisplay from "@/src/components/FoodDisplay/FoodDisplay";
-import Slider from "@/src/components/Slider/Slider";
+} from "@/src/components/common/featuredProduct/FeaturedProduct";
+import Slider from "@/src/components/common/slider/Slider";
 
 export default function Page() {
   const [category, setCategory] = useState("All");
@@ -15,7 +14,6 @@ export default function Page() {
     <div>
       <Slider />
       <ExploreMenu category={category} setCategory={setCategory} />
-      <FoodDisplay category={category} />
       <FeaturedProduct />
       <FeaturedProductsSection />
     </div>

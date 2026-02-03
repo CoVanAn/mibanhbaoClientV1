@@ -7,8 +7,8 @@ import {
   ProductCard,
   buildProductKey,
   resolveProductSlug,
-} from "../../../components/Products/Product";
-import { Pagination } from "../../../components/common/Pagination/Pagination";
+} from "../../../components/features/products/Product";
+import { Pagination } from "../../../components/common/pagination/Pagination";
 import styles from "./ProductDisplay.module.scss";
 
 export function ProductGridSection() {

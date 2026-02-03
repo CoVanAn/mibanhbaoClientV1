@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.scss";
-import ClientShell from "@/src/components/ClientShell/ClientShell";
+import ClientShell from "@/src/components/common/clientShell/ClientShell";
 import { Providers } from "@/src/lib/providers";
+
 
 export const metadata: Metadata = {
   title: "Mi Bánh Bao",
