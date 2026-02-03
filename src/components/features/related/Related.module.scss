@@ -1,0 +1,70 @@
+@use "../../../styles/variables" as vars;
+
+.relatedSection {
+  margin-top: 3rem;
+  padding: 2rem 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: vars.$text-main;
+  margin-bottom: 1.5rem;
+}
+
+.productRow {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: vars.$primary transparent;
+  padding-bottom: 1rem;
+
+  @media (max-width: 768px) {
+    padding-bottom: 1rem;
+  }
+
+  // Hide scrollbar on webkit browsers but keep functionality
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: vars.$primary;
+    border-radius: 3px;
+  }
+}
+
+.productItem {
+  flex: 0 0 auto;
+  width: 200px;
+  scroll-snap-align: start;
+
+  // Override card styles for horizontal layout
+  :global(.powder-card) {
+    height: 100%;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .productItem {
+    width: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .productItem {
+    width: 140px;
+  }
+}

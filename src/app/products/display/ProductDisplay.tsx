@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import useIsMobile from "@/src/hooks/useIsMobile";
 import { ProductsContext } from "../ProductsContext";
 import {
@@ -13,14 +13,7 @@ import styles from "./ProductDisplay.module.scss";
 
 export function ProductGridSection() {
   const context = useContext(ProductsContext);
-  const [filtersOpen, setFiltersOpen] = useState(false);
   const isTabletOrDown = useIsMobile(1024);
-
-  useEffect(() => {
-    if (!isTabletOrDown) {
-      setFiltersOpen(false);
-    }
-  }, [isTabletOrDown]);
 
   if (!context) return null;
 
@@ -31,6 +24,7 @@ export function ProductGridSection() {
     pagination,
     currentPage,
     handlePageChange,
+    openFilterDrawer,
   } = context;
 
   return (
@@ -40,7 +34,7 @@ export function ProductGridSection() {
           <button
             className={styles.filterTrigger}
             type="button"
-            onClick={() => setFiltersOpen(true)}
+            onClick={openFilterDrawer}
           >
             Chọn bộ lọc
           </button>

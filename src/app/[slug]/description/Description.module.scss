@@ -1,7 +1,7 @@
 @use "../../../styles/variables" as vars;
 
 .detailPanel {
-  padding: 1rem 2rem;
+  padding: 1rem 1rem;
   @media screen and (max-width: 768px) {
     box-shadow: none;
     padding: 0px;

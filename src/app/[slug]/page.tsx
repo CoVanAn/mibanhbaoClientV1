@@ -3,7 +3,8 @@ import { ProductDetailProvider } from "./ProductContent";
 import ProductNotFound from "../../components/common/not-found/NotFound";
 import { ProductHero } from "./hero";
 import { ProductDescription } from "./description";
-import { BackToCatalog } from "../../components/features/back";
+import RelatedProducts from "../../components/features/related/Related";
+import BackToCatalog from "../../components/features/back/Back";
 import styles from "./page.module.scss";
 
 export const dynamic = "force-dynamic";
@@ -32,6 +33,7 @@ export default async function Page({ params }: PageProps) {
       <main className={styles.productPage}>
         <ProductHero />
         <ProductDescription />
+        <RelatedProducts />
         <BackToCatalog />
       </main>
     </ProductDetailProvider>

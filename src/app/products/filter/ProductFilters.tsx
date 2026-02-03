@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import useIsMobile from "@/src/hooks/useIsMobile";
 import { ProductsContext } from "../ProductsContext";
 import { sortOptions } from "../types";
@@ -77,26 +77,32 @@ export function ProductFilterPanel() {
 }
 
 export function ProductFilterDrawer() {
-  const [isOpen, setIsOpen] = useState(false);
+  const context = useContext(ProductsContext);
   const isTabletOrDown = useIsMobile(1024);
 
-  useEffect(() => {
-    if (!isTabletOrDown) {
-      setIsOpen(false);
-    }
-  }, [isTabletOrDown]);
+  if (!context || !isTabletOrDown || !context.isFilterDrawerOpen) return null;
 
-  if (!isTabletOrDown || !isOpen) return null;
+  const { closeFilterDrawer } = context;
 
   return (
     <div
       className={styles.filtersDrawerOverlay}
-      onClick={() => setIsOpen(false)}
+      onClick={closeFilterDrawer}
     >
       <div
         className={styles.filtersDrawer}
         onClick={(event) => event.stopPropagation()}
       >
+        <div className={styles.filterHeader}>
+          <h3>Bộ lọc</h3>
+          <button 
+            type="button" 
+            className={styles.filterClose}
+            onClick={closeFilterDrawer}
+          >
+            Đóng
+          </button>
+        </div>
         <FilterControls isTablet />
       </div>
     </div>

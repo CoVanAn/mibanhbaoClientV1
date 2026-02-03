@@ -1,16 +1,17 @@
 "use client";
 
-import { createContext, useMemo, useState, useCallback } from "react";
+import { createContext, useMemo, useCallback, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { fetchProductList } from "@/src/queries/product";
 import { fetchCategories } from "@/src/queries/category";
+import useIsMobile from "@/src/hooks/useIsMobile";
 import type { ProductSummary } from "@/src/queries/product";
 import type { CategorySummary } from "@/src/queries/category";
 import type { PaginationData } from "@/src/schema/product.schema";
-import { SortOption } from "./types";
+import { SortOption, sortOptions } from "./types";
 
-const PRODUCTS_PER_PAGE = 9;
+const VALID_SORT_OPTIONS = sortOptions.map((opt) => opt.value);
 
 interface ProductsContextType {
   products: ProductSummary[];
@@ -25,6 +26,10 @@ interface ProductsContextType {
   // Pagination
   currentPage: number;
   pagination: PaginationData | null;
+  // Filter drawer (mobile)
+  isFilterDrawerOpen: boolean;
+  openFilterDrawer: () => void;
+  closeFilterDrawer: () => void;
   handleCategoryChange: (categoryId: number | null) => void;
   handleSortChange: (option: SortOption) => void;
   handlePageChange: (page: number) => void;
@@ -37,17 +42,31 @@ export const ProductsProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  // Desktop (>=1024): 9 products (3 columns x 3 rows)
+  // Mobile (<1024): 8 products (2 columns x 4 rows)
+  const isTabletOrDown = useIsMobile(1023);
+  const perPage = isTabletOrDown ? 8 : 9;
+
+  // Filter drawer state (mobile)
+  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
+  const openFilterDrawer = useCallback(() => setIsFilterDrawerOpen(true), []);
+  const closeFilterDrawer = useCallback(() => setIsFilterDrawerOpen(false), []);
+
   const router = useRouter();
   const searchParams = useSearchParams();
-  
-  // Read page from URL, default to 1
+
+  // Read all filters from URL
   const pageFromUrl = Number(searchParams.get("page")) || 1;
   const currentPage = pageFromUrl > 0 ? pageFromUrl : 1;
 
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
-    null,
-  );
-  const [sortOption, setSortOption] = useState<SortOption>("newest");
+  const categoryFromUrl = searchParams.get("category");
+  const selectedCategoryId = categoryFromUrl ? Number(categoryFromUrl) : null;
+
+  const sortFromUrl = searchParams.get("sort") as SortOption | null;
+  const sortOption: SortOption =
+    sortFromUrl && VALID_SORT_OPTIONS.includes(sortFromUrl)
+      ? sortFromUrl
+      : "newest";
 
   // Fetch products with React Query
   const {
@@ -56,11 +75,12 @@ export const ProductsProvider = ({
     error: productsError,
   } = useQuery({
     queryKey: ["products", selectedCategoryId, currentPage],
-    queryFn: () => fetchProductList({ 
-      categoryId: selectedCategoryId,
-      page: currentPage,
-      limit: PRODUCTS_PER_PAGE,
-    }),
+    queryFn: () =>
+      fetchProductList({
+        categoryId: selectedCategoryId,
+        page: currentPage,
+        limit: perPage,
+      }),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
@@ -99,32 +119,74 @@ export const ProductsProvider = ({
     categories.find((cat) => cat.id === selectedCategoryId)?.name || "Tất cả";
   const isFiltering = Boolean(selectedCategoryId);
 
-  // Update URL with new page number
-  const updatePageInUrl = useCallback((page: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (page === 1) {
-      params.delete("page"); // Remove ?page=1 to keep URL clean
-    } else {
-      params.set("page", String(page));
-    }
-    const queryString = params.toString();
-    router.push(queryString ? `/products?${queryString}` : "/products", { scroll: false });
-  }, [router, searchParams]);
+  // Update URL with filters
+  const updateUrl = useCallback(
+    (updates: {
+      page?: number;
+      category?: number | null;
+      sort?: SortOption;
+    }) => {
+      const params = new URLSearchParams(searchParams.toString());
 
-  const handleCategoryChange = (categoryId: number | null) => {
-    setSelectedCategoryId(categoryId);
-    updatePageInUrl(1); // Reset to page 1 when category changes
-  };
+      // Handle page
+      if (updates.page !== undefined) {
+        if (updates.page === 1) {
+          params.delete("page");
+        } else {
+          params.set("page", String(updates.page));
+        }
+      }
 
-  const handleSortChange = (option: SortOption) => {
-    setSortOption(option);
-  };
+      // Handle category
+      if (updates.category !== undefined) {
+        if (updates.category === null) {
+          params.delete("category");
+        } else {
+          params.set("category", String(updates.category));
+        }
+        // Reset page when category changes
+        params.delete("page");
+      }
 
-  const handlePageChange = (page: number) => {
-    updatePageInUrl(page);
-    // Scroll to top when changing page
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+      // Handle sort
+      if (updates.sort !== undefined) {
+        if (updates.sort === "newest") {
+          params.delete("sort");
+        } else {
+          params.set("sort", updates.sort);
+        }
+      }
+
+      const queryString = params.toString();
+      router.push(queryString ? `/products?${queryString}` : "/products", {
+        scroll: false,
+      });
+    },
+    [router, searchParams],
+  );
+
+  const handleCategoryChange = useCallback(
+    (categoryId: number | null) => {
+      updateUrl({ category: categoryId });
+    },
+    [updateUrl],
+  );
+
+  const handleSortChange = useCallback(
+    (option: SortOption) => {
+      updateUrl({ sort: option });
+    },
+    [updateUrl],
+  );
+
+  const handlePageChange = useCallback(
+    (page: number) => {
+      updateUrl({ page });
+      // Scroll to top when changing page
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    [updateUrl],
+  );
 
   const value: ProductsContextType = {
     products,
@@ -138,6 +200,9 @@ export const ProductsProvider = ({
     isFiltering,
     currentPage,
     pagination,
+    isFilterDrawerOpen,
+    openFilterDrawer,
+    closeFilterDrawer,
     handleCategoryChange,
     handleSortChange,
     handlePageChange,
