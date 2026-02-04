@@ -1,6 +1,5 @@
 "use client";
 
-// hooks/useIsMobile.js
 import { useState, useEffect } from "react";
 
 function getInitialState(breakpoint: number) {

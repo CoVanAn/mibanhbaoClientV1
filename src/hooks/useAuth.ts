@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import useStore from "@/src/store/useStore";
-import { authAPI, setAccessToken } from "@/src/lib/api";
+import { authAPI } from "@/src/app/api/auth/auth";
+import { setAccessToken } from "@/src/lib/axios";
 
 /**
  * Hook to handle authentication initialization

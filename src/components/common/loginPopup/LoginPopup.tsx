@@ -5,8 +5,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import "./LoginPopup.scss";
 import { assets } from "@/src/assets/assets";
 import useStore from "@/src/store/useStore";
-import { authAPI, setAccessToken } from "@/src/lib/api";
-import { useMergeGuestCart } from "@/src/queries/cart";
+import { authAPI } from "@/src/app/api/auth/auth";
+import { setAccessToken } from "@/src/lib/axios";
+import { useMergeGuestCart } from "@/src/queries/useCart";
 
 // Helper function to get cookie value
 const getCookie = (name: string): string | null => {

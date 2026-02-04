@@ -3,11 +3,12 @@
 import { createContext, useMemo, useCallback, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
-import { fetchProductList } from "@/src/queries/product";
-import { fetchCategories } from "@/src/queries/category";
+import { productAPI, type ProductSummary } from "@/src/app/api/product/route";
+import {
+  categoryAPI,
+  type CategorySummary,
+} from "@/src/app/api/category/route";
 import useIsMobile from "@/src/hooks/useIsMobile";
-import type { ProductSummary } from "@/src/queries/product";
-import type { CategorySummary } from "@/src/queries/category";
 import type { PaginationData } from "@/src/schema/product.schema";
 import { SortOption, sortOptions } from "./types";
 
@@ -76,7 +77,7 @@ export const ProductsProvider = ({
   } = useQuery({
     queryKey: ["products", selectedCategoryId, currentPage],
     queryFn: () =>
-      fetchProductList({
+      productAPI.getList({
         categoryId: selectedCategoryId,
         page: currentPage,
         limit: perPage,
@@ -90,7 +91,7 @@ export const ProductsProvider = ({
   // Fetch categories with React Query
   const { data: categories = [] } = useQuery({
     queryKey: ["categories"],
-    queryFn: fetchCategories,
+    queryFn: categoryAPI.getList,
     staleTime: 10 * 60 * 1000, // 10 minutes - categories change rarely
   });
 

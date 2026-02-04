@@ -6,8 +6,8 @@ import { Minus, Plus, Trash2 } from "lucide-react";
 import {
   useUpdateCartItem,
   useRemoveCartItem,
-  CartItem,
-} from "@/src/queries/cart";
+  type CartItem,
+} from "@/src/queries/useCart";
 import { useToast } from "@/src/components/common/toast/Toast";
 import styles from "./Item.module.scss";
 

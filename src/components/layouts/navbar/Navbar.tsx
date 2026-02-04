@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import "./Navbar.scss";
 import { assets } from "@/src/assets/assets";
 import { useRouter } from "next/navigation";
-import { useCart } from "@/src/queries/cart";
+import { useCart } from "@/src/queries/useCart";
 import Link from "next/link";
 
 const Navbar = () => {

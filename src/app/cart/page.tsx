@@ -1,6 +1,6 @@
 "use client";
 
-import { useCart, useClearCart } from "@/src/queries/cart";
+import { useCart, useClearCart } from "@/src/queries/useCart";
 import { CartItemCard, CartSummary } from "@/src/components/features/cart";
 import { ShoppingCart, Trash2 } from "lucide-react";
 import Link from "next/link";

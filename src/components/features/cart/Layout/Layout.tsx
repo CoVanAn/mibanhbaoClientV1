@@ -2,7 +2,7 @@
 
 import React from "react";
 import { X, ShoppingCart, Trash2 } from "lucide-react";
-import { useCart, useClearCart } from "@/src/queries/cart";
+import { useCart, useClearCart } from "@/src/queries/useCart";
 import { useToast } from "@/src/components/common/toast/Toast";
 import { CartItemCard } from "../Items/Item";
 import { CartSummary } from "../Summary/Summary";

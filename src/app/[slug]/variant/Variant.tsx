@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
-import { useAddToCart } from "@/src/queries/cart";
+import { useAddToCart } from "@/src/queries/useCart";
 import { useToast } from "@/src/components/common/toast/Toast";
 import styles from "./Variant.module.scss";
 

@@ -3,7 +3,7 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import useStore from "@/src/store/useStore";
 import { PasswordForm, StatusMessage, passwordFormSchema } from "../types";
-import { changePassword } from "@/src/queries/account";
+import { accountAPI } from "@/src/app/api/account/route";
 import styles from "./PasswordSection.module.scss";
 
 const initialPasswordForm: PasswordForm = {
@@ -43,7 +43,7 @@ const PasswordSection = () => {
     }
     setIsPasswordSaving(true);
     try {
-      await changePassword(
+      await accountAPI.changePassword(
         parsed.data.currentPassword,
         parsed.data.newPassword,
       );

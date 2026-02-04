@@ -4,7 +4,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import useStore from "@/src/store/useStore";
 import { useAccountContext } from "../AccountContext";
 import { ProfileForm, StatusMessage, profileFormSchema } from "../types";
-import { fetchUserProfile, updateUserProfile } from "@/src/queries/account";
+import { accountAPI } from "@/src/app/api/account/route";
 import styles from "./ProfileSection.module.scss";
 
 const initialProfileForm: ProfileForm = {
@@ -32,7 +32,7 @@ const ProfileSection = () => {
     const loadProfile = async () => {
       setProfileLoading(true);
       try {
-        const userData = await fetchUserProfile();
+        const userData = await accountAPI.getProfile();
         if (!isMounted) return;
         setUser(userData);
         setProfileForm({
@@ -74,7 +74,7 @@ const ProfileSection = () => {
     }
     setIsProfileSaving(true);
     try {
-      const updated = await updateUserProfile(parsed.data);
+      const updated = await accountAPI.updateProfile(parsed.data);
       setUser(updated);
       setProfileMessage({
         type: "success",

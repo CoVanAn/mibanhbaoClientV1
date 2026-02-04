@@ -3,7 +3,7 @@
 import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ProductDetailContext } from "../../../app/[slug]/ProductContent";
-import { fetchProductList } from "@/src/queries/product";
+import { productAPI } from "@/src/app/api/product/route";
 import { ProductCard } from "@/src/components/features/products/Product";
 import styles from "./Related.module.scss";
 
@@ -18,7 +18,7 @@ export default function RelatedProducts() {
   const { data, isLoading } = useQuery({
     queryKey: ["relatedProducts", categoryId],
     queryFn: () =>
-      fetchProductList({
+      productAPI.getList({
         categoryId,
         limit: RELATED_PRODUCTS_LIMIT + 1, // +1 để loại trừ sản phẩm hiện tại
       }),

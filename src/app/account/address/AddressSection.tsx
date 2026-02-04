@@ -8,11 +8,7 @@ import {
   StatusMessage,
   addressFormSchema,
 } from "../types";
-import {
-  deleteAddress,
-  fetchAddresses,
-  saveAddress,
-} from "@/src/queries/account";
+import { accountAPI } from "@/src/app/api/account/route";
 
 import styles from "./AddressSection.module.scss";
 
@@ -49,7 +45,7 @@ const AddressSection = () => {
     if (!token) return;
     setAddressesLoading(true);
     try {
-      const data = await fetchAddresses();
+      const data = await accountAPI.getAddresses();
       setAddresses(data);
       setAddressMessage(null);
     } catch (error) {
@@ -87,7 +83,7 @@ const AddressSection = () => {
     }
     setIsAddressSaving(true);
     try {
-      await saveAddress(parsed.data, editingAddressId ?? undefined);
+      await accountAPI.saveAddress(parsed.data, editingAddressId ?? undefined);
       setAddressMessage({
         type: "success",
         text: editingAddressId
@@ -122,7 +118,7 @@ const AddressSection = () => {
   const handleDeleteAddress = async (id: string) => {
     if (!window.confirm("Bạn chắc chắn muốn xóa địa chỉ này?")) return;
     try {
-      await deleteAddress(id);
+      await accountAPI.deleteAddress(id);
       setAddressMessage({ type: "success", text: "Địa chỉ đã được xóa" });
       await loadAddresses();
     } catch (error) {

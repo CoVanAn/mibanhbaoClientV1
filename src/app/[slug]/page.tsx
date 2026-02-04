@@ -1,4 +1,4 @@
-import { fetchProductBySlug } from "@/src/queries/product";
+import { productAPI } from "@/src/app/api/product/route";
 import { ProductDetailProvider } from "./ProductContent";
 import ProductNotFound from "../../components/common/not-found/NotFound";
 import { ProductHero } from "./hero";
@@ -18,7 +18,7 @@ export default async function Page({ params }: PageProps) {
 
   let product;
   try {
-    product = await fetchProductBySlug(slug);
+    product = await productAPI.getBySlug(slug);
   } catch (error) {
     console.error("Unable to load product", error);
     return <ProductNotFound />;
