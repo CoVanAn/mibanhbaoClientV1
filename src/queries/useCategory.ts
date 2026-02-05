@@ -4,7 +4,7 @@
  */
 
 import { useQuery } from "@tanstack/react-query";
-import { categoryAPI } from "@/src/app/api/category/route";
+import { categoryAPI } from "@/src/apiRequests/category";
 
 // Query Keys
 export const categoryKeys = {
@@ -22,4 +22,4 @@ export const useCategories = () => {
 };
 
 // Re-export types for convenience
-export type { CategorySummary } from "@/src/app/api/category/route";
+export type { CategorySummary } from "@/src/apiRequests/category";

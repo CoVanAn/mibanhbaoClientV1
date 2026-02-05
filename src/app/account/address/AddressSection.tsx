@@ -8,7 +8,7 @@ import {
   StatusMessage,
   addressFormSchema,
 } from "../types";
-import { accountAPI } from "@/src/app/api/account/route";
+import { accountAPI } from "@/src/apiRequests/account";
 
 import styles from "./AddressSection.module.scss";
 

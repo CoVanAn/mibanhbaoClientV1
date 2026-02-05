@@ -1,10 +1,13 @@
 /**
  * API Index
  * Central export for all API modules
+ * 
+ * Note: This file is deprecated. Use apiRequests/ instead.
+ * @deprecated
  */
 
-export { authAPI } from "./auth/auth";
-export { cartAPI, type Cart, type CartItem, type AddToCartPayload, type UpdateCartItemPayload } from "./cart/route";
-export { productAPI, type FetchProductListOptions, type ProductDetailData, type PaginatedProductListData, type ProductSummary } from "./product/route";
-export { categoryAPI, type CategorySummary } from "./category/route";
-export { accountAPI, type Address, type AddressForm, type ProfileForm, type User } from "./account/route";
+// Re-export from apiRequests for backward compatibility
+export type { Cart, CartItem, AddToCartPayload, UpdateCartItemPayload } from "@/src/apiRequests/cart";
+export type { ProductDetailData, ProductSummary } from "@/src/apiRequests/product";
+export type { CategorySummary } from "@/src/apiRequests/category";
+export type { Address, ProfileForm, User } from "@/src/apiRequests/account";

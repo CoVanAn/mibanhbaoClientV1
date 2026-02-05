@@ -4,8 +4,8 @@
  */
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { accountAPI } from "@/src/app/api/account/route";
-import type { AddressForm, ProfileForm } from "@/src/app/api/account/route";
+import { accountAPI } from "@/src/apiRequests/account";
+import type { AddressForm, ProfileForm } from "@/src/apiRequests/account";
 
 // Query Keys
 export const accountKeys = {
@@ -71,4 +71,4 @@ export const useChangePassword = () => {
 };
 
 // Re-export types for convenience
-export type { Address, AddressForm, ProfileForm, User } from "@/src/app/api/account/route";
+export type { Address, AddressForm, ProfileForm, User } from "@/src/apiRequests/account";

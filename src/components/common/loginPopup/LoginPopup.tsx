@@ -5,8 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import "./LoginPopup.scss";
 import { assets } from "@/src/assets/assets";
 import useStore from "@/src/store/useStore";
-import { authAPI } from "@/src/app/api/auth/auth";
-import { setAccessToken } from "@/src/lib/axios";
+import authApiRequest from "@/src/apiRequests/auth";
 import { useMergeGuestCart } from "@/src/queries/useCart";
 
 // Helper function to get cookie value
@@ -59,17 +58,35 @@ const LoginPopup = ({ setShowLogin }: any) => {
       let response;
 
       if (currState === "Đăng nhập") {
-        response = await authAPI.login(data.email, data.password);
+        console.log("[LoginPopup] Calling login Route Handler...");
+        response = await authApiRequest.login({
+          email: data.email,
+          password: data.password,
+        });
       } else {
-        response = await authAPI.register(data.name, data.email, data.password);
+        console.log("[LoginPopup] Calling register Route Handler...");
+        response = await authApiRequest.register({
+          name: data.name,
+          email: data.email,
+          password: data.password,
+        });
       }
 
-      console.log("Response:", response);
+      console.log("[LoginPopup] Response:", response);
+      console.log("[LoginPopup] Response success:", response.success);
+      console.log("[LoginPopup] Has accessToken:", !!response.accessToken);
 
       if (response.success) {
-        // Set access token in store and axios interceptor
-        setToken(response.accessToken);
-        setAccessToken(response.accessToken);
+        // Set access token in memory only (Zustand store)
+        // Do NOT save to localStorage for security (XSS protection)
+        if (response.accessToken) {
+          console.log("[LoginPopup] Setting token in Zustand store");
+          setToken(response.accessToken);
+        }
+
+        // Note: Cookies are HttpOnly and cannot be read by JavaScript
+        // They are automatically sent with requests by the browser
+        console.log("[LoginPopup] Login successful, cookies set by server");
 
         // Merge guest cart if exists (only on login, not register)
         if (currState === "Đăng nhập") {
@@ -110,22 +127,17 @@ const LoginPopup = ({ setShowLogin }: any) => {
         }
       }
     } catch (error: any) {
-      console.error("Login error:", error);
-      console.error("Error details:", error.response?.data);
-      console.error("Error status:", error.response?.status);
+      console.error("[LoginPopup] Error:", error);
+      
+      // Route Handlers return errors via response.data
       if (error.response) {
-        console.error("Error response:", error.response.data);
         const errorMsg = error.response.data.message;
-
+        
         if (currState === "Đăng nhập") {
           if (errorMsg === "User not found") {
-            setErrorMessage(
-              "Email không tồn tại. Vui lòng kiểm tra lại hoặc đăng ký tài khoản mới.",
-            );
+            setErrorMessage("Email không tồn tại. Vui lòng kiểm tra lại hoặc đăng ký tài khoản mới.");
           } else if (errorMsg === "Invalid credentials") {
             setErrorMessage("Mật khẩu không đúng. Vui lòng thử lại.");
-          } else if (errorMsg === "Email and password are required") {
-            setErrorMessage("Vui lòng nhập đầy đủ email và mật khẩu.");
           } else {
             setErrorMessage(errorMsg || "Đăng nhập thất bại");
           }

@@ -3,7 +3,7 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import useStore from "@/src/store/useStore";
 import { PasswordForm, StatusMessage, passwordFormSchema } from "../types";
-import { accountAPI } from "@/src/app/api/account/route";
+import { accountAPI } from "@/src/apiRequests/account";
 import styles from "./PasswordSection.module.scss";
 
 const initialPasswordForm: PasswordForm = {

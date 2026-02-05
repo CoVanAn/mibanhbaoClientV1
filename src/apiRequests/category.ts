@@ -1,6 +1,6 @@
 /**
- * Category API
- * Category related API functions
+ * Category API Requests
+ * Category related API functions that call backend directly via axios
  */
 
 import apiClient from "@/src/lib/axios";

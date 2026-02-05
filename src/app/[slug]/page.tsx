@@ -1,4 +1,4 @@
-import { productAPI } from "@/src/app/api/product/route";
+import { productAPI } from "@/src/apiRequests/product";
 import { ProductDetailProvider } from "./ProductContent";
 import ProductNotFound from "../../components/common/not-found/NotFound";
 import { ProductHero } from "./hero";

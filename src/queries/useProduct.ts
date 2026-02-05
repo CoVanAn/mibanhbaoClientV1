@@ -4,7 +4,7 @@
  */
 
 import { useQuery } from "@tanstack/react-query";
-import { productAPI, type FetchProductListOptions } from "@/src/app/api/product/route";
+import { productAPI, type FetchProductListOptions } from "@/src/apiRequests/product";
 
 // Query Keys
 export const productKeys = {
@@ -32,4 +32,4 @@ export const useProductList = (options?: FetchProductListOptions) => {
 };
 
 // Re-export types for convenience
-export type { ProductDetailData, PaginatedProductListData, ProductSummary, FetchProductListOptions } from "@/src/app/api/product/route";
+export type { ProductDetailData, PaginatedProductListData, ProductSummary, FetchProductListOptions } from "@/src/apiRequests/product";

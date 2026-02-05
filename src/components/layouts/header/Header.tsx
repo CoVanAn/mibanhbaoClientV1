@@ -11,12 +11,24 @@ const Header = ({ setShowLogin }: any) => {
 
   const token = useStore((state: any) => state.token);
   const setToken = useStore((state: any) => state.setToken);
+  const isInitialized = useStore((state: any) => state.isInitialized);
   const router = useRouter();
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    setToken("");
-    router.push("/");
+  const logout = async () => {
+    try {
+      // Call logout API to clear HttpOnly cookies
+      await fetch("/api/auth/logout", {
+        method: "POST",
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      // Clear token from memory
+      setToken("");
+      
+      // Redirect to home
+      router.push("/");
+    }
   };
 
   // Close dropdown when clicking outside
@@ -41,7 +53,12 @@ const Header = ({ setShowLogin }: any) => {
           <span>Email: hotro@mibanhbao.vn</span>
         </div>
         <div className="header-right">
-          {!token ? (
+          {!isInitialized ? (
+            // Show loading or placeholder while checking session
+            <span className="header-login-btn" style={{ opacity: 0.5 }}>
+              Đang tải...
+            </span>
+          ) : !token ? (
             <>
               <span
                 onClick={() => setShowLogin(true)}

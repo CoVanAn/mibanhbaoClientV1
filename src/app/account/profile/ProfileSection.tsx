@@ -4,7 +4,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import useStore from "@/src/store/useStore";
 import { useAccountContext } from "../AccountContext";
 import { ProfileForm, StatusMessage, profileFormSchema } from "../types";
-import { accountAPI } from "@/src/app/api/account/route";
+import { accountAPI } from "@/src/apiRequests/account";
 import styles from "./ProfileSection.module.scss";
 
 const initialProfileForm: ProfileForm = {

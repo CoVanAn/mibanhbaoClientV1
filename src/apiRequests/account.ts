@@ -1,6 +1,6 @@
 /**
- * Account API
- * User account related API functions
+ * Account API Requests
+ * Account related API functions that call backend directly via axios
  */
 
 import apiClient from "@/src/lib/axios";
@@ -48,7 +48,7 @@ export const accountAPI = {
       ? `/api/user/addresses/${addressId}`
       : `/api/user/addresses`;
     const method = addressId ? "patch" : "post";
-    
+
     const response = await apiClient[method](endpoint, {
       name: form.name.trim(),
       phone: form.phone.trim(),
@@ -58,7 +58,7 @@ export const accountAPI = {
       district: form.district.trim(),
       ward: form.ward.trim(),
     });
-    
+
     const payload = response.data as { message?: string };
     if (!response.data.success) {
       throw new Error(payload.message || "Không thể lưu địa chỉ");
@@ -73,7 +73,10 @@ export const accountAPI = {
     }
   },
 
-  changePassword: async (currentPassword: string, newPassword: string): Promise<void> => {
+  changePassword: async (
+    currentPassword: string,
+    newPassword: string
+  ): Promise<void> => {
     const response = await apiClient.post("/api/user/change-password", {
       currentPassword,
       newPassword,
@@ -86,4 +89,9 @@ export const accountAPI = {
 };
 
 // Re-export types for convenience
-export type { Address, AddressForm, ProfileForm, User } from "@/src/app/account/types";
+export type {
+  Address,
+  AddressForm,
+  ProfileForm,
+  User,
+} from "@/src/app/account/types";

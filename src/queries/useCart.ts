@@ -4,7 +4,7 @@
  */
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { cartAPI, type Cart } from "@/src/app/api/cart/route";
+import { cartAPI, type Cart } from "@/src/apiRequests/cart";
 
 // Query Keys
 export const cartKeys = {
@@ -130,4 +130,4 @@ export const useMergeGuestCart = () => {
 };
 
 // Re-export types for convenience
-export type { Cart, CartItem, AddToCartPayload, UpdateCartItemPayload } from "@/src/app/api/cart/route";
+export type { Cart, CartItem, AddToCartPayload, UpdateCartItemPayload } from "@/src/apiRequests/cart";

@@ -1,12 +1,15 @@
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import useStore from "@/src/store/useStore";
-import { authAPI } from "@/src/app/api/auth/auth";
-import { setAccessToken } from "@/src/lib/axios";
+import authApiRequest from "@/src/apiRequests/auth";
+import { removeTokensFromLocalStorage } from "@/src/lib/tokenUtils";
 
 /**
  * Hook to handle authentication initialization
  * Automatically refreshes access token on mount using HttpOnly cookie
+ * 
+ * NOTE: This hook is deprecated. Use SessionRestorer component instead.
+ * @deprecated
  */
 export const useAuth = () => {
   const queryClient = useQueryClient();
@@ -21,14 +24,13 @@ export const useAuth = () => {
 
     const initAuth = async () => {
       try {
-        // Try to refresh access token using HttpOnly cookie
-        const response = await authAPI.refreshToken();
-        
+        // Try to refresh access token using HttpOnly cookie via Route Handler
+        const response = await authApiRequest.refreshToken();
+
         if (response.success && response.accessToken) {
-          // Set token in store and axios interceptor
+          // Set token in Zustand store (memory only)
           setToken(response.accessToken);
-          setAccessToken(response.accessToken);
-          
+
           // Refetch cart after token is restored
           console.log("Token restored, refetching cart...");
           await queryClient.invalidateQueries({ queryKey: ["cart"] });
@@ -37,6 +39,7 @@ export const useAuth = () => {
         // No valid refresh token cookie, user needs to login
         console.log("No valid session, user needs to login");
         clearToken();
+        removeTokensFromLocalStorage(); // Cleanup any old data
       } finally {
         setInitialized(true);
       }

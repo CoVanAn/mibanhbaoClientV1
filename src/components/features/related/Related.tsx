@@ -3,7 +3,7 @@
 import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ProductDetailContext } from "../../../app/[slug]/ProductContent";
-import { productAPI } from "@/src/app/api/product/route";
+import { productAPI } from "@/src/apiRequests/product";
 import { ProductCard } from "@/src/components/features/products/Product";
 import styles from "./Related.module.scss";
 

@@ -1,5 +1,35 @@
 import axios, { AxiosInstance } from "axios";
 import { API_URL } from "@/src/constants/api";
+import useStore from "@/src/store/useStore";
+import {
+  removeTokensFromLocalStorage,
+  isTokenExpired,
+} from "@/src/lib/tokenUtils";
+
+/**
+ * Get access token from Zustand store
+ * This is safe because Zustand allows accessing state outside React components
+ */
+const getAccessToken = (): string | null => {
+  if (typeof window === "undefined") return null;
+  return (useStore.getState() as any).token || null;
+};
+
+/**
+ * Set access token to Zustand store
+ */
+const setTokenToStore = (token: string): void => {
+  if (typeof window === "undefined") return;
+  (useStore.getState() as any).setToken(token);
+};
+
+/**
+ * Clear access token from Zustand store
+ */
+const clearTokenFromStore = (): void => {
+  if (typeof window === "undefined") return;
+  (useStore.getState() as any).clearToken();
+};
 
 // Create axios instance with credentials enabled for HttpOnly cookies
 const apiClient: AxiosInstance = axios.create({
@@ -30,24 +60,7 @@ const processQueue = (error: any, token: string | null = null) => {
 };
 
 /**
- * Decode JWT and check if token is expiring soon (within 2-5 minutes)
- */
-const isTokenExpiringSoon = (token: string): boolean => {
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const exp = payload.exp * 1000; // Convert to milliseconds
-    const now = Date.now();
-    const timeLeft = exp - now;
-    // Refresh if less than 5 minutes remaining
-    return timeLeft < 5 * 60 * 1000;
-  } catch (error) {
-    // If can't decode, assume it's expiring
-    return true;
-  }
-};
-
-/**
- * Refresh access token using HttpOnly cookie
+ * Refresh access token via Route Handler
  */
 const refreshAccessToken = async (): Promise<string | null> => {
   if (isRefreshing) {
@@ -60,39 +73,38 @@ const refreshAccessToken = async (): Promise<string | null> => {
   isRefreshing = true;
 
   try {
-    const response = await axios.post(
-      `${API_URL}/api/user/refresh-token`,
-      {},
-      { withCredentials: true }
-    );
+    // Call Route Handler instead of backend directly
+    const response = await fetch("/api/auth/refresh-token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-    if (response.data.success) {
-      const { accessToken } = response.data;
+    const data = await response.json();
 
-      // Store new access token in memory
-      if (typeof window !== "undefined") {
-        (window as any).__accessToken = accessToken;
-      }
+    if (data.success && data.accessToken) {
+      // Store new access token in Zustand store (memory only)
+      setTokenToStore(data.accessToken);
 
       // Update authorization header
-      apiClient.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+      apiClient.defaults.headers.common["Authorization"] = `Bearer ${data.accessToken}`;
 
-      processQueue(null, accessToken);
+      processQueue(null, data.accessToken);
       isRefreshing = false;
 
-      return accessToken;
+      return data.accessToken;
     }
-    
+
     isRefreshing = false;
     return null;
   } catch (error) {
     processQueue(error, null);
     isRefreshing = false;
 
-    // Clear token on refresh failure
-    if (typeof window !== "undefined") {
-      delete (window as any).__accessToken;
-    }
+    // Clear tokens on refresh failure
+    clearTokenFromStore();
+    removeTokensFromLocalStorage();
 
     throw error;
   }
@@ -101,13 +113,13 @@ const refreshAccessToken = async (): Promise<string | null> => {
 // Request interceptor - add access token and proactively refresh if expiring soon
 apiClient.interceptors.request.use(
   async (config) => {
-    // Try to get token from store if available
+    // Get token from Zustand store (memory)
     if (typeof window !== "undefined") {
-      const token = (window as any).__accessToken;
-      
+      const token = getAccessToken();
+
       if (token) {
         // Check if token is expiring soon (within 5 minutes)
-        if (isTokenExpiringSoon(token)) {
+        if (isTokenExpired(token, 5 * 60)) {
           try {
             // Proactively refresh before making the request
             const newToken = await refreshAccessToken();
@@ -146,7 +158,7 @@ apiClient.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        // Call refresh token
+        // Call refresh token via Route Handler
         const newToken = await refreshAccessToken();
 
         if (newToken) {
@@ -155,10 +167,9 @@ apiClient.interceptors.response.use(
           return apiClient(originalRequest);
         }
       } catch (refreshError) {
-        // Clear token and reject
-        if (typeof window !== "undefined") {
-          delete (window as any).__accessToken;
-        }
+        // Clear tokens and reject
+        clearTokenFromStore();
+        removeTokensFromLocalStorage();
         return Promise.reject(refreshError);
       }
     }
@@ -167,20 +178,17 @@ apiClient.interceptors.response.use(
   }
 );
 
-// Helper to set access token in interceptor
+// Helper to set access token
 export const setAccessToken = (token: string) => {
-  if (typeof window !== "undefined") {
-    (window as any).__accessToken = token;
-    apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  }
+  setTokenToStore(token);
+  apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 };
 
 // Helper to clear access token
 export const clearAccessToken = () => {
-  if (typeof window !== "undefined") {
-    delete (window as any).__accessToken;
-    delete apiClient.defaults.headers.common["Authorization"];
-  }
+  clearTokenFromStore();
+  removeTokensFromLocalStorage();
+  delete apiClient.defaults.headers.common["Authorization"];
 };
 
 export default apiClient;

@@ -3,11 +3,11 @@
 import { createContext, useMemo, useCallback, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
-import { productAPI, type ProductSummary } from "@/src/app/api/product/route";
+import { productAPI, type ProductSummary } from "@/src/apiRequests/product";
 import {
   categoryAPI,
   type CategorySummary,
-} from "@/src/app/api/category/route";
+} from "@/src/apiRequests/category";
 import useIsMobile from "@/src/hooks/useIsMobile";
 import type { PaginationData } from "@/src/schema/product.schema";
 import { SortOption, sortOptions } from "./types";

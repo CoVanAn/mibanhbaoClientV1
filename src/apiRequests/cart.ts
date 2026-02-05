@@ -1,6 +1,6 @@
 /**
- * Cart API
- * Cart related API functions
+ * Cart API Requests
+ * Cart related API functions that call backend directly via axios
  */
 
 import apiClient from "@/src/lib/axios";
@@ -59,11 +59,13 @@ export const cartAPI = {
     return data.cart;
   },
 
-  updateItem: async ({ itemId, quantity }: UpdateCartItemPayload): Promise<Cart> => {
-    const { data } = await apiClient.put(
-      `/api/cart/items/${itemId}`,
-      { quantity }
-    );
+  updateItem: async ({
+    itemId,
+    quantity,
+  }: UpdateCartItemPayload): Promise<Cart> => {
+    const { data } = await apiClient.put(`/api/cart/items/${itemId}`, {
+      quantity,
+    });
     return data.cart;
   },
 
@@ -77,10 +79,7 @@ export const cartAPI = {
   },
 
   applyCoupon: async (couponCode: string): Promise<Cart> => {
-    const { data } = await apiClient.post(
-      "/api/cart/coupon",
-      { couponCode }
-    );
+    const { data } = await apiClient.post("/api/cart/coupon", { couponCode });
     return data.cart;
   },
 
@@ -90,10 +89,7 @@ export const cartAPI = {
   },
 
   mergeGuestCart: async (guestToken: string): Promise<Cart> => {
-    const { data } = await apiClient.post(
-      "/api/cart/merge",
-      { guestToken }
-    );
+    const { data } = await apiClient.post("/api/cart/merge", { guestToken });
     return data.cart;
   },
 };
