@@ -12,7 +12,7 @@ export default function Page() {
           của bánh bao. Mỗi chiếc bánh bao được làm thủ công với tình yêu thương
           và sự chăm sóc tỉ mỉ của đôi tay người thợ.
         </p>
-        <img src={assets.gioithieu} alt="Bánh Bao" />
+        <img src={assets.gioi_thieu} alt="Bánh Bao" />
         <p>
           Ở đây, bạn có thể thưởng thức những loại bánh bao đa dạng, từ những
           loại nhân truyền thống như thịt heo trứng cút, màn thầu, cadé cho đến

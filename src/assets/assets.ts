@@ -1,6 +1,6 @@
 const baseAssetsPath = "/assets";
 
-const withPath = (fileName) => `${baseAssetsPath}/${fileName}`;
+const withPath = (fileName: string) => `${baseAssetsPath}/${fileName}`;
 
 export const assets = {
   logo: withPath("logo.png"),
@@ -25,6 +25,7 @@ export const assets = {
   bag_icon: withPath("bag_icon.png"),
   parcel_icon: withPath("parcel_icon.png"),
   google_icon: withPath("google_.png"),
+  gioi_thieu: withPath("gioi_thieu.png"),
 };
 
 export const menu_list = [
