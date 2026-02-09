@@ -8,6 +8,11 @@ const createCartSlice = (set: any, get: any) => ({
     set({ cartItems: items });
   },
 
+  // DEPRECATED: loadCartData is no longer used
+  // Cart data is now managed by React Query (useCart hook)
+  // This function called the old API endpoint /api/cart/get which doesn't exist
+  // Keeping it commented for reference
+  /*
   loadCartData: async (tokenValue: string) => {
     if (!tokenValue) {
       set({ cartItems: {} });
@@ -29,6 +34,7 @@ const createCartSlice = (set: any, get: any) => ({
       set({ token: "", cartItems: {} });
     }
   },
+  */
 
   addToCart: async (id: string, quantity: number = 1) => {
     if (!id || quantity <= 0) return;

@@ -2,7 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode, useState } from "react";
-import { ToastProvider } from "@/src/components/common/toast/Toast";
+import { ToastProvider } from "@/src/components/common/toast";
 import { SessionRestorer } from "@/src/components/auth/SessionRestorer";
 
 export function Providers({ children }: { children: ReactNode }) {

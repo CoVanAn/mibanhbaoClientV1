@@ -1,11 +1,11 @@
 "use client";
 
 import useStore from "@/src/store/useStore";
-import { AccountHero } from "./hero";
-import { ProfileSection } from "./profile";
-import { PasswordSection } from "./password";
-import { AddressSection } from "./address";
-import { AccountProvider } from "./AccountContext";
+import AccountHero from "./hero";
+import ProfileSection from "./profile";
+import PasswordSection from "./password";
+import AddressSection from "./address";
+import { AccountProvider } from "./content";
 import styles from "./page.module.scss";
 
 export default function Page() {

@@ -2,9 +2,9 @@
 
 import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ProductDetailContext } from "../../../app/[slug]/ProductContent";
+import { ProductDetailContext } from "../../../app/[slug]/content";
 import { productAPI } from "@/src/apiRequests/product";
-import { ProductCard } from "@/src/components/features/products/Product";
+import { ProductCard } from "@/src/components/features/products";
 import styles from "./Related.module.scss";
 
 const RELATED_PRODUCTS_LIMIT = 6;

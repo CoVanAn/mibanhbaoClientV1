@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.scss";
-import ClientShell from "@/src/components/common/clientShell/ClientShell";
+import ClientShell from "@/src/components/common/clientShell";
 import { Providers } from "@/src/lib/providers";
 
 

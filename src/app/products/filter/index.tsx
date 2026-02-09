@@ -2,7 +2,7 @@
 
 import { useContext } from "react";
 import useIsMobile from "@/src/hooks/useIsMobile";
-import { ProductsContext } from "../ProductsContext";
+import { ProductsContext } from "../content";
 import { sortOptions } from "../types";
 import styles from "./ProductFilters.module.scss";
 
@@ -85,18 +85,15 @@ export function ProductFilterDrawer() {
   const { closeFilterDrawer } = context;
 
   return (
-    <div
-      className={styles.filtersDrawerOverlay}
-      onClick={closeFilterDrawer}
-    >
+    <div className={styles.filtersDrawerOverlay} onClick={closeFilterDrawer}>
       <div
         className={styles.filtersDrawer}
         onClick={(event) => event.stopPropagation()}
       >
         <div className={styles.filterHeader}>
           <h3>Bộ lọc</h3>
-          <button 
-            type="button" 
+          <button
+            type="button"
             className={styles.filterClose}
             onClick={closeFilterDrawer}
           >

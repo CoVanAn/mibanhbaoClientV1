@@ -3,9 +3,9 @@
 import React from "react";
 import { X, ShoppingCart, Trash2 } from "lucide-react";
 import { useCart, useClearCart } from "@/src/queries/useCart";
-import { useToast } from "@/src/components/common/toast/Toast";
-import { CartItemCard } from "../Items/Item";
-import { CartSummary } from "../Summary/Summary";
+import { useToast } from "@/src/components/common/toast";
+import { CartItemCard } from "../Items";
+import { CartSummary } from "../Summary";
 import styles from "./Layout.module.scss";
 
 interface CartDrawerProps {

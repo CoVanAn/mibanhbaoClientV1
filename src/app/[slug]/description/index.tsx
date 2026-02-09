@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext } from "react";
-import { ProductDetailContext } from "../ProductContent";
+import { ProductDetailContext } from "../content";
 import styles from "./Description.module.scss";
 
 export default function ProductDescriptionSection() {

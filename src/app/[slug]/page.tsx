@@ -1,10 +1,10 @@
 import { productAPI } from "@/src/apiRequests/product";
-import { ProductDetailProvider } from "./ProductContent";
-import ProductNotFound from "../../components/common/not-found/NotFound";
-import { ProductHero } from "./hero";
-import { ProductDescription } from "./description";
-import RelatedProducts from "../../components/features/related/Related";
-import BackToCatalog from "../../components/features/back/Back";
+import { ProductDetailProvider } from "./content";
+import ProductNotFound from "../../components/common/not-found";
+import ProductHero from "./hero";
+import ProductDescription from "./description";
+import RelatedProducts from "../../components/features/related";
+import BackToCatalog from "../../components/features/back";
 import styles from "./page.module.scss";
 
 export const dynamic = "force-dynamic";

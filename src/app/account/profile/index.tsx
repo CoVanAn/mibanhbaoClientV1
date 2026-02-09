@@ -2,10 +2,10 @@
 
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import useStore from "@/src/store/useStore";
-import { useAccountContext } from "../AccountContext";
+import { useAccountContext } from "../content";
 import { ProfileForm, StatusMessage, profileFormSchema } from "../types";
 import { accountAPI } from "@/src/apiRequests/account";
-import styles from "./ProfileSection.module.scss";
+import styles from "./Profile.module.scss";
 
 const initialProfileForm: ProfileForm = {
   name: "",

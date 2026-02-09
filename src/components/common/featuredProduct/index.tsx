@@ -7,7 +7,7 @@ import {
   ProductCard,
   resolveProductSlug,
   buildProductKey,
-} from "../../features/products/Product";
+} from "../../features/products";
 
 const renderProductCards = (products: any[]) =>
   products

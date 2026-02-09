@@ -1,8 +1,8 @@
 "use client";
 
 import { useContext, useEffect, useMemo, useState } from "react";
-import { ProductDetailContext } from "../ProductContent";
-import { VariantSelector } from "../variant";
+import { ProductDetailContext } from "../content";
+import VariantSelector from "../variant";
 import styles from "./Hero.module.scss";
 
 export default function ProductHero() {

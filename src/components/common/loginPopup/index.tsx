@@ -7,6 +7,7 @@ import { assets } from "@/src/assets/assets";
 import useStore from "@/src/store/useStore";
 import authApiRequest from "@/src/apiRequests/auth";
 import { useMergeGuestCart } from "@/src/queries/useCart";
+import { API_URL } from "@/src/constants/api";
 
 // Helper function to get cookie value
 const getCookie = (name: string): string | null => {
@@ -19,7 +20,6 @@ const getCookie = (name: string): string | null => {
 
 const LoginPopup = ({ setShowLogin }: any) => {
   const queryClient = useQueryClient();
-  const url = useStore((state: any) => state.url);
   const setToken = useStore((state: any) => state.setToken);
   const mergeGuestCart = useMergeGuestCart();
 
@@ -128,14 +128,16 @@ const LoginPopup = ({ setShowLogin }: any) => {
       }
     } catch (error: any) {
       console.error("[LoginPopup] Error:", error);
-      
+
       // Route Handlers return errors via response.data
       if (error.response) {
         const errorMsg = error.response.data.message;
-        
+
         if (currState === "Đăng nhập") {
           if (errorMsg === "User not found") {
-            setErrorMessage("Email không tồn tại. Vui lòng kiểm tra lại hoặc đăng ký tài khoản mới.");
+            setErrorMessage(
+              "Email không tồn tại. Vui lòng kiểm tra lại hoặc đăng ký tài khoản mới.",
+            );
           } else if (errorMsg === "Invalid credentials") {
             setErrorMessage("Mật khẩu không đúng. Vui lòng thử lại.");
           } else {
@@ -199,10 +201,6 @@ const LoginPopup = ({ setShowLogin }: any) => {
         <button type="submit">
           {currState === "Đăng ký" ? "Tạo tài khoản" : "Đăng nhập"}
         </button>
-        <div className="login-popup-condition">
-          <input type="checkbox" required />
-          <p>Tôi đồng ý với điều khoản sử dụng</p>
-        </div>
         {currState === "Đăng nhập" ? (
           <>
             <p>
@@ -222,7 +220,7 @@ const LoginPopup = ({ setShowLogin }: any) => {
                 cursor: "pointer",
               }}
               onClick={() => {
-                window.location.href = `${url}/auth/google`;
+                window.location.href = `${API_URL}/auth/google`;
               }}
             >
               <img

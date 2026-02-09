@@ -10,7 +10,7 @@ import {
 } from "../types";
 import { accountAPI } from "@/src/apiRequests/account";
 
-import styles from "./AddressSection.module.scss";
+import styles from "./Address.module.scss";
 
 const initialAddressForm: AddressForm = {
   name: "",

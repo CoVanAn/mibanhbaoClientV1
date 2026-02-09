@@ -1,6 +1,6 @@
 "use client";
 
-import { useAccountContext } from "../AccountContext";
+import { useAccountContext } from "../content";
 import styles from "./Hero.module.scss";
 
 const AccountHero = () => {

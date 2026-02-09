@@ -2,16 +2,16 @@
 
 import { useContext } from "react";
 import useIsMobile from "@/src/hooks/useIsMobile";
-import { ProductsContext } from "../ProductsContext";
+import { ProductsContext } from "../content";
 import {
   ProductCard,
   buildProductKey,
   resolveProductSlug,
-} from "../../../components/features/products/Product";
-import { Pagination } from "../../../components/common/pagination/Pagination";
+} from "../../../components/features/products";
+import { Pagination } from "../../../components/common/pagination";
 import styles from "./ProductDisplay.module.scss";
 
-export function ProductGridSection() {
+const ProductGridSection = () => {
   const context = useContext(ProductsContext);
   const isTabletOrDown = useIsMobile(1024);
 
@@ -71,4 +71,6 @@ export function ProductGridSection() {
       )}
     </section>
   );
-}
+};
+
+export default ProductGridSection;

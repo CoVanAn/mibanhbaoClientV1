@@ -3,8 +3,12 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Tag, X } from "lucide-react";
-import { type Cart, useApplyCoupon, useRemoveCoupon } from "@/src/queries/useCart";
-import { useToast } from "@/src/components/common/toast/Toast";
+import {
+  type Cart,
+  useApplyCoupon,
+  useRemoveCoupon,
+} from "@/src/queries/useCart";
+import { useToast } from "@/src/components/common/toast";
 import styles from "./Summary.module.scss";
 
 interface CartSummaryProps {

@@ -1,8 +1,8 @@
-import ExploreMenu from "@/src/components/features/exploreMenu/ExploreMenu";
+import ExploreMenu from "@/src/components/features/exploreMenu";
 import FeaturedProduct, {
   FeaturedProductsSection,
-} from "@/src/components/common/featuredProduct/FeaturedProduct";
-import Slider from "@/src/components/common/slider/Slider";
+} from "@/src/components/common/featuredProduct";
+import Slider from "@/src/components/common/slider";
 
 export default function Page() {
   return (
