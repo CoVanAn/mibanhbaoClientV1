@@ -8,6 +8,7 @@ import {
   resolveProductSlug,
   buildProductKey,
 } from "../../features/products";
+import Link from "next/dist/client/link";
 
 const renderProductCards = (products: any[]) =>
   products
@@ -67,7 +68,7 @@ function ProductSection({
   );
 }
 
-export default function FeaturedProduct({ limit = 8 }) {
+export default function FeaturedProduct({ limit = 10 }) {
   const powderProducts = useStore((state: any) => state.powderProducts);
   const powderLoading = useStore((state: any) => state.powderLoading);
   const powderError = useStore((state: any) => state.powderError);
@@ -93,7 +94,7 @@ export default function FeaturedProduct({ limit = 8 }) {
   );
 }
 
-export function FeaturedProductsSection({ limit = 8 }) {
+export function FeaturedProductsSection({ limit = 100 }) {
   const featuredProducts = useStore((state: any) => state.featuredProducts);
   const featuredLoading = useStore((state: any) => state.featuredLoading);
   const featuredError = useStore((state: any) => state.featuredError);
@@ -108,13 +109,19 @@ export function FeaturedProductsSection({ limit = 8 }) {
   }, [fetchFeaturedProducts, limit]);
 
   return (
-    <ProductSection
-      title="Sản phẩm nổi bật"
-      ariaLabel="Danh sách sản phẩm nổi bật"
-      products={featuredProducts}
-      loading={featuredLoading}
-      error={featuredError}
-      emptyMessage="Chưa có sản phẩm nổi bật nào."
-    />
+    <>
+      <br />
+      <ProductSection
+        title="Sản phẩm nổi bật"
+        ariaLabel="Danh sách sản phẩm nổi bật"
+        products={featuredProducts}
+        loading={featuredLoading}
+        error={featuredError}
+        emptyMessage="Chưa có sản phẩm nổi bật nào."
+      />
+      <Link href="/products" className="featured-more-link">
+        Xem tất cả sản phẩm
+      </Link>
+    </>
   );
 }

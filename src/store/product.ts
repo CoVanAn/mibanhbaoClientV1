@@ -63,7 +63,7 @@ const createProductSlice = (set: any) => ({
     }
   },
 
-  fetchFeaturedProducts: async (limit = 8, signal: AbortSignal) => {
+  fetchFeaturedProducts: async (limit = 100, signal: AbortSignal) => {
     set({ featuredLoading: true, featuredError: "", featuredProducts: [] });
     try {
       const productsRes = await fetch(

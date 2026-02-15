@@ -3,7 +3,7 @@
 .powder-showcase {
   margin: 1rem auto;
   max-width: 1110px;
-  padding: 2.5rem 1rem 3rem;
+  padding: 2rem 1rem;
 }
 
 .powder-showcase__header {
@@ -122,6 +122,20 @@
   text-align: center;
   color: vars.$text-muted;
   padding: 2rem 0;
+}
+
+.featured-more-link {
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+  margin-top: 1rem;
+  color: vars.$primary;
+  text-decoration: none;
+  font-size: x-large;
+
+  @media (max-width: 720px) {
+    font-size: large;
+  }
 }
 
 @media (max-width: 720px) {

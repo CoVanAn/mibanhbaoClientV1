@@ -8,7 +8,7 @@
 .sortRow {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 0.85rem;
+  margin-bottom: 1rem;
 }
 
 .filterTrigger {
@@ -18,8 +18,43 @@
   border-radius: 24px;
   padding: 0.9rem 1.5rem;
   font-weight: 600;
+  font-size: 0.95rem;
   box-shadow: 0 15px 35px rgba(211, 84, 0, 0.3);
   cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 8px 20px rgba(211, 84, 0, 0.4);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .sortRow {
+    margin-bottom: 0.85rem;
+  }
+
+  .filterTrigger {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+    border-radius: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sortRow {
+    margin-bottom: 0.75rem;
+  }
+
+  .filterTrigger {
+    padding: 0.65rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 18px;
+  }
 }
 
 .loading,
@@ -37,16 +72,29 @@
 .productGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  row-gap: 2rem;
 }
 
 @media (max-width: 1024px) {
   .productGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+    row-gap: 1.75rem;
   }
 }
 
 @media (max-width: 768px) {
   .productGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    row-gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .productGrid {
+    gap: 0.75rem;
+    row-gap: 1.25rem;
   }
 }

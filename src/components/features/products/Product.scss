@@ -1,9 +1,10 @@
 @use "../../../styles/variables" as vars;
 
 .powder-card {
-  max-width: 450px;
-  border-radius: 26px;
-  padding: 1rem;
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 20px;
+  padding: 0.75rem;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -13,7 +14,8 @@
     transform 0.2s ease,
     box-shadow 0.2s ease;
   &:hover {
-    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
   }
   &__media {
     position: relative;
@@ -46,13 +48,20 @@
     color: vars.$text-main;
     font-weight: 500;
     font-size: 1rem;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   &__price {
     display: flex;
     align-items: baseline;
     gap: 0.5rem;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
+    font-weight: 600;
   }
 
   &__price del {
@@ -76,14 +85,55 @@
     font-weight: 600;
   }
   @media (max-width: 1024px) {
-    max-width: 380px;
-    padding: 1rem;
-    border-radius: 1rem;
+    padding: 0.75rem;
+    border-radius: 16px;
+
+    &__title {
+      font-size: 0.95rem;
+    }
+
+    &__price {
+      font-size: 1rem;
+    }
   }
 
-  @media (max-width: 600px) {
-    max-width: 100%;
-    padding: 0.8rem;
-    border-radius: 1rem;
+  @media (max-width: 768px) {
+    padding: 0.65rem;
+    border-radius: 14px;
+
+    &__title {
+      font-size: 0.9rem;
+    }
+
+    &__price {
+      font-size: 0.95rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.5rem;
+    border-radius: 12px;
+    gap: 0.5rem;
+
+    &__body {
+      gap: 0.5rem;
+    }
+
+    &__title {
+      font-size: 0.85rem;
+    }
+
+    &__price {
+      font-size: 0.9rem;
+    }
+
+    &__price del {
+      font-size: 0.75rem;
+    }
+
+    &__badge {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+    }
   }
 }
