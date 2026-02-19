@@ -33,7 +33,7 @@ const AddressSection = () => {
   const url = useStore((state: any) => state.url);
   const [addressForm, setAddressForm] =
     useState<AddressForm>(initialAddressForm);
-  const [editingAddressId, setEditingAddressId] = useState<string | null>(null);
+  const [editingAddressId, setEditingAddressId] = useState<number | null>(null);
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [addressMessage, setAddressMessage] = useState<StatusMessage | null>(
     null,
@@ -115,7 +115,7 @@ const AddressSection = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleDeleteAddress = async (id: string) => {
+  const handleDeleteAddress = async (id: number) => {
     if (!window.confirm("Bạn chắc chắn muốn xóa địa chỉ này?")) return;
     try {
       await accountAPI.deleteAddress(id);

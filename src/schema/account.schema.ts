@@ -53,7 +53,7 @@ export const userSchema = z.object({
 });
 
 export const addressSchema = z.object({
-  id: z.string(),
+  id: z.number(),
   name: z.string(),
   phone: z.string(),
   company: z.string().nullable().optional(),

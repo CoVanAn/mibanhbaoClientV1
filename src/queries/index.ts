@@ -31,6 +31,25 @@ export {
   type FetchProductListOptions,
 } from "./useProduct";
 
+// Order
+export {
+  useMyOrders,
+  useOrder,
+  useOrderHistory,
+  useCreateOrder,
+  useCancelOrder,
+  useInvalidateOrders,
+  orderKeys,
+} from "./useOrder";
+export type {
+  Order,
+  OrderItem,
+  CreateOrderPayload,
+  CancelOrderPayload,
+  OrderListParams,
+  PaginatedOrderList,
+} from "../apiRequests/order";
+
 // Category
 export {
   useCategories,

@@ -44,7 +44,7 @@ export const useSaveAddress = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ form, addressId }: { form: AddressForm; addressId?: string }) =>
+    mutationFn: ({ form, addressId }: { form: AddressForm; addressId?: number }) =>
       accountAPI.saveAddress(form, addressId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: accountKeys.addresses() });
@@ -56,7 +56,7 @@ export const useDeleteAddress = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => accountAPI.deleteAddress(id),
+    mutationFn: (id: number) => accountAPI.deleteAddress(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: accountKeys.addresses() });
     },

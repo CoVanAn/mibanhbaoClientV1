@@ -43,7 +43,7 @@ export const accountAPI = {
     return payload.addresses ?? [];
   },
 
-  saveAddress: async (form: AddressForm, addressId?: string): Promise<void> => {
+  saveAddress: async (form: AddressForm, addressId?: number): Promise<void> => {
     const endpoint = addressId
       ? `/api/user/addresses/${addressId}`
       : `/api/user/addresses`;
@@ -65,7 +65,7 @@ export const accountAPI = {
     }
   },
 
-  deleteAddress: async (id: string): Promise<void> => {
+  deleteAddress: async (id: number): Promise<void> => {
     const response = await apiClient.delete(`/api/user/addresses/${id}`);
     const payload = response.data as { message?: string };
     if (!response.data.success) {

@@ -1,0 +1,318 @@
+.shippingStep {
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #1a1a1a;
+  }
+
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+}
+
+/* Method Selection */
+.methodOptions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.methodOption {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  background-color: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+
+  &:hover {
+    border-color: #ff6b6b;
+    background-color: #fff5f5;
+  }
+
+  &.selected {
+    border-color: #ff6b6b;
+    background-color: #fff5f5;
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+  }
+
+  svg {
+    color: #ff6b6b;
+    flex-shrink: 0;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    strong {
+      font-size: 1rem;
+      color: #1a1a1a;
+    }
+
+    span {
+      font-size: 0.85rem;
+      color: #666;
+    }
+  }
+}
+
+/* Address Section */
+.addressSection {
+  margin-bottom: 2rem;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-decoration: none;
+
+  &:hover {
+    background-color: #ff5252;
+  }
+}
+
+.addressList {
+  display: grid;
+  gap: 1rem;
+}
+
+.emptyAddresses {
+  padding: 2rem;
+  text-align: center;
+  background-color: #f9f9f9;
+  border: 1px dashed #d0d0d0;
+  border-radius: 12px;
+
+  p {
+    color: #666;
+    margin: 0;
+  }
+}
+
+.addressCard {
+  position: relative;
+  padding: 1.25rem;
+  background-color: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #ff6b6b;
+    background-color: #fff5f5;
+  }
+
+  &.selected {
+    border-color: #ff6b6b;
+    background-color: #fff5f5;
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+  }
+}
+
+.defaultBadge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  background-color: #51cf66;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 12px;
+}
+
+.addressInfo {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+
+  strong {
+    font-size: 1rem;
+    color: #1a1a1a;
+  }
+
+  span {
+    color: #666;
+  }
+}
+
+.addressText {
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.addressCompany {
+  color: #999;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 0.25rem 0 0 0;
+  font-style: italic;
+}
+
+.selectedCheck {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  width: 28px;
+  height: 28px;
+  background-color: #51cf66;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* Pickup Section */
+.pickupSection {
+  margin-bottom: 2rem;
+}
+
+.pickupCard {
+  padding: 1.25rem;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+
+  strong {
+    display: block;
+    font-size: 1rem;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 0.25rem;
+  }
+}
+
+.pickupHours {
+  margin-top: 0.75rem !important;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e0e0e0;
+
+  strong {
+    display: inline;
+    color: #ff6b6b;
+  }
+}
+
+/* Form Group */
+.formGroup {
+  margin-bottom: 1.5rem;
+
+  label {
+    display: block;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: #ff6b6b;
+    }
+  }
+}
+
+/* Note Section */
+.noteSection {
+  margin-bottom: 2rem;
+
+  label {
+    display: block;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: #ff6b6b;
+    }
+  }
+}
+
+/* Next Button */
+.nextButton {
+  width: 100%;
+  padding: 1rem;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: #ff5252;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+}
