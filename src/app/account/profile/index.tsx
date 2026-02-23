@@ -93,13 +93,6 @@ const ProfileSection = () => {
 
   return (
     <section className={styles.accountCard} id="profile-section">
-      <div className={styles.accountCardHeader}>
-        <div>
-          <h2>Thông tin tài khoản</h2>
-          <p>Thông tin sẽ được dùng khi bạn đặt hàng hoặc liên hệ.</p>
-        </div>
-      </div>
-
       {profileMessage && (
         <p
           className={`${styles.accountStatus} ${

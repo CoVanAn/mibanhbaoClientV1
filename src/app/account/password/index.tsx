@@ -65,13 +65,6 @@ const PasswordSection = () => {
 
   return (
     <section className={styles.accountCard} id="password-section">
-      <div className={styles.accountCardHeader}>
-        <div>
-          <h2>Đổi mật khẩu</h2>
-          <p>Chỉ áp dụng cho tài khoản đã từng tạo mật khẩu Mi Bánh Bao.</p>
-        </div>
-      </div>
-
       {passwordMessage && (
         <p
           className={`${styles.accountStatus} ${getStatusVariantClass(

@@ -2,11 +2,9 @@
 
 .accountCard {
   background: #fff;
-  border-radius: 18px;
-  padding: 24px;
-  border: 1px solid #ece9e4;
-  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.04);
-  margin-top: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .accountCardHeader {
@@ -14,7 +12,46 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f3f4f6;
+
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: vars.$text-main;
+    margin-bottom: 0.25rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: vars.$color-text-secondary;
+  }
+}
+
+// Add Address Button
+.addButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: vars.$primary;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  }
+
+  svg {
+    font-size: 1.1rem;
+  }
 }
 
 .accountForm {
@@ -65,25 +102,28 @@
 
 .accountStatus {
   border-radius: 10px;
-  padding: 10px 14px;
+  padding: 0.875rem 1rem;
   font-size: 0.95rem;
-  margin-bottom: 12px;
-  background: #f1f1f6;
-  color: vars.$text-muted;
+  margin-bottom: 1rem;
+  background: #f3f4f6;
+  color: vars.$color-text-secondary;
 }
 
 .accountStatusSuccess {
-  background: #ebf9ef;
-  color: #1c7a4b;
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #6ee7b7;
 }
 
 .accountStatusError {
-  background: #fbecea;
-  color: #a00404;
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
 }
 
+// Address List
 .accountAddresses {
-  margin-top: 8px;
+  margin-top: 0;
 }
 
 .accountAddressesList {
@@ -92,52 +132,128 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 1rem;
 }
 
 .accountAddressItem {
-  background: #faf8f2;
-  border: 1px solid #e6e0d9;
-  border-radius: 14px;
-  padding: 16px 20px;
+  background: #f9fafb;
+  border: 2px solid #f3f4f6;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 16px;
+  gap: 1rem;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+}
+
+.addressInfo {
+  flex: 1;
+  min-width: 0;
 }
 
 .accountAddressMeta {
-  margin: 0;
+  margin: 0 0 0.5rem;
   font-size: 1rem;
   color: vars.$text-main;
+
+  strong {
+    font-weight: 600;
+  }
 }
 
 .accountAddressCompany {
-  margin: 4px 0 0;
+  margin: 0 0 0.25rem;
   font-size: 0.9rem;
-  color: vars.$text-muted;
+  color: vars.$color-text-secondary;
+  font-style: italic;
 }
 
 .accountAddressLine {
-  margin: 4px 0 0;
+  margin: 0;
   font-size: 0.9rem;
-  color: vars.$text-muted;
+  color: vars.$color-text-secondary;
+  line-height: 1.5;
 }
 
 .accountAddressActions {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  gap: 0.5rem;
+  flex-shrink: 0;
 }
 
-.accountAddressActions button {
-  border: none;
-  background: transparent;
-  color: vars.$primary;
-  font-weight: 600;
+.actionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: vars.$color-text-secondary;
+  border-radius: 8px;
   cursor: pointer;
-  padding: 0;
-  text-align: right;
+  transition: all 0.2s;
+  font-size: 1.1rem;
+
+  &:hover {
+    background: vars.$primary;
+    border-color: vars.$primary;
+    color: #fff;
+  }
+}
+
+.deleteButton {
+  &:hover {
+    background: vars.$primary-dark;
+    border-color: vars.$primary-dark;
+  }
+}
+
+// Loading & Empty States
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  gap: 1rem;
+
+  p {
+    color: vars.$color-text-secondary;
+    font-size: 0.95rem;
+  }
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f4f6;
+  border-top-color: vars.$color-primary;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem 1rem;
+
+  p {
+    color: vars.$color-text-secondary;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
 }
 
 .primaryButton {
@@ -181,12 +297,235 @@
   color: vars.$primary-dark;
 }
 
+// Modal
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modalContent {
+  background: #fff;
+  border-radius: 20px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 1.75rem;
+  border-bottom: 2px solid #f3f4f6;
+
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: vars.$text-main;
+    margin: 0;
+  }
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: #f3f4f6;
+  color: vars.$color-text-secondary;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1.25rem;
+
+  &:hover {
+    background: #e5e7eb;
+    color: vars.$text-main;
+  }
+}
+
+.modalForm {
+  padding: 1.75rem;
+
+  .accountFormGrid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    margin-bottom: 1.5rem;
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      span {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: vars.$text-main;
+      }
+
+      input {
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+        font-family: inherit;
+        background: #fff;
+        transition: all 0.2s;
+
+        &:focus {
+          outline: none;
+          border-color: vars.$color-primary;
+          box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        &::placeholder {
+          color: #9ca3af;
+        }
+      }
+    }
+  }
+
+  .fullWidth {
+    grid-column: 1 / -1;
+  }
+
+  .accountStatus {
+    margin-bottom: 1rem;
+  }
+}
+
+.modalActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+
+  button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.cancelButton {
+  background: #f3f4f6;
+  color: vars.$text-main;
+
+  &:hover:not(:disabled) {
+    background: #e5e7eb;
+  }
+}
+
+.modalActions .primaryButton {
+  background: linear-gradient(135deg, #ff6b6b 0%, vars.$color-primary 100%);
+  border-radius: 10px;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  }
+}
+
 @media (max-width: 768px) {
   .accountCard {
     padding: 20px;
   }
 
+  .accountCardHeader {
+    flex-direction: column;
+    align-items: stretch;
+
+    h2 {
+      font-size: 1.2rem;
+    }
+  }
+
+  .addButton {
+    width: 100%;
+    justify-content: center;
+  }
+
   .accountAddressItem {
     flex-direction: column;
+    gap: 1rem;
+  }
+
+  .accountAddressActions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .modalContent {
+    max-height: 95vh;
+    border-radius: 16px;
+  }
+
+  .modalHeader {
+    padding: 1.25rem;
+
+    h2 {
+      font-size: 1.2rem;
+    }
+  }
+
+  .modalForm {
+    padding: 1.25rem;
+
+    .accountFormGrid {
+      grid-template-columns: 1fr;
+      gap: 0.875rem;
+    }
+  }
+
+  .modalActions {
+    flex-direction: column-reverse;
+
+    button {
+      width: 100%;
+    }
   }
 }

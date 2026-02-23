@@ -1,0 +1,581 @@
+@use "@/src/styles/_variables.scss" as vars;
+
+.detailPage {
+  width: 100%;
+  min-height: 70vh;
+  color: vars.$text-main;
+  padding: 40px 0 60px;
+}
+
+.detailWrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+// Header
+.header {
+  margin-bottom: 2rem;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: none;
+  color: vars.$color-text-secondary;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  margin-bottom: 1rem;
+
+  &:hover {
+    color: vars.$color-primary;
+  }
+}
+
+.headerInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: vars.$text-main;
+  }
+
+  .orderCode {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: vars.$color-text-secondary;
+  }
+}
+
+// Status Card
+.statusCard {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  margin-bottom: 2rem;
+}
+
+.statusHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.orderDate {
+  color: vars.$color-text-secondary;
+  font-size: 0.95rem;
+}
+
+.customerNote {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: vars.$color-text-secondary;
+
+  strong {
+    color: vars.$text-main;
+  }
+}
+
+// Content Grid
+.contentGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+}
+
+.leftColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+// Section
+.section {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: vars.$text-main;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+// Items
+.itemsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.item {
+  display: flex;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+.itemImage {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.itemInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.itemName {
+  font-weight: 600;
+  color: vars.$text-main;
+  font-size: 1rem;
+}
+
+.itemVariant {
+  font-size: 0.9rem;
+  color: vars.$color-text-secondary;
+}
+
+.itemSku {
+  font-size: 0.85rem;
+  color: vars.$color-text-secondary;
+}
+
+.itemPricing {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.itemQuantity {
+  font-size: 0.9rem;
+  color: vars.$color-text-secondary;
+}
+
+.itemPrice {
+  font-size: 0.95rem;
+  color: vars.$text-main;
+}
+
+.itemTotal {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: vars.$text-main;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+// Totals
+.totals {
+  padding-top: 1rem;
+  border-top: 2px solid #f3f4f6;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  color: vars.$color-text-secondary;
+
+  span:last-child {
+    font-weight: 500;
+    color: vars.$text-main;
+  }
+}
+
+.totalRowFinal {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1rem;
+  margin-top: 0.75rem;
+  border-top: 1px solid #f3f4f6;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: vars.$text-main;
+}
+
+.finalAmount {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: vars.$color-primary;
+}
+
+// Timeline
+.timeline {
+  position: relative;
+}
+
+.timelineItem {
+  position: relative;
+  padding-left: 2rem;
+  padding-bottom: 1.5rem;
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+}
+
+.timelineDot {
+  position: absolute;
+  left: 0;
+  top: 0.25rem;
+  width: 12px;
+  height: 12px;
+  background: vars.$color-primary;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 2px vars.$color-primary;
+}
+
+.timelineLine {
+  position: absolute;
+  left: 5px;
+  top: 12px;
+  bottom: -1.5rem;
+  width: 2px;
+  background: #e5e7eb;
+}
+
+.timelineContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.timelineStatus {
+  font-weight: 600;
+  color: vars.$text-main;
+  font-size: 0.95rem;
+}
+
+.timelineDate {
+  font-size: 0.85rem;
+  color: vars.$color-text-secondary;
+}
+
+.timelineReason {
+  font-size: 0.9rem;
+  color: vars.$color-text-secondary;
+  font-style: italic;
+  margin-top: 0.25rem;
+}
+
+// Address & User Info
+.addressInfo,
+.userInfo,
+.pickupInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  p {
+    font-size: 0.95rem;
+    color: vars.$color-text-secondary;
+    line-height: 1.5;
+  }
+}
+
+.addressName,
+.addressPhone {
+  font-weight: 600;
+  color: vars.$text-main;
+}
+
+.pickupTime {
+  font-weight: 500;
+  color: vars.$text-main;
+}
+
+// Payment
+.paymentsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.paymentItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.paymentInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.paymentProvider {
+  font-weight: 600;
+  color: vars.$text-main;
+  font-size: 0.95rem;
+}
+
+.paymentStatus {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.paymentAmount {
+  font-weight: 700;
+  color: vars.$text-main;
+  font-size: 1rem;
+}
+
+// Cancel Button
+.cancelButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.875rem;
+  background: #fff;
+  border: 2px solid #ef4444;
+  border-radius: 10px;
+  color: #ef4444;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background: #ef4444;
+    color: #fff;
+  }
+}
+
+// Modal
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modalContent {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: vars.$text-main;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: vars.$color-text-secondary;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.cancelTextarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+  margin-bottom: 1.5rem;
+
+  &:focus {
+    outline: none;
+    border-color: vars.$color-primary;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  }
+}
+
+.modalActions {
+  display: flex;
+  gap: 1rem;
+}
+
+.modalBtnSecondary,
+.modalBtnDanger {
+  flex: 1;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.modalBtnSecondary {
+  background: #f3f4f6;
+  color: vars.$text-main;
+
+  &:hover:not(:disabled) {
+    background: #e5e7eb;
+  }
+}
+
+.modalBtnDanger {
+  background: #ef4444;
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background: #dc2626;
+  }
+}
+
+// States
+.emptyState,
+.errorState,
+.loadingState {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: vars.$text-main;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: vars.$color-text-secondary;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.backButton {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background: vars.$color-primary;
+  color: #fff;
+  font-weight: 500;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s;
+
+  &:hover {
+    background: vars.$primary-hover;
+    transform: translateY(-2px);
+  }
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f4f6;
+  border-top-color: vars.$color-primary;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Responsive
+@media (max-width: 1024px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .detailPage {
+    padding: 32px 0 48px;
+  }
+
+  .headerInfo h1 {
+    font-size: 1.75rem;
+  }
+
+  .statusBadge {
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .item {
+    flex-direction: column;
+  }
+
+  .itemImage {
+    width: 100%;
+    height: 150px;
+  }
+
+  .finalAmount {
+    font-size: 1.25rem;
+  }
+
+  .modalContent {
+    padding: 1.5rem;
+  }
+}

@@ -2,6 +2,7 @@
 
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import useStore from "@/src/store/useStore";
+import { FiX, FiPlus, FiEdit, FiTrash2 } from "react-icons/fi";
 import {
   Address,
   AddressForm,
@@ -40,6 +41,7 @@ const AddressSection = () => {
   );
   const [isAddressSaving, setIsAddressSaving] = useState(false);
   const [addressesLoading, setAddressesLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const loadAddresses = async () => {
     if (!token) return;
@@ -67,9 +69,22 @@ const AddressSection = () => {
     setAddressForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const resetAddressForm = () => {
+  const openModal = () => {
+    setIsModalOpen(true);
+    setAddressMessage(null);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
     setAddressForm(initialAddressForm);
     setEditingAddressId(null);
+    setAddressMessage(null);
+  };
+
+  const handleAddNewAddress = () => {
+    setAddressForm(initialAddressForm);
+    setEditingAddressId(null);
+    openModal();
   };
 
   const handleAddressSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -90,8 +105,11 @@ const AddressSection = () => {
           ? "Địa chỉ đã được cập nhật"
           : "Địa chỉ đã được thêm",
       });
-      resetAddressForm();
       await loadAddresses();
+      // Close modal after successful save
+      setTimeout(() => {
+        closeModal();
+      }, 1000);
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Không thể lưu địa chỉ";
@@ -112,7 +130,7 @@ const AddressSection = () => {
       ward: address.ward ?? "",
     });
     setEditingAddressId(address.id);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    openModal();
   };
 
   const handleDeleteAddress = async (id: number) => {
@@ -135,128 +153,29 @@ const AddressSection = () => {
       <div className={styles.accountCardHeader}>
         <div>
           <h2>Địa chỉ giao hàng</h2>
+          <p>Quản lý địa chỉ nhận hàng của bạn</p>
         </div>
         <button
           type="button"
-          className={styles.textButton}
-          onClick={resetAddressForm}
+          className={styles.addButton}
+          onClick={handleAddNewAddress}
         >
-          {editingAddressId ? "Thêm địa chỉ khác" : "Thêm địa chỉ mới"}
+          <FiPlus />
+          <span>Thêm địa chỉ</span>
         </button>
       </div>
 
-      {addressMessage && (
-        <p
-          className={`${styles.accountStatus} ${getStatusVariantClass(
-            addressMessage.type,
-          )}`}
-        >
-          {addressMessage.text}
-        </p>
-      )}
-
-      <form
-        className={`${styles.accountForm} ${styles.accountAddressForm}`}
-        onSubmit={handleAddressSubmit}
-      >
-        <div className={styles.accountFormGrid}>
-          <label>
-            <span>Người nhận</span>
-            <input
-              name="name"
-              value={addressForm.name}
-              onChange={handleAddressChange}
-              placeholder="Tên người nhận"
-            />
-          </label>
-          <label>
-            <span>Điện thoại</span>
-            <input
-              name="phone"
-              value={addressForm.phone}
-              onChange={handleAddressChange}
-              placeholder="0912345678"
-            />
-          </label>
-          <label>
-            <span>Công ty (tùy chọn)</span>
-            <input
-              name="company"
-              value={addressForm.company}
-              onChange={handleAddressChange}
-              placeholder="Tên công ty, nếu có"
-            />
-          </label>
-          <label>
-            <span>Địa chỉ chi tiết</span>
-            <input
-              name="addressLine"
-              value={addressForm.addressLine}
-              onChange={handleAddressChange}
-              placeholder="Số nhà, đường, phường"
-            />
-          </label>
-          <label>
-            <span>Tỉnh/Thành phố</span>
-            <input
-              name="province"
-              value={addressForm.province}
-              onChange={handleAddressChange}
-              placeholder="TP. Hồ Chí Minh"
-            />
-          </label>
-          <label>
-            <span>Quận/Huyện</span>
-            <input
-              name="district"
-              value={addressForm.district}
-              onChange={handleAddressChange}
-              placeholder="Quận 1"
-            />
-          </label>
-          <label>
-            <span>Phường/Xã</span>
-            <input
-              name="ward"
-              value={addressForm.ward}
-              onChange={handleAddressChange}
-              placeholder="Phường Bến Nghé"
-            />
-          </label>
-        </div>
-
-        <div className={styles.accountFormActions}>
-          <button
-            type="submit"
-            className={styles.primaryButton}
-            disabled={isAddressSaving}
-          >
-            {isAddressSaving
-              ? "Đang lưu..."
-              : editingAddressId
-                ? "Cập nhật địa chỉ"
-                : "Lưu địa chỉ"}
-          </button>
-          {editingAddressId && (
-            <button
-              type="button"
-              className={styles.textButton}
-              onClick={resetAddressForm}
-            >
-              Hủy chỉnh sửa
-            </button>
-          )}
-        </div>
-      </form>
-
       <div className={styles.accountAddresses}>
         {addressesLoading ? (
-          <p className={styles.accountStatus}>Đang tải danh sách địa chỉ…</p>
+          <div className={styles.loadingState}>
+            <div className={styles.spinner}></div>
+            <p>Đang tải danh sách địa chỉ…</p>
+          </div>
         ) : addresses.length > 0 ? (
           <ul className={styles.accountAddressesList}>
             {addresses.map((address) => (
               <li key={address.id} className={styles.accountAddressItem}>
-                <div>
+                <div className={styles.addressInfo}>
                   <p className={styles.accountAddressMeta}>
                     <strong>{address.name}</strong> · {address.phone}
                   </p>
@@ -273,26 +192,166 @@ const AddressSection = () => {
                 <div className={styles.accountAddressActions}>
                   <button
                     type="button"
-                    className={styles.textButton}
+                    className={styles.actionButton}
                     onClick={() => handleEditAddress(address)}
+                    title="Sửa địa chỉ"
                   >
-                    Sửa
+                    <FiEdit />
                   </button>
                   <button
                     type="button"
-                    className={styles.textButton}
+                    className={`${styles.actionButton} ${styles.deleteButton}`}
                     onClick={() => handleDeleteAddress(address.id)}
+                    title="Xóa địa chỉ"
                   >
-                    Xóa
+                    <FiTrash2 />
                   </button>
                 </div>
               </li>
             ))}
           </ul>
         ) : (
-          <p className={styles.accountStatus}>Bạn chưa thêm địa chỉ nào.</p>
+          <div className={styles.emptyState}>
+            <p>Bạn chưa thêm địa chỉ nào.</p>
+            <button
+              type="button"
+              className={styles.primaryButton}
+              onClick={handleAddNewAddress}
+            >
+              Thêm địa chỉ đầu tiên
+            </button>
+          </div>
         )}
       </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className={styles.modal} onClick={closeModal}>
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className={styles.modalHeader}>
+              <h2>
+                {editingAddressId ? "Chỉnh sửa địa chỉ" : "Thêm địa chỉ mới"}
+              </h2>
+              <button
+                type="button"
+                className={styles.closeButton}
+                onClick={closeModal}
+              >
+                <FiX />
+              </button>
+            </div>
+
+            {addressMessage && (
+              <p
+                className={`${styles.accountStatus} ${getStatusVariantClass(
+                  addressMessage.type,
+                )}`}
+              >
+                {addressMessage.text}
+              </p>
+            )}
+
+            <form className={styles.modalForm} onSubmit={handleAddressSubmit}>
+              <div className={styles.accountFormGrid}>
+                <label>
+                  <span>Người nhận *</span>
+                  <input
+                    name="name"
+                    value={addressForm.name}
+                    onChange={handleAddressChange}
+                    placeholder="Tên người nhận"
+                    required
+                  />
+                </label>
+                <label>
+                  <span>Điện thoại *</span>
+                  <input
+                    name="phone"
+                    value={addressForm.phone}
+                    onChange={handleAddressChange}
+                    placeholder="0912345678"
+                    required
+                  />
+                </label>
+                <label className={styles.fullWidth}>
+                  <span>Công ty (tùy chọn)</span>
+                  <input
+                    name="company"
+                    value={addressForm.company}
+                    onChange={handleAddressChange}
+                    placeholder="Tên công ty, nếu có"
+                  />
+                </label>
+                <label className={styles.fullWidth}>
+                  <span>Địa chỉ chi tiết *</span>
+                  <input
+                    name="addressLine"
+                    value={addressForm.addressLine}
+                    onChange={handleAddressChange}
+                    placeholder="Số nhà, tên đường"
+                    required
+                  />
+                </label>
+                <label>
+                  <span>Phường/Xã *</span>
+                  <input
+                    name="ward"
+                    value={addressForm.ward}
+                    onChange={handleAddressChange}
+                    placeholder="Phường Bến Nghé"
+                    required
+                  />
+                </label>
+                <label>
+                  <span>Quận/Huyện *</span>
+                  <input
+                    name="district"
+                    value={addressForm.district}
+                    onChange={handleAddressChange}
+                    placeholder="Quận 1"
+                    required
+                  />
+                </label>
+                <label className={styles.fullWidth}>
+                  <span>Tỉnh/Thành phố *</span>
+                  <input
+                    name="province"
+                    value={addressForm.province}
+                    onChange={handleAddressChange}
+                    placeholder="TP. Hồ Chí Minh"
+                    required
+                  />
+                </label>
+              </div>
+
+              <div className={styles.modalActions}>
+                <button
+                  type="button"
+                  className={styles.cancelButton}
+                  onClick={closeModal}
+                  disabled={isAddressSaving}
+                >
+                  Hủy
+                </button>
+                <button
+                  type="submit"
+                  className={styles.primaryButton}
+                  disabled={isAddressSaving}
+                >
+                  {isAddressSaving
+                    ? "Đang lưu..."
+                    : editingAddressId
+                      ? "Cập nhật"
+                      : "Lưu địa chỉ"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
