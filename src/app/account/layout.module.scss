@@ -46,7 +46,7 @@
   transition: all 0.3s;
 
   &:hover {
-    background: varsprimary-hover;
+    background: vars.$primary-hover;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
   }
@@ -119,6 +119,15 @@
   flex-shrink: 0;
 }
 
+// Label visibility
+.navLabel {
+  display: inline;
+}
+
+.navLabelShort {
+  display: none;
+}
+
 // Main Content
 .content {
   min-height: 400px;
@@ -132,39 +141,112 @@
   }
 
   .sidebar {
-    padding: 1.25rem;
+    padding-right: 1.5rem;
   }
 }
 
 @media (max-width: 768px) {
   .container {
-    padding: 20px 0 40px;
+    padding: 0 0 2rem;
+  }
+
+  .wrapper {
+    padding: 0;
+    max-width: 100%;
   }
 
   .layoutGrid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 0;
   }
 
   .sidebar {
-    position: static;
-    padding: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #fff;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   }
 
-  .sidebarHeader h2 {
-    font-size: 1.1rem;
+  .sidebarHeader {
+    display: none;
   }
 
   .nav {
-    gap: 0.25rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    padding: 0.5rem 0.5rem 0.6rem;
   }
 
   .navItem {
-    padding: 0.75rem 0.875rem;
-    font-size: 0.9rem;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.65rem 0.5rem;
+    font-size: 0.7rem;
+    border-radius: 10px;
+    white-space: nowrap;
+    text-align: center;
+    justify-content: center;
+    border: none;
+  }
+
+  .navItemActive {
+    background: vars.$primary-dark;
+    color: #fff !important;
   }
 
   .navIcon {
     font-size: 1.1rem;
+  }
+
+  // Show short labels on mobile
+  .navLabel {
+    display: none;
+  }
+
+  .navLabelShort {
+    display: inline;
+  }
+
+  .content {
+    padding: 1rem;
+    min-height: auto;
+  }
+
+  .emptyCard {
+    border-radius: 12px;
+    padding: 3rem 1.5rem;
+    margin: 0;
+
+    h2 {
+      font-size: 1.4rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .nav {
+    padding: 0.4rem 0.4rem 0.5rem;
+  }
+
+  .navItem {
+    padding: 0.6rem 0.4rem;
+    font-size: 0.65rem;
+  }
+
+  .navIcon {
+    font-size: 1.05rem;
+  }
+
+  .content {
+    padding: 0.85rem;
   }
 }

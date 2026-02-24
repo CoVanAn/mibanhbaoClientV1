@@ -150,21 +150,6 @@ const AddressSection = () => {
 
   return (
     <section className={styles.accountCard} id="address-section">
-      <div className={styles.accountCardHeader}>
-        <div>
-          <h2>Địa chỉ giao hàng</h2>
-          <p>Quản lý địa chỉ nhận hàng của bạn</p>
-        </div>
-        <button
-          type="button"
-          className={styles.addButton}
-          onClick={handleAddNewAddress}
-        >
-          <FiPlus />
-          <span>Thêm địa chỉ</span>
-        </button>
-      </div>
-
       <div className={styles.accountAddresses}>
         {addressesLoading ? (
           <div className={styles.loadingState}>
@@ -352,6 +337,16 @@ const AddressSection = () => {
           </div>
         </div>
       )}
+      <div className={styles.accountCardHeader}>
+        <button
+          type="button"
+          className={styles.addButton}
+          onClick={handleAddNewAddress}
+        >
+          <FiPlus />
+          <span>Thêm địa chỉ</span>
+        </button>
+      </div>
     </section>
   );
 };

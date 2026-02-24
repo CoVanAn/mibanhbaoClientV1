@@ -161,7 +161,7 @@ export default function OrdersPage() {
 
                     <div className={styles.orderContent}>
                       <div className={styles.orderItems}>
-                        {order.items.slice(0, 2).map((item) => (
+                        {order.items.slice(0, 4).map((item) => (
                           <div key={item.id} className={styles.orderItem}>
                             {item.image && (
                               <img
@@ -185,9 +185,9 @@ export default function OrdersPage() {
                             </div>
                           </div>
                         ))}
-                        {order.items.length > 2 && (
+                        {order.items.length > 4 && (
                           <span className={styles.moreItems}>
-                            +{order.items.length - 2} sản phẩm khác
+                            +{order.items.length - 4} sản phẩm khác
                           </span>
                         )}
                       </div>

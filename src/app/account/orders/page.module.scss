@@ -4,29 +4,12 @@
   width: 100%;
   min-height: 70vh;
   color: vars.$text-main;
-  padding: 40px 0 60px;
+  padding: 0;
 }
 
 .ordersWrapper {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 0 1rem;
-}
-
-.header {
-  margin-bottom: 2rem;
-
-  h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: vars.$text-main;
-    margin-bottom: 0.5rem;
-  }
-
-  .subtitle {
-    color: vars.$text-muted;
-    font-size: 0.95rem;
-  }
 }
 
 // Filter Bar
@@ -60,7 +43,7 @@
   &:focus {
     outline: none;
     border-color: vars.$primary;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    box-shadow: 0 0 0 3px rgba(160, 6, 5, 0.1);
   }
 }
 
@@ -73,27 +56,20 @@
 
 .orderCard {
   background: #fff;
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 1.25rem;
+  border-top: 1px solid vars.$text-light;
   transition: all 0.3s;
   text-decoration: none;
   color: inherit;
   display: block;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  }
 }
 
 .orderHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #f3f4f6;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
 }
 
 .orderInfo {
@@ -124,23 +100,26 @@
 .orderContent {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .orderItems {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 0.75rem;
 }
 
 .orderItem {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.5rem;
+  flex: 0 0 calc(50% - 0.375rem);
+  min-width: 0;
 }
 
 .itemImage {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   object-fit: cover;
   border-radius: 8px;
   flex-shrink: 0;
@@ -149,56 +128,65 @@
 .itemInfo {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.15rem;
   flex: 1;
+  min-width: 0;
 }
 
 .itemName {
   font-weight: 500;
   color: vars.$text-main;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .itemVariant {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: vars.$text-muted;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .itemQuantity {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: vars.$text-muted;
 }
 
 .moreItems {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: vars.$text-muted;
   font-style: italic;
-  margin-top: 0.25rem;
+  width: 100%;
+  text-align: center;
 }
 
 .orderMeta {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 0.75rem;
-  padding-top: 1rem;
-  border-top: 1px solid #f3f4f6;
+  padding-top: 0.75rem;
 }
 
 .metaItem {
   display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .metaLabel {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: vars.$text-muted;
 }
 
 .metaValue {
   font-weight: 600;
   color: vars.$text-main;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 // Empty State
@@ -299,7 +287,7 @@
   gap: 1rem;
   margin-top: 2rem;
   padding-top: 2rem;
-  border-top: 1px solid #f3f4f6;
+  // border-top: 1px solid #f3f4f6;
 }
 
 .pageButton {
@@ -330,25 +318,175 @@
 }
 
 // Responsive
+@media (max-width: 1024px) {
+  .orderItem {
+    flex: 0 0 100%;
+  }
+}
+
 @media (max-width: 768px) {
   .ordersPage {
-    padding: 32px 0 48px;
+    padding: 0;
   }
 
-  .header h1 {
-    font-size: 1.75rem;
+  .ordersWrapper {
+    padding: 0.85rem;
+  }
+
+  .filterBar {
+    padding: 0.85rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+  }
+
+  .filterSelect {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .ordersList {
+    gap: 0.85rem;
   }
 
   .orderCard {
-    padding: 1.25rem;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    border-top: none;
+  }
+
+  .orderHeader {
+    margin-bottom: 0.65rem;
+    padding-bottom: 0.65rem;
+  }
+
+  .orderItems {
+    flex-direction: column;
+  }
+
+  .orderItem {
+    flex: 1;
+    gap: 0.6rem;
   }
 
   .orderMeta {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 0.65rem;
+    gap: 0.5rem;
+  }
+
+  .metaItem {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .metaLabel {
+    font-size: 0.8rem;
+  }
+
+  .metaValue {
+    font-size: 0.9rem;
   }
 
   .itemImage {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .itemName {
+    font-size: 0.85rem;
+  }
+
+  .itemVariant {
+    font-size: 0.75rem;
+  }
+
+  .itemQuantity {
+    font-size: 0.75rem;
+  }
+
+  .moreItems {
+    font-size: 0.8rem;
+  }
+
+  .emptyState {
+    margin: 1rem;
+    padding: 3rem 1.5rem;
+
+    h2 {
+      font-size: 1.3rem;
+    }
+
+    p {
+      font-size: 0.85rem;
+    }
+  }
+
+  .pagination {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .ordersWrapper {
+    padding: 0.75rem;
+  }
+
+  .filterBar {
+    padding: 0.75rem 0.85rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .filterSelect {
+    padding: 0.55rem 0.65rem;
+    font-size: 0.85rem;
+  }
+
+  .ordersList {
+    gap: 0.75rem;
+  }
+
+  .orderCard {
+    padding: 0.85rem;
+    border-radius: 10px;
+  }
+
+  .orderCode {
+    font-size: 0.9rem;
+  }
+
+  .orderStatus {
+    padding: 0.3rem 0.65rem;
+    font-size: 0.75rem;
+  }
+
+  .itemImage {
+    width: 44px;
+    height: 44px;
+  }
+
+  .itemName {
+    font-size: 0.8rem;
+  }
+
+  .emptyState {
+    margin: 0.75rem;
+    padding: 2.5rem 1rem;
+
+    h2 {
+      font-size: 1.2rem;
+    }
+  }
+
+  .shopButton {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .pageButton {
+    padding: 0.55rem 1rem;
+    font-size: 0.9rem;
   }
 }

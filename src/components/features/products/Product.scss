@@ -3,19 +3,16 @@
 .powder-card {
   width: 100%;
   margin: 0 auto;
-  border-radius: 20px;
+  border-radius: 12px;
   padding: 0.75rem;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
   text-decoration: none;
   color: inherit;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease;
   &:hover {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
-    transform: translateY(-2px);
   }
   &__media {
     position: relative;
