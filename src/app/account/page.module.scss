@@ -7,6 +7,14 @@
   gap: 2rem;
 }
 
+// Loading State
+.loading {
+  padding: 3rem;
+  text-align: center;
+  color: vars.$text-muted;
+  font-size: 1rem;
+}
+
 // Hero Section
 .hero {
   border-radius: 20px;

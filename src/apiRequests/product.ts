@@ -65,6 +65,17 @@ export const productAPI = {
     const response = await apiClient.get(url);
     return parsePaginatedProductList(response.data);
   },
+
+  getFeatured: async (limit?: number): Promise<PaginatedProductListData> => {
+    const params = new URLSearchParams();
+    if (limit) {
+      params.append("limit", String(limit));
+    }
+    const query = params.toString();
+    const url = `/api/product/featured${query ? `?${query}` : ""}`;
+    const response = await apiClient.get(url);
+    return parsePaginatedProductList(response.data);
+  },
 };
 
 // Export types for external use

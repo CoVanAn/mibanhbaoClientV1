@@ -11,6 +11,9 @@ import type {
   User,
 } from "@/src/app/account/types";
 
+// Type for updating profile (email cannot be changed)
+export type UpdateProfileData = Omit<ProfileForm, "email">;
+
 export const accountAPI = {
   getProfile: async (): Promise<User> => {
     const response = await apiClient.get("/api/user/profile");
@@ -21,10 +24,9 @@ export const accountAPI = {
     return payload.user;
   },
 
-  updateProfile: async (form: ProfileForm): Promise<User> => {
+  updateProfile: async (form: UpdateProfileData): Promise<User> => {
     const response = await apiClient.patch("/api/user/profile", {
       name: form.name.trim(),
-      email: form.email.trim(),
       phone: form.phone.trim() || null,
     });
     const payload = response.data as { user?: User; message?: string };

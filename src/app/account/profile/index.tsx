@@ -1,10 +1,9 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import useStore from "@/src/store/useStore";
 import { useAccountContext } from "../content";
+import { useProfile, useUpdateProfile } from "@/src/queries/useAccount";
 import { ProfileForm, StatusMessage, profileFormSchema } from "../types";
-import { accountAPI } from "@/src/apiRequests/account";
 import styles from "./Profile.module.scss";
 
 const initialProfileForm: ProfileForm = {
@@ -14,49 +13,23 @@ const initialProfileForm: ProfileForm = {
 };
 
 const ProfileSection = () => {
-  const token = useStore((state: any) => state.token);
-  const url = useStore((state: any) => state.url);
-  const { user, setUser } = useAccountContext();
+  const { user, isLoading } = useAccountContext();
+  const updateProfileMutation = useUpdateProfile();
   const [profileForm, setProfileForm] =
     useState<ProfileForm>(initialProfileForm);
   const [profileMessage, setProfileMessage] = useState<StatusMessage | null>(
     null,
   );
-  const [isProfileSaving, setIsProfileSaving] = useState(false);
-  const [profileLoading, setProfileLoading] = useState(false);
 
   useEffect(() => {
-    if (!token) return;
-    let isMounted = true;
-
-    const loadProfile = async () => {
-      setProfileLoading(true);
-      try {
-        const userData = await accountAPI.getProfile();
-        if (!isMounted) return;
-        setUser(userData);
-        setProfileForm({
-          name: userData.name ?? "",
-          email: userData.email ?? "",
-          phone: userData.phone ?? "",
-        });
-        setProfileMessage(null);
-      } catch (error) {
-        const message =
-          error instanceof Error ? error.message : "Có lỗi khi tải hồ sơ";
-        setProfileMessage({ type: "error", text: message });
-      } finally {
-        if (isMounted) {
-          setProfileLoading(false);
-        }
-      }
-    };
-
-    loadProfile();
-    return () => {
-      isMounted = false;
-    };
-  }, [token, url, setUser]);
+    if (user) {
+      setProfileForm({
+        name: user.name ?? "",
+        email: user.email ?? "",
+        phone: user.phone ?? "",
+      });
+    }
+  }, [user]);
 
   const handleProfileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -72,10 +45,11 @@ const ProfileSection = () => {
       setProfileMessage({ type: "error", text: message });
       return;
     }
-    setIsProfileSaving(true);
+
     try {
-      const updated = await accountAPI.updateProfile(parsed.data);
-      setUser(updated);
+      // Remove email from data sent to API (email cannot be changed)
+      const { email, ...dataToUpdate } = parsed.data;
+      await updateProfileMutation.mutateAsync(dataToUpdate);
       setProfileMessage({
         type: "success",
         text: "Đã lưu thông tin tài khoản",
@@ -84,12 +58,12 @@ const ProfileSection = () => {
       const message =
         error instanceof Error ? error.message : "Không thể cập nhật hồ sơ";
       setProfileMessage({ type: "error", text: message });
-    } finally {
-      setIsProfileSaving(false);
     }
   };
 
-  if (!token) return null;
+  if (isLoading) {
+    return <div className={styles.loading}>Đang tải...</div>;
+  }
 
   return (
     <section className={styles.accountCard} id="profile-section">
@@ -124,10 +98,13 @@ const ProfileSection = () => {
             name="email"
             type="email"
             value={profileForm.email}
-            onChange={handleProfileChange}
             placeholder="name@example.com"
-            required
+            disabled
+            title="Email không thể thay đổi"
           />
+          {/* <small style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+            Email không thể thay đổi
+          </small> */}
         </label>
         <label>
           <span>Số điện thoại</span>
@@ -142,13 +119,11 @@ const ProfileSection = () => {
         <button
           type="submit"
           className={`${styles.primaryButton} ${
-            isProfileSaving || profileLoading
-              ? styles.primaryButtonDisabled
-              : ""
+            updateProfileMutation.isPending ? styles.primaryButtonDisabled : ""
           }`}
-          disabled={isProfileSaving || profileLoading}
+          disabled={updateProfileMutation.isPending}
         >
-          {isProfileSaving ? "Đang lưu..." : "Lưu thông tin"}
+          {updateProfileMutation.isPending ? "Đang lưu..." : "Lưu thông tin"}
         </button>
       </form>
     </section>

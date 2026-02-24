@@ -1,10 +1,13 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, ReactNode, useEffect } from "react";
+import { useProfile } from "@/src/queries/useAccount";
 import { User } from "./types";
+
 type AccountContextValue = {
   user: User | null;
-  setUser: (user: User | null) => void;
+  isLoading: boolean;
+  error: Error | null;
 };
 
 const AccountContext = createContext<AccountContextValue | undefined>(
@@ -12,10 +15,12 @@ const AccountContext = createContext<AccountContextValue | undefined>(
 );
 
 export const AccountProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const { data: user, isLoading, error } = useProfile();
 
   return (
-    <AccountContext.Provider value={{ user, setUser }}>
+    <AccountContext.Provider
+      value={{ user: user || null, isLoading, error: error as Error | null }}
+    >
       {children}
     </AccountContext.Provider>
   );

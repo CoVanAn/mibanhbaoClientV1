@@ -13,7 +13,17 @@ import {
 import styles from "./page.module.scss";
 
 export default function Page() {
-  const { user } = useAccountContext();
+  const { user, isLoading } = useAccountContext();
+
+  if (isLoading) {
+    return (
+      <div className={styles.overview}>
+        <div className={styles.loading}>
+          <p>Đang tải thông tin...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.overview}>

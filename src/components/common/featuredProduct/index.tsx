@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
-import useStore from "@/src/store/useStore";
 import "./FeaturedProduct.scss";
 import {
   ProductCard,
@@ -9,6 +7,10 @@ import {
   buildProductKey,
 } from "../../features/products";
 import Link from "next/dist/client/link";
+import {
+  usePowderProducts,
+  useFeaturedProducts,
+} from "@/src/queries/useProduct";
 
 const renderProductCards = (products: any[]) =>
   products
@@ -26,7 +28,6 @@ const renderProductCards = (products: any[]) =>
       );
     })
     .filter(Boolean);
-// .filter(Boolean);
 
 function ProductSection({
   title,
@@ -69,44 +70,24 @@ function ProductSection({
 }
 
 export default function FeaturedProduct({ limit = 10 }) {
-  const powderProducts = useStore((state: any) => state.powderProducts);
-  const powderLoading = useStore((state: any) => state.powderLoading);
-  const powderError = useStore((state: any) => state.powderError);
-  const fetchPowderProducts = useStore(
-    (state: any) => state.fetchPowderProducts,
-  );
-
-  useEffect(() => {
-    const controller = new AbortController();
-    fetchPowderProducts(limit, controller.signal);
-    return () => controller.abort();
-  }, [fetchPowderProducts, limit]);
+  const { data, isLoading, error } = usePowderProducts(limit);
+  const products = data?.data ?? [];
 
   return (
     <ProductSection
       title="Bột bánh bao trộn sẵn"
       ariaLabel="Danh mục bột bánh bao"
-      products={powderProducts}
-      loading={powderLoading}
-      error={powderError}
+      products={products}
+      loading={isLoading}
+      error={error}
       emptyMessage="Hiện chưa có sản phẩm phù hợp."
     />
   );
 }
 
 export function FeaturedProductsSection({ limit = 100 }) {
-  const featuredProducts = useStore((state: any) => state.featuredProducts);
-  const featuredLoading = useStore((state: any) => state.featuredLoading);
-  const featuredError = useStore((state: any) => state.featuredError);
-  const fetchFeaturedProducts = useStore(
-    (state: any) => state.fetchFeaturedProducts,
-  );
-
-  useEffect(() => {
-    const controller = new AbortController();
-    fetchFeaturedProducts(limit, controller.signal);
-    return () => controller.abort();
-  }, [fetchFeaturedProducts, limit]);
+  const { data, isLoading, error } = useFeaturedProducts(limit);
+  const products = data?.data ?? [];
 
   return (
     <>
@@ -114,9 +95,9 @@ export function FeaturedProductsSection({ limit = 100 }) {
       <ProductSection
         title="Sản phẩm nổi bật"
         ariaLabel="Danh sách sản phẩm nổi bật"
-        products={featuredProducts}
-        loading={featuredLoading}
-        error={featuredError}
+        products={products}
+        loading={isLoading}
+        error={error ? "Không thể tải sản phẩm nổi bật" : null}
         emptyMessage="Chưa có sản phẩm nổi bật nào."
       />
       <Link href="/products" className="featured-more-link">

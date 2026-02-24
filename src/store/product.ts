@@ -1,8 +1,24 @@
+/**
+ * DEPRECATED: Product store is no longer used
+ * All product fetching has been migrated to React Query hooks
+ * 
+ * Use these instead:
+ * - useProduct(slug) - Get product by slug
+ * - useProductList(options) - Get paginated product list
+ * - useFeaturedProducts(limit) - Get featured products
+ * - usePowderProducts(limit) - Get powder products by category
+ * 
+ * @see src/queries/useProduct.ts
+ * @see src/apiRequests/product.ts
+ */
+
 import axios from "axios";
 import { API_URL, POWDER_CATEGORY_NAME } from "@/src/store/constants";
 
 const createProductSlice = (set: any) => ({
   url: API_URL,
+  
+  // DEPRECATED: Use React Query hooks instead
   food_list: [],
   powderProducts: [],
   powderLoading: false,
@@ -11,7 +27,9 @@ const createProductSlice = (set: any) => ({
   featuredLoading: false,
   featuredError: "",
 
+  // DEPRECATED: Use useProductList() hook instead
   fetchFoodList: async () => {
+    console.warn("fetchFoodList is deprecated. Use useProductList() hook instead.");
     try {
       const response = await axios.get(`${API_URL}/api/food/list`);
       set({ food_list: response.data });
@@ -20,7 +38,9 @@ const createProductSlice = (set: any) => ({
     }
   },
 
+  // DEPRECATED: Use usePowderProducts() hook instead
   fetchPowderProducts: async (limit = 8, signal: AbortSignal) => {
+    console.warn("fetchPowderProducts is deprecated. Use usePowderProducts() hook instead.");
     set({ powderLoading: true, powderError: "", powderProducts: [] });
     try {
       const categoriesRes = await fetch(
@@ -46,7 +66,6 @@ const createProductSlice = (set: any) => ({
         throw new Error("Không thể tải sản phẩm");
       }
       const payload = await productsRes.json();
-      // API returns { data: [...], pagination: {...} }
       const products = payload?.data ?? payload;
       set({
         powderProducts: Array.isArray(products) ? products : [],
@@ -63,7 +82,9 @@ const createProductSlice = (set: any) => ({
     }
   },
 
+  // DEPRECATED: Use useFeaturedProducts() hook instead
   fetchFeaturedProducts: async (limit = 100, signal: AbortSignal) => {
+    console.warn("fetchFeaturedProducts is deprecated. Use useFeaturedProducts() hook instead.");
     set({ featuredLoading: true, featuredError: "", featuredProducts: [] });
     try {
       const productsRes = await fetch(

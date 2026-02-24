@@ -19,6 +19,8 @@ export const useProfile = () => {
   return useQuery({
     queryKey: accountKeys.profile(),
     queryFn: accountAPI.getProfile,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    refetchOnMount: true,
   });
 };
 
@@ -26,7 +28,7 @@ export const useUpdateProfile = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (form: ProfileForm) => accountAPI.updateProfile(form),
+    mutationFn: (form: Omit<ProfileForm, "email">) => accountAPI.updateProfile(form),
     onSuccess: (data) => {
       queryClient.setQueryData(accountKeys.profile(), data);
     },
@@ -37,6 +39,8 @@ export const useAddresses = () => {
   return useQuery({
     queryKey: accountKeys.addresses(),
     queryFn: accountAPI.getAddresses,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    refetchOnMount: true,
   });
 };
 
