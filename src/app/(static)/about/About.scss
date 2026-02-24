@@ -14,13 +14,13 @@
   h1 {
     font-size: $font-size-24;
     font-weight: $font-weight-semibold;
-    color: $color-text-primary;
+    color: $text-main;
     margin-bottom: $spacing-md;
   }
 
   p {
     font-size: $font-size-16;
-    color: $color-text-secondary;
+    color: $text-muted;
     line-height: 1.6;
     margin-bottom: $spacing-md;
   }

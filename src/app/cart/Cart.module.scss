@@ -19,7 +19,7 @@
   h1 {
     font-size: $font-size-24;
     font-weight: $font-weight-semibold;
-    color: $color-text-primary;
+    color: $text-main;
   }
 
   @include tablet {
@@ -40,7 +40,7 @@
   background: transparent;
   border: 1px solid $color-border-medium;
   border-radius: $radius-lg;
-  color: $color-text-secondary;
+  color: $text-muted;
   cursor: pointer;
   font-size: $font-size-14;
   transition: all $transition-slow;
@@ -90,7 +90,7 @@
 .loading {
   @include flex-center;
   min-height: 400px;
-  color: $color-text-secondary;
+  color: $text-muted;
 
   h2 {
     font-size: $font-size-20;
@@ -106,20 +106,20 @@
   gap: $spacing-xl;
 
   svg {
-    color: $color-text-disabled;
+    color: $text-light;
     margin-bottom: $spacing-xl;
   }
 
   h2 {
     font-size: $font-size-24;
     font-weight: $font-weight-semibold;
-    color: $color-text-primary;
+    color: $text-main;
     margin-bottom: $spacing-md;
   }
 
   p {
     font-size: $font-size-16;
-    color: $color-text-secondary;
+    color: $text-muted;
     margin-bottom: $spacing-3xl;
   }
 }
@@ -128,7 +128,7 @@
   display: inline-block;
   padding: $spacing-md $spacing-4xl;
   background: $primary;
-  color: $color-white;
+  color: #ffffff;
   border: none;
   border-radius: $radius-lg;
   font-size: $font-size-16;

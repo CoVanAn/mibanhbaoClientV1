@@ -16,28 +16,28 @@
   flex: 1;
   padding: $spacing-md $spacing-md;
   border: 1px solid $color-border;
-  border-radius: $radius-md;
+  border-radius: 6px;
   font-size: $font-size-14;
 
   &:focus {
     outline: none;
-    border-color: $color-primary;
+    border-color: $primary;
   }
 }
 
 .applyBtn {
-  background: $color-primary;
-  color: $color-white;
+  background: $primary;
+  color: #ffffff;
   border: none;
   padding: $spacing-md $spacing-xl;
-  border-radius: $radius-md;
+  border-radius: 6px;
   cursor: pointer;
   font-size: $font-size-14;
   font-weight: $font-weight-medium;
   transition: background $transition-normal;
 
   &:hover:not(:disabled) {
-    background: $color-primary-hover;
+    background: $primary-hover;
   }
 
   &:disabled {
@@ -50,7 +50,7 @@
   @include flex-between;
   background: rgba($color-success, 0.1);
   padding: $spacing-md;
-  border-radius: $radius-md;
+  border-radius: 6px;
   margin-bottom: $spacing-lg;
 }
 
@@ -77,8 +77,8 @@
   border: none;
   cursor: pointer;
   padding: $spacing-xs;
-  border-radius: $radius-sm;
-  color: $color-text-tertiary;
+  border-radius: 4px;
+  color: $text-muted;
   transition: all $transition-normal;
 
   &:hover {
@@ -102,7 +102,7 @@
   align-items: center;
   padding: $spacing-sm 0;
   font-size: $font-size-14;
-  color: $color-text-tertiary;
+  color: $text-muted;
 }
 
 .discount {
@@ -111,7 +111,7 @@
 }
 
 .shipping {
-  font-size: $font-size-13;
+  font-size: $font-size-12;
   font-style: italic;
 }
 
@@ -123,19 +123,19 @@
 
 .total {
   padding: $spacing-md 0 0;
-  font-size: $font-size-18;
-  font-weight: $font-weight-bold;
-  color: $color-text-primary;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $text-main;
 
   span:last-child {
-    color: $color-primary;
+    color: $primary;
   }
 }
 
 .checkoutBtn {
   width: 100%;
-  background: $color-primary;
-  color: $color-white;
+  background: $primary;
+  color: #ffffff;
   border: none;
   padding: $spacing-lg;
   border-radius: $radius-lg;
@@ -145,7 +145,7 @@
   transition: background $transition-normal;
 
   &:hover:not(:disabled) {
-    background: $color-primary-hover;
+    background: $primary-hover;
     @include hover-lift;
   }
 
@@ -158,6 +158,6 @@
 .note {
   margin: $spacing-md 0 0;
   font-size: $font-size-12;
-  color: $color-text-disabled;
+  color: $text-light;
   text-align: center;
 }

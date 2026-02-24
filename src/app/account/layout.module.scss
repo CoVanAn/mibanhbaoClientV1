@@ -30,7 +30,7 @@
 
   p {
     font-size: 1rem;
-    color: vars.$color-text-secondary;
+    color: vars.$text-muted;
     margin-bottom: 2rem;
   }
 }
@@ -46,7 +46,7 @@
   transition: all 0.3s;
 
   &:hover {
-    background: vars.$color-primary-hover;
+    background: varsprimary-hover;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
   }
@@ -92,7 +92,7 @@
   align-items: center;
   gap: 0.875rem;
   padding: 0.875rem 1rem;
-  color: vars.$color-text-secondary;
+  color: vars.$text-muted;
   text-decoration: none;
   border-radius: 10px;
   font-weight: 500;

@@ -2,7 +2,7 @@
 
 .ordersSection {
   width: 100%;
-  background: #fff;
+  background: #ffffff;
   border-radius: 18px;
   padding: 28px 34px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
@@ -30,7 +30,7 @@
   }
 
   .icon {
-    color: vars.$color-primary;
+    color: vars.$primary;
   }
 }
 
@@ -39,7 +39,7 @@
   align-items: center;
   gap: 0.25rem;
   padding: 0.5rem 1rem;
-  color: vars.$color-primary;
+  color: vars.$primary;
   font-weight: 500;
   font-size: 0.95rem;
   text-decoration: none;
@@ -61,7 +61,7 @@
   gap: 1rem;
 
   p {
-    color: vars.$color-text-secondary;
+    color: vars.$text-muted;
     font-size: 0.95rem;
   }
 }
@@ -70,7 +70,7 @@
   width: 40px;
   height: 40px;
   border: 3px solid #f3f4f6;
-  border-top-color: vars.$color-primary;
+  border-top-color: vars.$primary;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -91,13 +91,13 @@
   text-align: center;
 
   .emptyIcon {
-    color: vars.$color-text-secondary;
+    color: vars.$text-muted;
     opacity: 0.4;
     margin-bottom: 1rem;
   }
 
   p {
-    color: vars.$color-text-secondary;
+    color: vars.$text-muted;
     font-size: 0.95rem;
     margin-bottom: 1.25rem;
   }
@@ -106,7 +106,7 @@
 .shopButton {
   display: inline-block;
   padding: 0.625rem 1.5rem;
-  background: vars.$color-primary;
+  background: vars.$primary;
   color: #fff;
   font-weight: 500;
   font-size: 0.9rem;
@@ -115,7 +115,7 @@
   transition: all 0.3s;
 
   &:hover {
-    background: vars.$color-primary-hover;
+    background: vars.$primary-hover;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
   }
@@ -173,7 +173,7 @@
 
 .orderDate {
   font-size: 0.85rem;
-  color: vars.$color-text-secondary;
+  color: vars.$text-muted;
 }
 
 .orderTotal {
@@ -183,7 +183,7 @@
 }
 
 .chevron {
-  color: vars.$color-text-secondary;
+  color: vars.$text-muted;
   flex-shrink: 0;
 }
 

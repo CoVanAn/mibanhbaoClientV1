@@ -2,12 +2,12 @@
 
 .cartItem {
   display: grid;
-  grid-template-columns: $cart-item-image-desktop 2fr 1fr 150px 1fr;
-  gap: $grid-gap-lg;
+  grid-template-columns: 100px 2fr 1fr 150px 1fr;
+  gap: $spacing-lg;
   align-items: center;
   padding: $spacing-xl 0;
   background: $color-bg-primary;
-  border-bottom: 1px solid $color-border-light;
+  border-bottom: 1px solid $color-border;
   position: relative;
 
   &:last-child {
@@ -15,16 +15,16 @@
   }
 
   @include tablet {
-    grid-template-columns: $cart-item-image-mobile 1fr;
+    grid-template-columns: 80px 1fr;
     gap: $spacing-md;
     padding: $spacing-lg 0;
-    border-bottom: 1px solid $color-border-light;
+    border-bottom: 1px solid $color-border;
   }
 }
 
 .image {
-  width: $cart-item-image-desktop;
-  height: $cart-item-image-desktop;
+  width: 100px;
+  height: 100px;
   border-radius: $radius-lg;
   overflow: hidden;
   background: $color-bg-primary;
@@ -37,8 +37,8 @@
   }
 
   @include tablet {
-    width: $cart-item-image-mobile;
-    height: $cart-item-image-mobile;
+    width: 80px;
+    height: 80px;
   }
 }
 
@@ -55,20 +55,20 @@
 
 .name {
   margin: 0;
-  font-size: $font-size-15;
+  font-size: $font-size-14;
   font-weight: $font-weight-semibold;
-  color: $color-text-primary;
+  color: $text-main;
   @include text-ellipsis(2);
 
   @include tablet {
-    font-size: $font-size-14;
+    font-size: $font-size-12;
   }
 }
 
 .variant {
   margin: 0;
-  font-size: $font-size-13;
-  color: $color-text-secondary;
+  font-size: $font-size-12;
+  color: $text-muted;
 
   @include tablet {
     font-size: $font-size-12;
@@ -79,7 +79,7 @@
   margin: 0;
   font-size: $font-size-14;
   font-weight: $font-weight-semibold;
-  color: $color-primary-light;
+  color: $primary-light;
 
   @include tablet {
     display: none;
@@ -88,13 +88,13 @@
 
 .removeLink {
   margin: $spacing-xs 0 0;
-  font-size: $font-size-13;
-  color: $color-primary;
+  font-size: $font-size-12;
+  color: $primary;
   cursor: pointer;
   text-decoration: underline;
 
   &:hover {
-    color: $color-primary-hover;
+    color: $primary-hover;
   }
 
   @include tablet {
@@ -104,9 +104,9 @@
 
 .unitPrice {
   text-align: center;
-  font-size: $font-size-15;
+  font-size: $font-size-14;
   font-weight: $font-weight-semibold;
-  color: $color-primary;
+  color: $primary;
 
   @include tablet {
     display: none;
@@ -115,15 +115,15 @@
 
 .unavailable {
   margin: $spacing-xs 0 0;
-  font-size: $font-size-xs;
-  color: $color-primary;
+  font-size: $font-size-12;
+  color: $primary;
   font-weight: $font-weight-medium;
 }
 
 .lowStock {
   margin: $spacing-xs 0 0;
-  font-size: $font-size-xs;
-  color: $color-warning;
+  font-size: $font-size-12;
+  color: $color-error;
   font-weight: $font-weight-medium;
 }
 
@@ -143,14 +143,14 @@
   gap: $spacing-sm;
   background: $color-bg-primary;
   border: 1px solid $color-border;
-  border-radius: $radius-md;
+  border-radius: 6px;
   padding: $spacing-xs;
 }
 
 .quantityBtn {
   @include button-reset;
   padding: $spacing-xs;
-  border-radius: $radius-sm;
+  border-radius: 4px;
   @include flex-center;
   transition: background $transition-normal;
 
@@ -174,13 +174,13 @@
 .removeBtn {
   @include button-reset;
   padding: $spacing-sm;
-  border-radius: $radius-sm;
-  color: $color-text-tertiary;
+  border-radius: 4px;
+  color: $text-muted;
   transition: all $transition-normal;
 
   &:hover:not(:disabled) {
-    color: $color-primary;
-    background: $color-primary-lighter;
+    color: $primary;
+    background: $primary-lighter;
   }
 
   &:disabled {
@@ -192,12 +192,12 @@
 .subtotal {
   text-align: right;
   font-size: $font-size-16;
-  font-weight: $font-weight-bold;
-  color: $color-primary;
+  font-weight: $font-weight-semibold;
+  color: $primary;
 
   @include tablet {
     margin-top: -3.8rem;
     grid-column: 1 / 3;
-    font-size: $font-size-15;
+    font-size: $font-size-14;
   }
 }

@@ -83,14 +83,14 @@
 
   p {
     font-size: 0.9rem;
-    color: vars.$color-text-secondary;
+    color: vars.$text-muted;
     line-height: 1.4;
   }
 }
 
 .actionArrow {
   font-size: 1.25rem;
-  color: vars.$color-text-secondary;
+  color: vars.$text-muted;
   flex-shrink: 0;
   transition: transform 0.3s;
 }

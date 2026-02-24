@@ -8,8 +8,8 @@
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: $z-index-modal-backdrop;
-  animation: fadeIn $transition-fast;
+  z-index: 1040;
+  animation: fadeIn $transition-normal;
 }
 
 .drawer {
@@ -19,12 +19,12 @@
   bottom: 0;
   width: 100%;
   max-width: 450px;
-  background: $color-white;
-  z-index: $z-index-modal;
+  background: #ffffff;
+  z-index: 1050;
   display: flex;
   flex-direction: column;
-  animation: slideIn $transition-fast;
-  box-shadow: $shadow-xl;
+  animation: slideIn $transition-normal;
+  box-shadow: $shadow-lg;
 }
 
 .header {
@@ -46,7 +46,7 @@
   }
 
   svg {
-    color: $color-primary;
+    color: $primary;
   }
 }
 
@@ -55,7 +55,7 @@
   border: none;
   cursor: pointer;
   padding: $spacing-sm;
-  border-radius: $radius-full;
+  border-radius: 9999px;
   transition: background $transition-normal;
 
   &:hover {
@@ -73,7 +73,7 @@
 .loading {
   flex: 1;
   @include flex-center;
-  color: $color-text-disabled;
+  color: $text-light;
 }
 
 .empty {
@@ -86,18 +86,18 @@
   padding: $spacing-4xl;
 
   svg {
-    color: $color-border-dark;
+    color: $color-border;
   }
 
   p {
-    color: $color-text-disabled;
+    color: $text-light;
     font-size: $font-size-16;
   }
 }
 
 .continueBtn {
-  background: $color-primary;
-  color: $color-white;
+  background: $primary;
+  color: #ffffff;
   border: none;
   padding: $spacing-md $spacing-2xl;
   border-radius: $radius-lg;
@@ -107,7 +107,7 @@
   transition: background $transition-normal;
 
   &:hover {
-    background: $color-primary-hover;
+    background: $primary-hover;
     @include hover-lift;
   }
 }
@@ -118,16 +118,16 @@
   align-items: center;
   gap: $spacing-sm;
   background: none;
-  border: 1px solid $color-primary;
-  color: $color-primary;
+  border: 1px solid $primary;
+  color: $primary;
   padding: $spacing-sm $spacing-lg;
-  border-radius: $radius-md;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: $font-size-13;
+  font-size: $font-size-12;
   transition: all $transition-normal;
 
   &:hover {
-    background: rgba($color-primary, 0.05);
+    background: rgba($primary, 0.05);
   }
 }
 
