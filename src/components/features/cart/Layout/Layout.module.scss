@@ -108,7 +108,6 @@
 
   &:hover {
     background: $primary-hover;
-    @include hover-lift;
   }
 }
 

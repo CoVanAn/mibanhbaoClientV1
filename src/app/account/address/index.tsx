@@ -10,6 +10,7 @@ import {
   addressFormSchema,
 } from "../types";
 import { accountAPI } from "@/src/apiRequests/account";
+import ConfirmModal from "@/src/components/common/ConfirmModal";
 
 import styles from "./Address.module.scss";
 
@@ -42,6 +43,10 @@ const AddressSection = () => {
   const [isAddressSaving, setIsAddressSaving] = useState(false);
   const [addressesLoading, setAddressesLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [deleteConfirmModal, setDeleteConfirmModal] = useState<{
+    isOpen: boolean;
+    addressId: number | null;
+  }>({ isOpen: false, addressId: null });
 
   const loadAddresses = async () => {
     if (!token) return;
@@ -134,9 +139,17 @@ const AddressSection = () => {
   };
 
   const handleDeleteAddress = async (id: number) => {
-    if (!window.confirm("Bạn chắc chắn muốn xóa địa chỉ này?")) return;
+    setDeleteConfirmModal({ isOpen: true, addressId: id });
+  };
+
+  const confirmDeleteAddress = async () => {
+    const { addressId } = deleteConfirmModal;
+    if (!addressId) return;
+
+    setDeleteConfirmModal({ isOpen: false, addressId: null });
+
     try {
-      await accountAPI.deleteAddress(id);
+      await accountAPI.deleteAddress(addressId);
       setAddressMessage({ type: "success", text: "Địa chỉ đã được xóa" });
       await loadAddresses();
     } catch (error) {
@@ -144,6 +157,10 @@ const AddressSection = () => {
         error instanceof Error ? error.message : "Không thể xóa địa chỉ";
       setAddressMessage({ type: "error", text: message });
     }
+  };
+
+  const cancelDeleteAddress = () => {
+    setDeleteConfirmModal({ isOpen: false, addressId: null });
   };
 
   if (!token) return null;
@@ -337,6 +354,17 @@ const AddressSection = () => {
           </div>
         </div>
       )}
+
+      <ConfirmModal
+        isOpen={deleteConfirmModal.isOpen}
+        title="Xác nhận xóa địa chỉ"
+        message="Bạn chắc chắn muốn xóa địa chỉ này?"
+        confirmText="Xóa"
+        cancelText="Hủy"
+        onConfirm={confirmDeleteAddress}
+        onCancel={cancelDeleteAddress}
+      />
+
       <div className={styles.accountCardHeader}>
         <button
           type="button"

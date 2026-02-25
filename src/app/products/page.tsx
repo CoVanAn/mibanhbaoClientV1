@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import useIsMobile from "@/src/hooks/useIsMobile";
 import { ProductsProvider } from "./content";
-import { ProductFilterPanel, ProductFilterDrawer } from "./filter";
+import { ProductFilterPanel } from "./filter";
 import ProductGridSection from "./display";
 import styles from "./page.module.scss";
 
@@ -17,7 +17,6 @@ function ProductsContent() {
           {!isTabletOrDown && <ProductFilterPanel />}
           <ProductGridSection />
         </div>
-        {isTabletOrDown && <ProductFilterDrawer />}
       </div>
     </ProductsProvider>
   );

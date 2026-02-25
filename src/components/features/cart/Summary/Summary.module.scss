@@ -146,7 +146,6 @@
 
   &:hover:not(:disabled) {
     background: $primary-hover;
-    @include hover-lift;
   }
 
   &:disabled {

@@ -5,16 +5,24 @@ import "./Header.scss";
 import useStore from "@/src/store/useStore";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import ConfirmModal from "@/src/components/common/ConfirmModal";
 
 const Header = ({ setShowLogin }: any) => {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const token = useStore((state: any) => state.token);
   const setToken = useStore((state: any) => state.setToken);
   const isInitialized = useStore((state: any) => state.isInitialized);
   const router = useRouter();
 
-  const logout = async () => {
+  const handleLogout = () => {
+    setShowLogoutModal(true);
+  };
+
+  const confirmLogout = async () => {
+    setShowLogoutModal(false);
+
     try {
       // Call logout API to clear HttpOnly cookies
       await fetch("/api/auth/logout", {
@@ -25,10 +33,14 @@ const Header = ({ setShowLogin }: any) => {
     } finally {
       // Clear token from memory
       setToken("");
-      
+
       // Redirect to home
       router.push("/");
     }
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutModal(false);
   };
 
   // Close dropdown when clicking outside
@@ -78,13 +90,23 @@ const Header = ({ setShowLogin }: any) => {
               <Link href="/account" className="header-login-btn">
                 Tài khoản
               </Link>
-              <span className="login-btn" onClick={logout}>
+              <span className="login-btn" onClick={handleLogout}>
                 Đăng xuất
               </span>
             </>
           )}
         </div>
       </div>
+
+      <ConfirmModal
+        isOpen={showLogoutModal}
+        title="Xác nhận đăng xuất"
+        message="Bạn có chắc muốn đăng xuất tài khoản?"
+        confirmText="Đăng xuất"
+        cancelText="Hủy"
+        onConfirm={confirmLogout}
+        onCancel={cancelLogout}
+      />
     </div>
   );
 };

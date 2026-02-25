@@ -1,3 +1,5 @@
+@use "../../../styles/variables" as *;
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -23,8 +25,8 @@
   transition: all 0.2s ease;
 
   &:hover:not(:disabled) {
-    border-color: #e67e22;
-    color: #e67e22;
+    border-color: $primary;
+    color: $primary;
   }
 
   &:disabled {
@@ -33,7 +35,7 @@
   }
 
   &.active {
-    background: linear-gradient(135deg, #e67e22, #d35400);
+    background: $primary;
     border-color: transparent;
     color: #fff;
     box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
