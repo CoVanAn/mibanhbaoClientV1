@@ -4,13 +4,11 @@
   width: 100%;
   min-height: 70vh;
   color: vars.$text-main;
-  padding: 40px 0 60px;
 }
 
 .detailWrapper {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
 }
 
 // Header
@@ -22,7 +20,6 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
   background: transparent;
   border: none;
   color: vars.$text-muted;
@@ -117,7 +114,7 @@
 // Section
 .section {
   background: #fff;
-  padding: 1.5rem;
+  padding: 1rem;
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
@@ -322,7 +319,8 @@
 }
 
 .addressName,
-.addressPhone {
+.addressPhone,
+.addressLine {
   font-weight: 600;
   color: vars.$text-main;
 }

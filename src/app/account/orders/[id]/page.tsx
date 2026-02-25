@@ -14,6 +14,8 @@ import {
   AlertCircle,
   CheckCircle,
   XCircle,
+  Phone,
+  House,
 } from "lucide-react";
 import Link from "next/link";
 import styles from "./page.module.scss";
@@ -292,7 +294,7 @@ export default function OrderDetailPage() {
             </div>
 
             {/* Status Timeline */}
-            {order.statusHistory && order.statusHistory.length > 0 && (
+            {/* {order.statusHistory && order.statusHistory.length > 0 && (
               <div className={styles.section}>
                 <h2 className={styles.sectionTitle}>
                   <Clock size={20} />
@@ -323,13 +325,80 @@ export default function OrderDetailPage() {
                   ))}
                 </div>
               </div>
-            )}
+            )} */}
+            <div className={styles.section}>
+              <h2 className={styles.sectionTitle}>
+                <MapPin size={20} />
+                {order.method === "DELIVERY"
+                  ? "Địa chỉ giao hàng"
+                  : "Thông tin nhận hàng"}
+              </h2>
+              {order.method === "DELIVERY" && order.address ? (
+                <div className={styles.addressInfo}>
+                  <p className={styles.addressName}>{order.address.name}</p>
+                  <p className={styles.addressPhone}>{order.address.phone}</p>
+                  <p className={styles.addressLine}>
+                    {order.address.addressLine}
+                  </p>
+                  <p className={styles.addressLocation}>
+                    {order.address.ward}, {order.address.district},{" "}
+                    {order.address.province}
+                  </p>
+                </div>
+              ) : (
+                <div className={styles.pickupInfo}>
+                  <strong>Nhận tại cửa hàng</strong>
+                  {order.pickupAt && (
+                    <p className={styles.pickupTime}>
+                      Thời gian:{" "}
+                      {new Date(order.pickupAt).toLocaleString("vi-VN")}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+            {/* {order.payments && order.payments.length > 0 && (
+              <div className={styles.section}>
+                <h2 className={styles.sectionTitle}>
+                  <CreditCard size={20} />
+                  Thanh toán
+                </h2>
+                <div className={styles.paymentsList}>
+                  {order.payments.map((payment) => (
+                    <div key={payment.id} className={styles.paymentItem}>
+                      <div className={styles.paymentInfo}>
+                        <span className={styles.paymentProvider}>
+                          {payment.provider}
+                        </span>
+                        <span
+                          className={styles.paymentStatus}
+                          style={{
+                            color:
+                              paymentStatusConfig[
+                                payment.status as keyof typeof paymentStatusConfig
+                              ]?.color,
+                          }}
+                        >
+                          {
+                            paymentStatusConfig[
+                              payment.status as keyof typeof paymentStatusConfig
+                            ]?.label
+                          }
+                        </span>
+                      </div>
+                      <div className={styles.paymentAmount}>
+                        {payment.amount.toLocaleString("vi-VN")} ₫
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )} */}
           </div>
 
           {/* Right Column */}
           <div className={styles.rightColumn}>
-            {/* Delivery/Pickup Info */}
-            <div className={styles.section}>
+            {/* <div className={styles.section}>
               <h2 className={styles.sectionTitle}>
                 <MapPin size={20} />
                 {order.method === "DELIVERY"
@@ -359,32 +428,7 @@ export default function OrderDetailPage() {
                   )}
                 </div>
               )}
-            </div>
-
-            {/* User Info */}
-            {order.user && (
-              <div className={styles.section}>
-                <h2 className={styles.sectionTitle}>
-                  <User size={20} />
-                  Thông tin khách hàng
-                </h2>
-                <div className={styles.userInfo}>
-                  <p>
-                    <strong>Tên:</strong> {order.user.name}
-                  </p>
-                  <p>
-                    <strong>Email:</strong> {order.user.email}
-                  </p>
-                  {order.user.phone && (
-                    <p>
-                      <strong>SĐT:</strong> {order.user.phone}
-                    </p>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Payment Info */}
+            </div> */}
             {order.payments && order.payments.length > 0 && (
               <div className={styles.section}>
                 <h2 className={styles.sectionTitle}>
@@ -422,8 +466,38 @@ export default function OrderDetailPage() {
                 </div>
               </div>
             )}
-
-            {/* Cancel Button */}
+            {order.statusHistory && order.statusHistory.length > 0 && (
+              <div className={styles.section}>
+                <h2 className={styles.sectionTitle}>
+                  <Clock size={20} />
+                  Lịch sử đơn hàng
+                </h2>
+                <div className={styles.timeline}>
+                  {order.statusHistory.map((history, index) => (
+                    <div key={history.id} className={styles.timelineItem}>
+                      <div className={styles.timelineDot} />
+                      {index < order.statusHistory.length - 1 && (
+                        <div className={styles.timelineLine} />
+                      )}
+                      <div className={styles.timelineContent}>
+                        <div className={styles.timelineStatus}>
+                          {statusConfig[history.toStatus as OrderStatus]
+                            ?.label || history.toStatus}
+                        </div>
+                        <div className={styles.timelineDate}>
+                          {new Date(history.createdAt).toLocaleString("vi-VN")}
+                        </div>
+                        {history.reason && (
+                          <div className={styles.timelineReason}>
+                            {history.reason}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
             {canCancel && !isCompleted && (
               <button
                 onClick={() => setShowCancelModal(true)}

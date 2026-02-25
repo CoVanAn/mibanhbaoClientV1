@@ -141,7 +141,12 @@
   }
 
   .sidebar {
-    padding-right: 1.5rem;
+    padding: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .content {
+    margin-top: 1rem;
   }
 }
 
@@ -179,13 +184,13 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 0;
-    padding: 0.5rem 0.5rem 0.6rem;
+    padding: 0.5rem;
   }
 
   .navItem {
     flex-direction: column;
     gap: 0.35rem;
-    padding: 0.65rem 0.5rem;
+    padding: 0.5rem;
     font-size: 0.7rem;
     border-radius: 10px;
     white-space: nowrap;

@@ -92,26 +92,6 @@ export default function OrderSuccessPage() {
             Tiếp tục mua sắm
           </Link>
         </div>
-
-        {/* Download Receipt (Optional) */}
-        <div className={styles.receipt}>
-          <p className={styles.receiptText}>
-            Biên lai đơn hàng đã được gửi đến email của bạn
-            <br />
-            <button
-              type="button"
-              className={styles.downloadLink}
-              onClick={() => {
-                // TODO: Implement download receipt
-                alert(
-                  "Chức năng tải xuống biên lai đang trong quá trình phát triển",
-                );
-              }}
-            >
-              Tải xuống biên lai PDF
-            </button>
-          </p>
-        </div>
       </div>
     </div>
   );
