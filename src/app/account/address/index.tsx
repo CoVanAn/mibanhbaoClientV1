@@ -278,7 +278,7 @@ const AddressSection = () => {
                     required
                   />
                 </label>
-                <label className={styles.fullWidth}>
+                {/* <label className={styles.fullWidth}>
                   <span>Công ty (tùy chọn)</span>
                   <input
                     name="company"
@@ -286,15 +286,14 @@ const AddressSection = () => {
                     onChange={handleAddressChange}
                     placeholder="Tên công ty, nếu có"
                   />
-                </label>
+                </label> */}
                 <label className={styles.fullWidth}>
                   <span>Địa chỉ chi tiết *</span>
                   <input
                     name="addressLine"
                     value={addressForm.addressLine}
                     onChange={handleAddressChange}
-                    placeholder="Số nhà, tên đường"
-                    required
+                    placeholder="Số nhà, Tên Cty, Tên đường, ... "
                   />
                 </label>
                 <label>
@@ -327,6 +326,15 @@ const AddressSection = () => {
                     required
                   />
                 </label>
+                <p
+                  style={{
+                    color: "gray",
+                    fontSize: "14px",
+                    gridColumn: "1 / -1",
+                  }}
+                >
+                  Vui lòng điền thông tin địa chỉ trước khi xác nhập tỉnh
+                </p>
               </div>
 
               <div className={styles.modalActions}>
