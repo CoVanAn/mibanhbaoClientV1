@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useCart } from "@/src/queries/useCart";
+import { useCart, useApplyCoupon, useRemoveCoupon } from "@/src/queries/useCart";
 import { useCreateOrder } from "@/src/queries/useOrder";
 import { useProfile, useAddresses } from "@/src/queries/useAccount";
 import { useToast } from "@/src/components/common/toast";
-import { ShoppingCart, MapPin, CreditCard, CheckCircle } from "lucide-react";
+import { ShoppingCart, MapPin, CreditCard, CheckCircle, Tag, X } from "lucide-react";
 import Link from "next/link";
 import ShippingStep from "./components/ShippingStep";
 import PaymentStep from "./components/PaymentStep";
@@ -21,9 +21,13 @@ export default function CheckoutPage() {
   const { data: cart, isLoading: cartLoading } = useCart();
   const { data: addresses = [], isLoading: addressesLoading } = useAddresses();
   const createOrder = useCreateOrder();
+  const applyCoupon = useApplyCoupon();
+  const removeCoupon = useRemoveCoupon();
   const toast = useToast();
 
   const [currentStep, setCurrentStep] = useState<Step>("shipping");
+  const [couponCode, setCouponCode] = useState("");
+  const [couponError, setCouponError] = useState("");
   const [checkoutData, setCheckoutData] = useState({
     method: "DELIVERY" as "DELIVERY" | "PICKUP",
     addressId: undefined as number | undefined,
@@ -89,6 +93,35 @@ export default function CheckoutPage() {
       setCurrentStep("payment");
     }
   };
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    setCouponError("");
+    try {
+      await applyCoupon.mutateAsync(couponCode.trim().toUpperCase());
+      setCouponCode("");
+      toast.success("Áp dụng mã giảm giá thành công");
+    } catch (error: any) {
+      const msg = error.response?.data?.message || "Mã giảm giá không hợp lệ";
+      setCouponError(msg);
+      toast.error(msg);
+    }
+  };
+
+  const handleRemoveCoupon = async () => {
+    try {
+      await removeCoupon.mutateAsync();
+      toast.success("Đã xóa mã giảm giá");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Không thể xóa mã giảm giá");
+    }
+  };
+
+  const couponDiscount = cart?.coupon
+    ? cart.coupon.type === "PERCENT"
+      ? Math.floor((cart.subtotal * cart.coupon.value) / 100)
+      : Math.min(cart.coupon.value, cart.subtotal)
+    : 0;
 
   const handlePlaceOrder = async () => {
     try {
@@ -230,6 +263,52 @@ export default function CheckoutPage() {
                 )}
               </div>
 
+              {/* Coupon box */}
+              {!cart?.coupon ? (
+                <div className={styles.couponBox}>
+                  <div className={styles.couponRow}>
+                    <input
+                      type="text"
+                      value={couponCode}
+                      onChange={(e) => {
+                        setCouponCode(e.target.value.toUpperCase());
+                        setCouponError("");
+                      }}
+                      onKeyDown={(e) => e.key === "Enter" && handleApplyCoupon()}
+                      placeholder="Mã giảm giá"
+                      className={styles.couponInput}
+                    />
+                    <button
+                      onClick={handleApplyCoupon}
+                      disabled={!couponCode.trim() || applyCoupon.isPending}
+                      className={styles.couponApplyBtn}
+                    >
+                      {applyCoupon.isPending ? "..." : "Áp dụng"}
+                    </button>
+                  </div>
+                  {couponError && (
+                    <p className={styles.couponError}>{couponError}</p>
+                  )}
+                </div>
+              ) : (
+                <div className={styles.couponApplied}>
+                  <Tag size={14} />
+                  <span className={styles.couponCode}>{cart.coupon.code}</span>
+                  <span className={styles.couponSaving}>
+                    -{couponDiscount.toLocaleString("vi-VN")} ₫
+                  </span>
+                  <button
+                    onClick={handleRemoveCoupon}
+                    className={styles.couponRemoveBtn}
+                    title="Xóa mã"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              )}
+
+              <div className={styles.summaryDivider} />
+
               <div className={styles.summaryRow}>
                 <span>Tạm tính:</span>
                 <span>{cart?.subtotal.toLocaleString("vi-VN")} ₫</span>
@@ -242,11 +321,11 @@ export default function CheckoutPage() {
                 </div>
               )}
 
-              {cart?.coupon && (
+              {couponDiscount > 0 && (
                 <div className={styles.summaryRow}>
                   <span>Giảm giá:</span>
                   <span className={styles.discount}>
-                    -{cart.coupon.value.toLocaleString("vi-VN")} ₫
+                    -{couponDiscount.toLocaleString("vi-VN")} ₫
                   </span>
                 </div>
               )}
@@ -257,7 +336,7 @@ export default function CheckoutPage() {
                   {(
                     (cart?.subtotal || 0) +
                     (checkoutData.method === "DELIVERY" ? 30000 : 0) -
-                    (cart?.coupon?.value || 0)
+                    couponDiscount
                   ).toLocaleString("vi-VN")}{" "}
                   ₫
                 </span>

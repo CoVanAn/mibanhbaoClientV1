@@ -31,7 +31,11 @@ export default function ReviewStep({
   const selectedAddress = addresses.find((a) => a.id === data.addressId);
 
   const shippingFee = data.method === "DELIVERY" ? 30000 : 0;
-  const discount = cart.coupon?.value || 0;
+  const discount = cart.coupon
+    ? cart.coupon.type === "PERCENT"
+      ? Math.floor((cart.subtotal * cart.coupon.value) / 100)
+      : Math.min(cart.coupon.value, cart.subtotal)
+    : 0;
   const total = cart.subtotal + shippingFee - discount;
 
   return (

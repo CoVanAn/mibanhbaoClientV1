@@ -67,9 +67,9 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
   };
 
   const discount = cart.coupon
-    ? cart.coupon.type === "PERCENTAGE"
-      ? (cart.subtotal * cart.coupon.value) / 100
-      : cart.coupon.value
+    ? cart.coupon.type === "PERCENT"
+      ? Math.floor((cart.subtotal * cart.coupon.value) / 100)
+      : Math.min(cart.coupon.value, cart.subtotal)
     : 0;
 
   const total = cart.subtotal - discount;
@@ -101,10 +101,9 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
             <Tag size={16} />
             <span>{cart.coupon.code}</span>
             <span className={styles.couponValue}>
-              -
-              {cart.coupon.type === "PERCENTAGE"
-                ? `${cart.coupon.value}%`
-                : formatPrice(cart.coupon.value)}
+              -{cart.coupon.type === "PERCENT"
+                ? `${cart.coupon.value}% (${formatPrice(discount)})`
+                : formatPrice(discount)}
             </span>
           </div>
           <button onClick={handleRemoveCoupon} className={styles.removeBtn}>
