@@ -38,11 +38,21 @@ export const addressFormSchema = z.object({
 });
 
 export const passwordFormSchema = z.object({
-  currentPassword: trimmedString("Nhập mật khẩu hiện tại"),
+  currentPassword: z
+    .string()
+    .trim()
+    .optional()
+    .transform((value) => value ?? ""),
   newPassword: z
     .string()
     .trim()
     .min(6, "Mật khẩu mới tối thiểu 6 ký tự"),
+  confirmPassword: z
+    .string()
+    .trim()
+    .min(6, "Xác nhận mật khẩu tối thiểu 6 ký tự"),
+}).refine((data) => data.newPassword === data.confirmPassword, {
+  message: "Mật khẩu xác nhận không khớp",
 });
 
 export const userSchema = z.object({
@@ -50,6 +60,7 @@ export const userSchema = z.object({
   name: z.string(),
   email: z.string().trim().email(),
   phone: z.string().nullable().optional(),
+  hasPassword: z.boolean().optional(),
 });
 
 export const addressSchema = z.object({

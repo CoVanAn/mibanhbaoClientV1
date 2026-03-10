@@ -4,11 +4,13 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import useStore from "@/src/store/useStore";
 import { PasswordForm, StatusMessage, passwordFormSchema } from "../types";
 import { accountAPI } from "@/src/apiRequests/account";
+import { useProfile } from "@/src/queries/useAccount";
 import styles from "./Password.module.scss";
 
 const initialPasswordForm: PasswordForm = {
   currentPassword: "",
   newPassword: "",
+  confirmPassword: "",
 };
 
 const getStatusVariantClass = (type?: string) => {
@@ -19,7 +21,9 @@ const getStatusVariantClass = (type?: string) => {
 
 const PasswordSection = () => {
   const token = useStore((state: any) => state.token);
-  const url = useStore((state: any) => state.url);
+  const { data: profile } = useProfile();
+  const hasPassword = profile?.hasPassword ?? true;
+
   const [passwordForm, setPasswordForm] =
     useState<PasswordForm>(initialPasswordForm);
   const [passwordMessage, setPasswordMessage] = useState<StatusMessage | null>(
@@ -41,10 +45,20 @@ const PasswordSection = () => {
       setPasswordMessage({ type: "error", text: message });
       return;
     }
+
+    // If user has an existing password, current password is required
+    if (hasPassword && !parsed.data.currentPassword) {
+      setPasswordMessage({
+        type: "error",
+        text: "Vui lòng nhập mật khẩu hiện tại",
+      });
+      return;
+    }
+
     setIsPasswordSaving(true);
     try {
       await accountAPI.changePassword(
-        parsed.data.currentPassword,
+        parsed.data.currentPassword ?? "",
         parsed.data.newPassword,
       );
       setPasswordMessage({
@@ -76,17 +90,19 @@ const PasswordSection = () => {
       )}
 
       <form className={styles.accountForm} onSubmit={handlePasswordSubmit}>
-        <label>
-          <span>Mật khẩu hiện tại</span>
-          <input
-            name="currentPassword"
-            type="password"
-            value={passwordForm.currentPassword}
-            onChange={handlePasswordChange}
-            placeholder="********"
-            required
-          />
-        </label>
+        {hasPassword && (
+          <label>
+            <span>Mật khẩu hiện tại</span>
+            <input
+              name="currentPassword"
+              type="password"
+              value={passwordForm.currentPassword}
+              onChange={handlePasswordChange}
+              placeholder="********"
+              required
+            />
+          </label>
+        )}
         <label>
           <span>Mật khẩu mới</span>
           <input
@@ -95,6 +111,17 @@ const PasswordSection = () => {
             value={passwordForm.newPassword}
             onChange={handlePasswordChange}
             placeholder="Tối thiểu 6 ký tự"
+            required
+          />
+        </label>
+        <label>
+          <span>Xác nhận mật khẩu mới</span>
+          <input
+            name="confirmPassword"
+            type="password"
+            value={passwordForm.confirmPassword}
+            onChange={handlePasswordChange}
+            placeholder="Nhập lại mật khẩu mới"
             required
           />
         </label>
