@@ -25,7 +25,7 @@ export const assets = {
   bag_icon: withPath("bag_icon.png"),
   parcel_icon: withPath("parcel_icon.png"),
   google_icon: withPath("google_.png"),
-  gioi_thieu: withPath("gioi_thieu.png"),
+  gioithieu: withPath("gioithieu.jpg"),
 };
 
 export const menu_list = [

@@ -45,7 +45,7 @@ const Navbar = () => {
             <span onClick={() => router.push("/")}>Trang chủ</span>
             <span onClick={() => router.push("/about")}>Giới thiệu</span>
             <span onClick={() => router.push("/products")}>Sản phẩm</span>
-            <span onClick={() => router.push("/news")}>Tin tức</span>
+            {/* <span onClick={() => router.push("/news")}>Tin tức</span> */}
             <span onClick={() => router.push("/contact")}>Liên hệ</span>
           </div>
           <div

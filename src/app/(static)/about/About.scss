@@ -1,4 +1,4 @@
-@import "@/src/styles/variables";
+@import "../../../styles/variables";
 
 .about-us {
   padding: $spacing-xl;
@@ -22,11 +22,11 @@
     font-size: $font-size-16;
     color: $text-muted;
     line-height: 1.6;
-    margin-bottom: $spacing-md;
+    margin-bottom: 4px;
   }
 
   img {
-    max-width: 100%;
+    max-width: 600px;
     height: auto;
     border-radius: $radius-lg;
   }

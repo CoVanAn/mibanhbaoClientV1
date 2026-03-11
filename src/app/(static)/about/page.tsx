@@ -12,12 +12,12 @@ export default function Page() {
           của bánh bao. Mỗi chiếc bánh bao được làm thủ công với tình yêu thương
           và sự chăm sóc tỉ mỉ của đôi tay người thợ.
         </p>
-        <img src={assets.gioi_thieu} alt="Bánh Bao" />
+        <img src={assets.gioithieu} alt="Bánh Bao" />
         <p>
           Ở đây, bạn có thể thưởng thức những loại bánh bao đa dạng, từ những
-          loại nhân truyền thống như thịt heo trứng cút, màn thầu, cadé cho đến
-          những loại sáng tạo như bánh bao xá xíu phô mai, bò xốt tiêu, gà nấm
-          hương và bánh bao nhân xúc xích tươi ngon.
+          loại nhân truyền thống như thịt heo trứng cút, màn thầu, cadé (nhân
+          bánh ngọt) cho đến những loại sáng tạo như bánh bao xá xíu phô mai, bò
+          xốt tiêu, gà nấm hương và bánh bao nhân xúc xích tươi ngon.
         </p>
         <p>
           Chúng tôi luôn đặt chất lượng lên hàng đầu. Mỗi chiếc bánh được làm từ
@@ -25,8 +25,17 @@ export default function Page() {
           hoàn hảo.
         </p>
         <p>
-          Hãy ghé qua Mi Bánh Bao và cùng trải nghiệm những hương vị thân thuộc
-          và đậm đà của ẩm thực đường phố ngay tại tiệm nhà Mi nha.
+          Hãy ghé qua
+          <strong> Tiệm Bánh Bao Nhà Mi</strong> để thưởng thức những chiếc bánh
+          bao thơm ngon, đậm đà hương vị truyền thống và sáng tạo. Chúng tôi rất
+          mong được phục vụ bạn và mang đến cho bạn những trải nghiệm ẩm thực
+          tuyệt vời nhất! Hãy cùng nhau thưởng thức những chiếc bánh bao ngon
+          lành tại Tiệm Bánh Bao Nhà Mi nhé!
+        </p>
+        <p>
+          Cảm ơn bạn đã lựa chọn Tiệm Bánh Bao Nhà Mi. Hãy để chúng tôi mang đến
+          cho bạn những trải nghiệm ẩm thực tuyệt vời và những khoảnh khắc đáng
+          nhớ bên chiếc bánh bao thơm ngon của chúng tôi!
         </p>
       </div>
     </div>
