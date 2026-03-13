@@ -1,10 +1,9 @@
-// ...existing code...
 @use "../../../styles/variables" as *;
 
 .footer {
   background-color: $bg-dark;
   color: $text-light;
-  padding: 4rem 0 1rem 0;
+  padding: 4rem 0 1rem;
   width: 100%;
   margin-top: 100px;
   font-family: $font-family-main;
@@ -32,7 +31,6 @@
   }
 
   &-toggle {
-    display: block;
     font-size: $font-size-md;
     user-select: none;
     font-weight: bold;
@@ -48,25 +46,17 @@
       font-weight: normal;
       margin-bottom: 20px;
       letter-spacing: 0.5px;
-      // font-size: $font-size-sm;
-      // font-weight: normal; // hoặc $font-weight-regular nếu có biến
-      // line-height: 1.5; // giống p
-      // margin: 0; // bỏ margin mặc định
     }
 
     h3 {
       font-size: $font-size-sm;
       font-weight: 500;
-      margin-bottom: 15px;
-      margin-top: 20px;
+      margin: 20px 0 15px;
       color: $text-white;
     }
 
     ul {
       list-style: none;
-      transition: max-height 0.3s ease;
-      max-height: 0;
-      padding-bottom: 0;
 
       li {
         margin-bottom: 12px;
@@ -82,17 +72,15 @@
     }
   }
 
-  .company-info {
-    p {
-      margin-bottom: 8px;
-      font-size: $font-size-sm;
-      line-height: 1.5;
-      color: $text-muted;
+  .company-info p {
+    margin-bottom: 8px;
+    font-size: $font-size-sm;
+    line-height: 1.5;
+    color: $text-muted;
 
-      &:last-child {
-        font-weight: 500;
-        margin-top: 10px;
-      }
+    &:last-child {
+      font-weight: 500;
+      margin-top: 10px;
     }
   }
 
@@ -106,10 +94,9 @@
       padding: 12px 15px;
       border: 1px solid $bg-dark;
       border-radius: 5px;
-      background-color: $bg-light;
+      background: $bg-light;
       color: $text-main;
       font-size: $font-size-sm;
-      outline: none;
 
       &::placeholder {
         color: $text-muted;
@@ -118,17 +105,16 @@
 
     &-btn {
       padding: 12px 20px;
-      background-color: $primary;
+      background: $primary;
       color: $text-white;
       border: none;
       border-radius: 5px;
       font-size: $font-size-sm;
       font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.3s ease;
 
       &:hover {
-        background-color: $primary-dark;
+        background: $primary-dark;
       }
     }
   }
@@ -139,9 +125,7 @@
 
     img {
       width: 35px;
-      height: 35px;
       cursor: pointer;
-      transition: transform 0.3s ease;
 
       &:hover {
         transform: scale(1.1);
@@ -152,13 +136,12 @@
   hr {
     border: none;
     height: 1px;
-    background-color: $bg-dark;
-    margin: 40px 0 20px 0;
+    background: $bg-dark;
+    margin: 40px 0 20px;
   }
 
   &-copyright {
     text-align: center;
-    padding: 0 20px;
 
     p {
       font-size: $font-size-sm;
@@ -175,7 +158,7 @@
   }
 
   @media (max-width: 768px) {
-    padding: 40px 0 20px 0;
+    padding: 40px 0 20px;
 
     &-container {
       grid-template-columns: 1fr;
@@ -183,25 +166,14 @@
       padding: 0 24px;
     }
 
-    &-content {
-      h2 {
-        font-size: $font-size-sm;
-      }
-    }
-
-    .newsletter {
-      flex-direction: column;
-
-      &-input,
-      &-btn {
-        width: 100%;
-      }
+    .newsletter-input,
+    .newsletter-btn {
+      width: 100%;
     }
 
     .footer-list {
       max-height: 0;
       opacity: 0;
-      padding-bottom: 0;
       overflow: hidden;
       transition:
         max-height 0.4s ease-in-out,
@@ -211,18 +183,6 @@
     .footer-list.active {
       max-height: 500px;
       opacity: 1;
-    }
-
-    .footer-content ul[style*="height: 0px;"] {
-      max-height: 0;
-      transition: max-height 0.3s ease-in-out;
-      padding-bottom: 0;
-    }
-
-    .footer-content ul[style*="height: 500px;"] {
-      max-height: 500px;
-      transition: max-height 0.3s ease-in-out;
-      padding-bottom: 0;
     }
   }
 }

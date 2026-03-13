@@ -102,9 +102,14 @@ const LoginPopup = ({ setShowLogin }: any) => {
           }
         }
 
-        // Refetch cart after successful login/register
-        console.log("Login/Register successful, refetching cart...");
-        await queryClient.invalidateQueries({ queryKey: ["cart"] });
+        // Refetch cart and account data after successful login/register
+        console.log(
+          "Login/Register successful, refetching cart and account...",
+        );
+        await Promise.all([
+          queryClient.invalidateQueries({ queryKey: ["cart"] }),
+          queryClient.invalidateQueries({ queryKey: ["account"] }),
+        ]);
 
         setShowLogin(false);
       }
@@ -161,11 +166,14 @@ const LoginPopup = ({ setShowLogin }: any) => {
       <form onSubmit={onLogin} className="login-popup-container">
         <div className="login-popup-title">
           <h2>{currState}</h2>
-          <img
+          <p
             onClick={() => setShowLogin(false)}
-            src={assets.cross_icon}
-            alt=""
-          />
+            style={{
+              cursor: "pointer",
+            }}
+          >
+            X
+          </p>
         </div>
         <div className="login-popup-inputs">
           {currState === "Đăng nhập" ? (
