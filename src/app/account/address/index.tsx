@@ -214,14 +214,7 @@ const AddressSection = () => {
           </ul>
         ) : (
           <div className={styles.emptyState}>
-            <p>Bạn chưa thêm địa chỉ nào.</p>
-            <button
-              type="button"
-              className={styles.primaryButton}
-              onClick={handleAddNewAddress}
-            >
-              Thêm địa chỉ đầu tiên
-            </button>
+            <p>Bạn chưa có địa chỉ nào.</p>
           </div>
         )}
       </div>

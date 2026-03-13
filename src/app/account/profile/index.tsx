@@ -113,7 +113,6 @@ const ProfileSection = () => {
             type="tel"
             value={profileForm.phone}
             onChange={handleProfileChange}
-            placeholder="0901234567"
           />
         </label>
         <button

@@ -10,29 +10,10 @@
   &-container {
     max-width: 1110px;
     margin: 0 auto;
-    padding: 1rem 1rem;
+    padding: 0.75rem 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .logo {
-    width: 150px;
-  }
-
-  &-menu {
-    display: flex;
-    list-style: none;
-    gap: 20px;
-    color: $text-main;
-    font-size: $font-size-md;
-    li {
-      cursor: pointer;
-      &.active {
-        padding-bottom: 5px;
-        border-bottom: 2px solid $primary;
-      }
-    }
   }
 
   &-left,
@@ -40,10 +21,12 @@
     display: flex;
     gap: 30px;
     align-items: center;
+
     span {
       cursor: pointer;
       font-size: $font-size-sm;
       font-weight: 400;
+
       &:hover {
         color: $text-white;
       }
@@ -51,165 +34,26 @@
   }
 
   &-right {
-    button {
-      padding: 8px 16px;
-      border-radius: 4px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      border: 1px solid $primary;
-      background: transparent;
-      color: $text-main;
-      font-size: $font-size-md;
-      border-radius: 50px;
-      cursor: pointer;
-      &:hover {
-        background: $primary-lighter;
-        color: $text-white !important;
-      }
-    }
-    img {
-      width: 20px;
-    }
-
-    // Cart icon in header
-    > div {
-      display: flex;
-      align-items: center;
-    }
+    gap: 20px;
   }
 
-  &-profile {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  .header-login-btn {
     cursor: pointer;
-    padding: 8px 12px;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-    &:hover {
-      background-color: rgba(255, 165, 0, 0.1);
-      .header-profile-dropdown {
-        display: block;
-      }
-    }
-    img {
-      width: 20px;
-      height: 20px;
-    }
-    .dot {
-      position: absolute;
-      height: 10px;
-      width: 10px;
-      background-color: $primary;
-      border-radius: 50%;
-      display: inline-block;
-      top: 20px;
-    }
-    .header-profile-dropdown {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      background-color: $bg-light;
-      border: 1px solid $primary-lighter;
-      border-radius: 6px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      min-width: 180px;
-      z-index: 1000;
-      list-style: none;
-      padding: 8px 0;
-      margin: 8px 0 0 0;
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-      li {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 12px 16px;
-        cursor: pointer;
-        color: $text-main;
-        transition: background-color 0.3s ease;
-        &:hover {
-          background-color: $primary-lighter;
-          color: $primary;
-        }
-        img {
-          width: 16px;
-          height: 16px;
-        }
-        p {
-          margin: 0;
-          font-size: $font-size-sm;
-          color: $text-main;
-        }
-        hr {
-          border: none;
-          height: 1px;
-          background-color: $bg-dark;
-          margin: 4px 0;
-        }
-      }
-      hr {
-        width: 100%;
-        margin: 0;
-        border: 1px solid $primary;
-        margin-top: 10px;
-        margin-bottom: 10px;
-      }
-      img {
-        width: 30px;
-      }
-    }
   }
 
-  .narbar-search-icon {
-    div {
-      color: $primary;
-      cursor: pointer;
-      position: absolute;
-      min-width: 10px;
-      min-height: 10px;
-      top: -8px;
-      right: 8px;
-      border-radius: 5px;
-    }
-  }
-
-  @media (max-width: 1050px) {
-    .logo {
-      width: 140px;
-    }
-    &-menu {
-      gap: 20px;
-      font-size: $font-size-md;
-    }
-    &-right {
-      button {
-        padding: 10px 15px;
-        font-size: $font-size-sm;
-      }
-      img {
-        width: 20px;
-      }
-    }
+  .login-btn {
+    cursor: pointer;
   }
 
   @media (max-width: 750px) {
-    &-menu {
-      display: none;
-    }
     &-left {
       span:nth-child(2) {
         display: none;
       }
     }
+
     &-right {
       gap: 10px;
-      span:nth-child(3) {
-        display: none;
-      }
     }
   }
 }
-
