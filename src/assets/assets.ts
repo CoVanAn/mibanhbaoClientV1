@@ -29,10 +29,10 @@ export const assets = {
 };
 
 export const menu_list = [
-  { category: 6, menu_image: withPath("img_brand_1.jpg") },
-  { category: 20, menu_image: withPath("img_brand_2.jpg") },
-  { category: 9, menu_image: withPath("img_brand_3.jpg") },
-  { category: 7, menu_image: withPath("img_brand_4.jpg") },
-  { category: 8, menu_image: withPath("img_brand_5.jpg") },
-  { category: 10, menu_image: withPath("img_brand_6.jpg") },
+  { category: 1, menu_image: withPath("img_brand_1.jpg") },
+  { category: 2, menu_image: withPath("img_brand_2.jpg") },
+  { category: 3, menu_image: withPath("img_brand_3.jpg") },
+  { category: 4, menu_image: withPath("img_brand_4.jpg") },
+  { category: 5, menu_image: withPath("img_brand_5.jpg") },
+  { category: 6, menu_image: withPath("img_brand_6.jpg") },
 ];

@@ -79,7 +79,7 @@ const ClientShell = ({ children }: { children: React.ReactNode }) => {
       <Header setShowLogin={setShowLogin} />
       <Navbar />
       <main className="app">{children}</main>
-      <Footer />
+      <Footer setShowLogin={setShowLogin} />
     </>
   );
 };

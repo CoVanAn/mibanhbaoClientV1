@@ -162,8 +162,12 @@ const LoginPopup = ({ setShowLogin }: any) => {
   };
 
   return (
-    <div className="login-popup">
-      <form onSubmit={onLogin} className="login-popup-container">
+    <div className="login-popup" onClick={() => setShowLogin(false)}>
+      <form
+        onSubmit={onLogin}
+        onClick={(e) => e.stopPropagation()}
+        className="login-popup-container"
+      >
         <div className="login-popup-title">
           <h2>{currState}</h2>
           <p
@@ -218,15 +222,19 @@ const LoginPopup = ({ setShowLogin }: any) => {
             <button
               type="button"
               className="google-login-btn"
-              style={{
-                marginTop: "16px",
-                background: "#fff",
-                color: "#333",
-                border: "1px solid #ccc",
-                padding: "8px 16px",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
+              // style={{
+              //   display: "flex",
+              //   justifyContent: "center",
+              //   alignItems: "center",
+              //   width: "100%",
+              //   marginTop: "16px",
+              //   background: "#fff",
+              //   color: "#333",
+              //   border: "1px solid #ccc",
+              //   padding: "8px 16px",
+              //   borderRadius: "4px",
+              //   cursor: "pointer",
+              // }}
               onClick={() => {
                 window.location.href = `${API_URL}/auth/google`;
               }}
@@ -236,7 +244,7 @@ const LoginPopup = ({ setShowLogin }: any) => {
                 alt="Google"
                 style={{ width: 20, marginRight: 8 }}
               />{" "}
-              Đăng nhập với Google
+              <p>Đăng nhập với Google</p>
             </button>
           </>
         ) : (

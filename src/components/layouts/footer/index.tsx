@@ -6,7 +6,7 @@ import { assets } from "@/src/assets/assets";
 import { useRouter } from "next/navigation";
 import useIsMobile from "../../../hooks/useIsMobile";
 
-const Footer = () => {
+const Footer = ({ setShowLogin }: any) => {
   const router = useRouter();
   const [showPolicy, setShowPolicy] = useState(false);
   const [showSupport, setShowSupport] = useState(false);
@@ -136,7 +136,15 @@ const Footer = () => {
               placeholder="Nhập địa chỉ email"
               className="newsletter-input"
             />
-            <button className="newsletter-btn">Đăng ký</button>
+            <button
+              className="newsletter-btn"
+              onClick={() => {
+                setShowLogin(true);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            >
+              Đăng ký
+            </button>
           </div>
           <div className="social-section">
             <h3>Theo dõi chúng tôi</h3>
