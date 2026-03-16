@@ -43,9 +43,19 @@ const LoginPopup = ({ setShowLogin }: any) => {
     e.preventDefault();
     setErrorMessage(""); // Clear previous error
 
+    const isValidEmail = (email: string) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+      return emailRegex.test(email);
+    };
+
     // Validation
     if (!data.email || !data.password) {
       setErrorMessage("Vui lòng nhập đầy đủ email và mật khẩu");
+      return;
+    }
+
+    if (!isValidEmail(data.email)) {
+      setErrorMessage("Email không đúng định dạng");
       return;
     }
 
@@ -133,28 +143,13 @@ const LoginPopup = ({ setShowLogin }: any) => {
       }
     } catch (error: any) {
       console.error("[LoginPopup] Error:", error);
+      console.error("Error response:", error.response);
 
       // Route Handlers return errors via response.data
-      if (error.response) {
-        const errorMsg = error.response.data.message;
+      if (error.payload) {
+        const errorMsg = error.payload.message;
 
-        if (currState === "Đăng nhập") {
-          if (errorMsg === "User not found") {
-            setErrorMessage(
-              "Email không tồn tại. Vui lòng kiểm tra lại hoặc đăng ký tài khoản mới.",
-            );
-          } else if (errorMsg === "Invalid credentials") {
-            setErrorMessage("Mật khẩu không đúng. Vui lòng thử lại.");
-          } else {
-            setErrorMessage(errorMsg || "Đăng nhập thất bại");
-          }
-        } else {
-          if (errorMsg === "User already exists") {
-            setErrorMessage("Email đã được sử dụng. Vui lòng chọn email khác.");
-          } else {
-            setErrorMessage(errorMsg || "Đăng ký thất bại");
-          }
-        }
+        setErrorMessage(errorMsg || "Đăng nhập thất bại");
       } else {
         setErrorMessage("Không thể kết nối tới server. Vui lòng thử lại sau.");
       }
@@ -198,6 +193,8 @@ const LoginPopup = ({ setShowLogin }: any) => {
             value={data.email}
             type="email"
             placeholder="Email"
+            pattern="^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$"
+            title="Vui lòng nhập email hợp lệ"
             required
           />
           <input
