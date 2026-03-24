@@ -3,85 +3,30 @@
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useOrder, useCancelOrder } from "@/src/queries/useOrder";
-import useStore from "@/src/store/useStore";
+import useStore from "@/src/store/user";
 import {
   ArrowLeft,
   Package,
   MapPin,
   CreditCard,
-  User,
   Clock,
   AlertCircle,
   CheckCircle,
   XCircle,
-  Phone,
-  House,
 } from "lucide-react";
 import Link from "next/link";
+import { orderStatusConfig, type OrderStatus } from "../statusConfig";
 import styles from "./page.module.scss";
 
-type OrderStatus =
-  | "PENDING"
-  | "CONFIRMED"
-  | "PREPARING"
-  | "READY"
-  | "OUT_FOR_DELIVERY"
-  | "COMPLETED"
-  | "CANCELED"
-  | "REFUNDED";
-
-const statusConfig: Record<
-  OrderStatus,
-  { label: string; color: string; bgColor: string; icon: any }
-> = {
-  PENDING: {
-    label: "Chờ xác nhận",
-    color: "#f59e0b",
-    bgColor: "#fef3c7",
-    icon: Clock,
-  },
-  CONFIRMED: {
-    label: "Đã xác nhận",
-    color: "#3b82f6",
-    bgColor: "#dbeafe",
-    icon: CheckCircle,
-  },
-  PREPARING: {
-    label: "Đang chuẩn bị",
-    color: "#8b5cf6",
-    bgColor: "#ede9fe",
-    icon: Package,
-  },
-  READY: {
-    label: "Sẵn sàng",
-    color: "#06b6d4",
-    bgColor: "#cffafe",
-    icon: CheckCircle,
-  },
-  OUT_FOR_DELIVERY: {
-    label: "Đang giao",
-    color: "#0891b2",
-    bgColor: "#cffafe",
-    icon: Package,
-  },
-  COMPLETED: {
-    label: "Đã hoàn thành",
-    color: "#10b981",
-    bgColor: "#d1fae5",
-    icon: CheckCircle,
-  },
-  CANCELED: {
-    label: "Đã hủy",
-    color: "#ef4444",
-    bgColor: "#fee2e2",
-    icon: XCircle,
-  },
-  REFUNDED: {
-    label: "Đã hoàn tiền",
-    color: "#6b7280",
-    bgColor: "#f3f4f6",
-    icon: AlertCircle,
-  },
+const statusIconConfig = {
+  PENDING: Clock,
+  CONFIRMED: CheckCircle,
+  PREPARING: Package,
+  READY: CheckCircle,
+  OUT_FOR_DELIVERY: Package,
+  COMPLETED: CheckCircle,
+  CANCELED: XCircle,
+  REFUNDED: AlertCircle,
 };
 
 const paymentStatusConfig = {
@@ -150,8 +95,8 @@ export default function OrderDetailPage() {
     );
   }
 
-  const config = statusConfig[order.status as OrderStatus];
-  const StatusIcon = config.icon;
+  const config = orderStatusConfig[order.status as OrderStatus];
+  const StatusIcon = statusIconConfig[order.status as OrderStatus];
 
   // Check if order can be cancelled
   const canCancel = ["PENDING", "CONFIRMED"].includes(order.status);
@@ -265,8 +210,6 @@ export default function OrderDetailPage() {
                   </div>
                 ))}
               </div>
-
-              {/* Totals */}
               <div className={styles.totals}>
                 <div className={styles.totalRow}>
                   <span>Tạm tính:</span>
@@ -292,40 +235,6 @@ export default function OrderDetailPage() {
                 </div>
               </div>
             </div>
-
-            {/* Status Timeline */}
-            {/* {order.statusHistory && order.statusHistory.length > 0 && (
-              <div className={styles.section}>
-                <h2 className={styles.sectionTitle}>
-                  <Clock size={20} />
-                  Lịch sử đơn hàng
-                </h2>
-                <div className={styles.timeline}>
-                  {order.statusHistory.map((history, index) => (
-                    <div key={history.id} className={styles.timelineItem}>
-                      <div className={styles.timelineDot} />
-                      {index < order.statusHistory.length - 1 && (
-                        <div className={styles.timelineLine} />
-                      )}
-                      <div className={styles.timelineContent}>
-                        <div className={styles.timelineStatus}>
-                          {statusConfig[history.toStatus as OrderStatus]
-                            ?.label || history.toStatus}
-                        </div>
-                        <div className={styles.timelineDate}>
-                          {new Date(history.createdAt).toLocaleString("vi-VN")}
-                        </div>
-                        {history.reason && (
-                          <div className={styles.timelineReason}>
-                            {history.reason}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )} */}
             <div className={styles.section}>
               <h2 className={styles.sectionTitle}>
                 <MapPin size={20} />
@@ -357,78 +266,8 @@ export default function OrderDetailPage() {
                 </div>
               )}
             </div>
-            {/* {order.payments && order.payments.length > 0 && (
-              <div className={styles.section}>
-                <h2 className={styles.sectionTitle}>
-                  <CreditCard size={20} />
-                  Thanh toán
-                </h2>
-                <div className={styles.paymentsList}>
-                  {order.payments.map((payment) => (
-                    <div key={payment.id} className={styles.paymentItem}>
-                      <div className={styles.paymentInfo}>
-                        <span className={styles.paymentProvider}>
-                          {payment.provider}
-                        </span>
-                        <span
-                          className={styles.paymentStatus}
-                          style={{
-                            color:
-                              paymentStatusConfig[
-                                payment.status as keyof typeof paymentStatusConfig
-                              ]?.color,
-                          }}
-                        >
-                          {
-                            paymentStatusConfig[
-                              payment.status as keyof typeof paymentStatusConfig
-                            ]?.label
-                          }
-                        </span>
-                      </div>
-                      <div className={styles.paymentAmount}>
-                        {payment.amount.toLocaleString("vi-VN")} ₫
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )} */}
           </div>
-
-          {/* Right Column */}
           <div className={styles.rightColumn}>
-            {/* <div className={styles.section}>
-              <h2 className={styles.sectionTitle}>
-                <MapPin size={20} />
-                {order.method === "DELIVERY"
-                  ? "Địa chỉ giao hàng"
-                  : "Thông tin nhận hàng"}
-              </h2>
-              {order.method === "DELIVERY" && order.address ? (
-                <div className={styles.addressInfo}>
-                  <p className={styles.addressName}>{order.address.name}</p>
-                  <p className={styles.addressPhone}>{order.address.phone}</p>
-                  <p className={styles.addressLine}>
-                    {order.address.addressLine}
-                  </p>
-                  <p className={styles.addressLocation}>
-                    {order.address.ward}, {order.address.district},{" "}
-                    {order.address.province}
-                  </p>
-                </div>
-              ) : (
-                <div className={styles.pickupInfo}>
-                  <p>Nhận tại cửa hàng</p>
-                  {order.pickupAt && (
-                    <p className={styles.pickupTime}>
-                      Thời gian:{" "}
-                      {new Date(order.pickupAt).toLocaleString("vi-VN")}
-                    </p>
-                  )}
-                </div>
-              )}
-            </div> */}
             {order.payments && order.payments.length > 0 && (
               <div className={styles.section}>
                 <h2 className={styles.sectionTitle}>
@@ -481,7 +320,7 @@ export default function OrderDetailPage() {
                       )}
                       <div className={styles.timelineContent}>
                         <div className={styles.timelineStatus}>
-                          {statusConfig[history.toStatus as OrderStatus]
+                          {orderStatusConfig[history.toStatus as OrderStatus]
                             ?.label || history.toStatus}
                         </div>
                         <div className={styles.timelineDate}>

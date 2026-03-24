@@ -35,10 +35,11 @@ export const useUpdateProfile = () => {
   });
 };
 
-export const useAddresses = () => {
+export const useAddresses = (enabled: boolean = true) => {
   return useQuery({
     queryKey: accountKeys.addresses(),
     queryFn: accountAPI.getAddresses,
+    enabled,
     staleTime: 5 * 60 * 1000, // 5 minutes
     refetchOnMount: true,
   });

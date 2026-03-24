@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import useStore from "@/src/store/useStore";
+import useStore from "@/src/store/user";
 import { FiX, FiPlus, FiEdit, FiTrash2 } from "react-icons/fi";
 import {
   Address,
@@ -9,7 +9,11 @@ import {
   StatusMessage,
   addressFormSchema,
 } from "../types";
-import { accountAPI } from "@/src/apiRequests/account";
+import {
+  useAddresses,
+  useDeleteAddress,
+  useSaveAddress,
+} from "@/src/queries/useAccount";
 import ConfirmModal from "@/src/components/common/ConfirmModal";
 
 import styles from "./Address.module.scss";
@@ -31,43 +35,32 @@ const getStatusVariantClass = (type?: string) => {
 };
 
 const AddressSection = () => {
-  const token = useStore((state: any) => state.token);
-  const url = useStore((state: any) => state.url);
+  const token = useStore((state) => state.token);
+  const {
+    data: addresses = [],
+    isLoading: addressesLoading,
+    refetch: refetchAddresses,
+  } = useAddresses(!!token);
+  const saveAddressMutation = useSaveAddress();
+  const deleteAddressMutation = useDeleteAddress();
   const [addressForm, setAddressForm] =
     useState<AddressForm>(initialAddressForm);
   const [editingAddressId, setEditingAddressId] = useState<number | null>(null);
-  const [addresses, setAddresses] = useState<Address[]>([]);
   const [addressMessage, setAddressMessage] = useState<StatusMessage | null>(
     null,
   );
   const [isAddressSaving, setIsAddressSaving] = useState(false);
-  const [addressesLoading, setAddressesLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteConfirmModal, setDeleteConfirmModal] = useState<{
     isOpen: boolean;
     addressId: number | null;
   }>({ isOpen: false, addressId: null });
 
-  const loadAddresses = async () => {
-    if (!token) return;
-    setAddressesLoading(true);
-    try {
-      const data = await accountAPI.getAddresses();
-      setAddresses(data);
-      setAddressMessage(null);
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Lỗi khi tải địa chỉ";
-      setAddressMessage({ type: "error", text: message });
-    } finally {
-      setAddressesLoading(false);
-    }
-  };
-
   useEffect(() => {
-    if (!token) return;
-    loadAddresses();
-  }, [token, url]);
+    if (token) {
+      refetchAddresses();
+    }
+  }, [token, refetchAddresses]);
 
   const handleAddressChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -103,14 +96,17 @@ const AddressSection = () => {
     }
     setIsAddressSaving(true);
     try {
-      await accountAPI.saveAddress(parsed.data, editingAddressId ?? undefined);
+      await saveAddressMutation.mutateAsync({
+        form: parsed.data,
+        addressId: editingAddressId ?? undefined,
+      });
+      await refetchAddresses();
       setAddressMessage({
         type: "success",
         text: editingAddressId
           ? "Địa chỉ đã được cập nhật"
           : "Địa chỉ đã được thêm",
       });
-      await loadAddresses();
       // Close modal after successful save
       setTimeout(() => {
         closeModal();
@@ -149,9 +145,9 @@ const AddressSection = () => {
     setDeleteConfirmModal({ isOpen: false, addressId: null });
 
     try {
-      await accountAPI.deleteAddress(addressId);
+      await deleteAddressMutation.mutateAsync(addressId);
+      await refetchAddresses();
       setAddressMessage({ type: "success", text: "Địa chỉ đã được xóa" });
-      await loadAddresses();
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Không thể xóa địa chỉ";

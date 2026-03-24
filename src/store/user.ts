@@ -1,6 +1,18 @@
+import { create } from "zustand";
+import { getCookie } from "@/src/lib/cookies";
+
+export type UserSlice = {
+  token: string;
+  isInitialized: boolean;
+  setToken: (tokenValue: string) => void;
+  clearToken: () => void;
+  setInitialized: (value: boolean) => void;
+  handleGoogleLogin: () => Promise<void>;
+};
+
 // Access token only stored in memory (not persisted to localStorage)
 // Refresh token is stored in HttpOnly cookie (managed by server)
-const createUserSlice = (set: any, get: any) => ({
+const createUserSlice = (set: (partial: Partial<UserSlice>) => void): UserSlice => ({
   token: "", // Access token in memory only
   isInitialized: false, // Track if we've tried to refresh on mount
 
@@ -20,26 +32,23 @@ const createUserSlice = (set: any, get: any) => ({
     if (typeof window === "undefined") return;
     const params = new URLSearchParams(window.location.search);
     const googleAuthStatus = params.get("googleAuth");
-    
+
     if (googleAuthStatus === "success") {
       // Google login successful, access token is in cookie
       // Read access token from cookie (non-HttpOnly)
-      const accessToken = document.cookie
-        .split("; ")
-        .find(row => row.startsWith("accessToken="))
-        ?.split("=")[1];
-      
+      const accessToken = getCookie("accessToken");
+
       if (accessToken) {
         set({ token: accessToken, isInitialized: true });
-        
+
         // Clean up URL
         window.history.replaceState({}, document.title, window.location.pathname);
-        
+
         // Dispatch custom event to trigger refetch in other components
         if (typeof window !== "undefined") {
           window.dispatchEvent(new Event("google-login-success"));
         }
-        
+
         console.log("[Google Login] Token set successfully, triggering refetch");
       }
     } else if (googleAuthStatus === "error") {
@@ -50,4 +59,8 @@ const createUserSlice = (set: any, get: any) => ({
   },
 });
 
-export default createUserSlice;
+const useStore = create<UserSlice>((set) => ({
+  ...createUserSlice(set),
+}));
+
+export default useStore;

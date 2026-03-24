@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import "./Header.scss";
-import useStore from "@/src/store/useStore";
+import useStore from "@/src/store/user";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ConfirmModal from "@/src/components/common/ConfirmModal";

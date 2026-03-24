@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import useStore from "@/src/store/useStore";
+import useStore from "@/src/store/user";
 import { AccountProvider } from "./content";
 import { FiUser, FiLock, FiMapPin, FiShoppingBag } from "react-icons/fi";
 import styles from "./layout.module.scss";

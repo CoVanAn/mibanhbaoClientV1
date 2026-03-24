@@ -1,44 +1,45 @@
 "use client";
 
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { ProductDetailContext } from "../content";
 import VariantSelector from "../variant";
 import styles from "./Hero.module.scss";
 
+const EMPTY_ARRAY: never[] = [];
+
 export default function ProductHero() {
   const context = useContext(ProductDetailContext);
-  if (!context) return null;
+  const product = context?.product;
+  const categoryLabel = context?.categoryLabel ?? "";
+  const thumbnails = context?.thumbnails ?? EMPTY_ARRAY;
+  const variants = context?.variants ?? EMPTY_ARRAY;
+  const defaultImage = context?.mainImage ?? "";
 
-  const {
-    product,
-    categoryLabel,
-    thumbnails,
-    variants,
-    mainImage: defaultImage,
-  } = context;
-
-  const initialImage = useMemo(
-    () => defaultImage || thumbnails[0]?.url || "",
+  const availableImages = useMemo(
+    () =>
+      [defaultImage, ...thumbnails.map((thumbnail) => thumbnail.url)].filter(
+        Boolean,
+      ),
     [defaultImage, thumbnails],
   );
-  const [mainImage, setMainImage] = useState(initialImage);
+  const [selectedImage, setSelectedImage] = useState("");
 
-  useEffect(() => {
-    const nextImage = defaultImage || thumbnails[0]?.url || "";
-    if (nextImage) {
-      setMainImage((current) => (current === nextImage ? current : nextImage));
+  const displayImage = useMemo(() => {
+    if (selectedImage && availableImages.includes(selectedImage)) {
+      return selectedImage;
     }
-  }, [defaultImage, thumbnails]);
-
-  const displayImage = mainImage || "";
+    return availableImages[0] || "";
+  }, [selectedImage, availableImages]);
 
   const sortedThumbnails = thumbnails.filter((image) => image.url);
 
   const [showPreview, setShowPreview] = useState(false);
 
+  if (!context || !product) return null;
+
   const handleThumbnailClick = (url: string) => {
     if (url) {
-      setMainImage(url);
+      setSelectedImage(url);
     }
   };
 

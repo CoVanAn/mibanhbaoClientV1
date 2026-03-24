@@ -4,19 +4,27 @@
  */
 
 import apiClient from "@/src/lib/axios";
+import {
+  CategoryListSchema,
+  type CategoryData,
+} from "@/src/schema/category.schema";
 
-export interface CategorySummary {
-  id: number;
-  name: string;
-  slug: string;
-  parentId?: number | null;
-  position: number;
-  isActive: boolean;
-}
+const parseCategoryList = (payload: unknown): CategoryData[] => {
+  const parsed = CategoryListSchema.safeParse(payload);
+
+  if (!parsed.success) {
+    console.error("Unexpected category list shape", parsed.error);
+    throw new Error("Không thể tải danh mục");
+  }
+
+  return parsed.data;
+};
 
 export const categoryAPI = {
-  getList: async (): Promise<CategorySummary[]> => {
+  getList: async (): Promise<CategoryData[]> => {
     const response = await apiClient.get("/api/category/list");
-    return response.data as CategorySummary[];
+    return parseCategoryList(response.data);
   },
 };
+
+export type { CategoryData as CategorySummary };

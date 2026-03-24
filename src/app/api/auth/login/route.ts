@@ -3,9 +3,8 @@
  * Handles user login and sets HttpOnly cookies for tokens
  */
 
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { API_URL } from "@/src/constants/api";
+import { API_URL } from "@/src/store/constants";
 
 interface LoginBody {
   email: string;
@@ -36,8 +35,6 @@ const decodeJWT = (token: string): { exp: number } | null => {
 };
 
 export async function POST(request: Request) {
-  const cookieStore = await cookies();
-
   try {
     const body: LoginBody = await request.json();
 
@@ -136,12 +133,12 @@ export async function POST(request: Request) {
     return jsonResponse;
   } catch (error) {
     console.error("[Login Route] Error:", error);
-    
+
     // More detailed error message
-    const errorMessage = error instanceof Error 
-      ? error.message 
+    const errorMessage = error instanceof Error
+      ? error.message
       : "Có lỗi xảy ra khi đăng nhập";
-    
+
     return NextResponse.json(
       {
         success: false,

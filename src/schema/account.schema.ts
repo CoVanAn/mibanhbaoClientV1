@@ -56,7 +56,7 @@ export const passwordFormSchema = z.object({
 });
 
 export const userSchema = z.object({
-  id: z.string(),
+  id: z.union([z.string(), z.number()]).transform((value) => String(value)),
   name: z.string(),
   email: z.string().trim().email(),
   phone: z.string().nullable().optional(),
@@ -74,4 +74,9 @@ export const addressSchema = z.object({
   ward: z.string(),
 });
 
-export type AddressSchemaType = z.TypeOf<typeof addressSchema>;
+export type StatusMessage = z.infer<typeof statusMessageSchema>;
+export type ProfileForm = z.infer<typeof profileFormSchema>;
+export type AddressForm = z.infer<typeof addressFormSchema>;
+export type PasswordForm = z.infer<typeof passwordFormSchema>;
+export type User = z.infer<typeof userSchema>;
+export type Address = z.infer<typeof addressSchema>;

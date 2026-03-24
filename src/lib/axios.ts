@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
-import { API_URL } from "@/src/constants/api";
-import useStore from "@/src/store/useStore";
+import { API_URL } from "@/src/store/constants";
+import useStore from "@/src/store/user";
 import {
   removeTokensFromLocalStorage,
   isTokenExpired,

@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useState } from "react";
-import useStore from "@/src/store/useStore";
+import useStore from "@/src/store/user";
 import { PasswordForm, StatusMessage, passwordFormSchema } from "../types";
 import { accountAPI } from "@/src/apiRequests/account";
 import { useProfile } from "@/src/queries/useAccount";

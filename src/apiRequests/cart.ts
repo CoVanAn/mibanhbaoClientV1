@@ -4,74 +4,70 @@
  */
 
 import apiClient from "@/src/lib/axios";
+import {
+  AddToCartPayloadSchema,
+  CartSchema,
+  UpdateCartItemPayloadSchema,
+  type AddToCartPayloadData,
+  type CartData,
+  type CartItemData,
+  type UpdateCartItemPayloadData,
+} from "@/src/schema/cart.schema";
 
 // Types
-export interface CartItem {
-  id: number;
-  productId: number;
-  productName: string;
-  productSlug: string;
-  productImage: string | null;
-  variantId: number;
-  variantName: string;
-  variantSku: string;
-  quantity: number;
-  unitPrice: string;
-  subtotal: number;
-  inStock: number;
-  isAvailable: boolean;
-}
+export type CartItem = CartItemData;
+export type Cart = CartData;
+export type AddToCartPayload = AddToCartPayloadData;
+export type UpdateCartItemPayload = UpdateCartItemPayloadData;
 
-export interface Cart {
-  id: number | null;
-  items: CartItem[];
-  coupon: {
-    code: string;
-    type: string;
-    value: number;
-  } | null;
-  subtotal: number;
-  totalItems: number;
-  currency: string;
-  updatedAt?: string;
-}
+const parseCart = (payload: unknown): Cart => {
+  const parsed = CartSchema.safeParse(payload);
 
-export interface AddToCartPayload {
-  variantId: number;
-  productId: number;
-  quantity: number;
-}
+  if (!parsed.success) {
+    console.error("Unexpected cart shape", parsed.error);
+    throw new Error("Không thể đồng bộ giỏ hàng");
+  }
 
-export interface UpdateCartItemPayload {
-  itemId: number;
-  quantity: number;
-}
+  return parsed.data;
+};
+
+const extractCart = (payload: unknown): Cart => {
+  const cart = (payload as { cart?: unknown })?.cart;
+
+  if (!cart) {
+    throw new Error("Không thể đồng bộ giỏ hàng");
+  }
+
+  return parseCart(cart);
+};
 
 // API Functions
 export const cartAPI = {
   getCart: async (): Promise<Cart> => {
     const { data } = await apiClient.get("/api/cart");
-    return data.cart;
+    return extractCart(data);
   },
 
   addItem: async (payload: AddToCartPayload): Promise<Cart> => {
-    const { data } = await apiClient.post("/api/cart/items", payload);
-    return data.cart;
+    const body = AddToCartPayloadSchema.parse(payload);
+    const { data } = await apiClient.post("/api/cart/items", body);
+    return extractCart(data);
   },
 
   updateItem: async ({
     itemId,
     quantity,
   }: UpdateCartItemPayload): Promise<Cart> => {
-    const { data } = await apiClient.put(`/api/cart/items/${itemId}`, {
-      quantity,
+    const parsed = UpdateCartItemPayloadSchema.parse({ itemId, quantity });
+    const { data } = await apiClient.put(`/api/cart/items/${parsed.itemId}`, {
+      quantity: parsed.quantity,
     });
-    return data.cart;
+    return extractCart(data);
   },
 
   removeItem: async (itemId: number): Promise<Cart> => {
     const { data } = await apiClient.delete(`/api/cart/items/${itemId}`);
-    return data.cart;
+    return extractCart(data);
   },
 
   clearCart: async (): Promise<void> => {
@@ -79,17 +75,20 @@ export const cartAPI = {
   },
 
   applyCoupon: async (couponCode: string): Promise<Cart> => {
-    const { data } = await apiClient.post("/api/cart/coupon", { couponCode });
-    return data.cart;
+    const normalizedCode = couponCode.trim().toUpperCase();
+    const { data } = await apiClient.post("/api/cart/coupon", {
+      couponCode: normalizedCode,
+    });
+    return extractCart(data);
   },
 
   removeCoupon: async (): Promise<Cart> => {
     const { data } = await apiClient.delete("/api/cart/coupon");
-    return data.cart;
+    return extractCart(data);
   },
 
   mergeGuestCart: async (guestToken: string): Promise<Cart> => {
     const { data } = await apiClient.post("/api/cart/merge", { guestToken });
-    return data.cart;
+    return extractCart(data);
   },
 };

@@ -7,9 +7,9 @@ import Header from "@/src/components/layouts/header";
 import Navbar from "@/src/components/layouts/navbar";
 import Footer from "@/src/components/layouts/footer";
 import LoginPopup from "@/src/components/common/loginPopup";
-import useStore from "@/src/store/useStore";
-import { useAuth } from "@/src/hooks/useAuth";
+import useStore from "@/src/store/user";
 import { useMergeGuestCart } from "@/src/queries/useCart";
+import { getCookie } from "@/src/lib/cookies";
 
 const ClientShell = ({ children }: { children: React.ReactNode }) => {
   const [showLogin, setShowLogin] = useState(false);
@@ -18,20 +18,9 @@ const ClientShell = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const mergeGuestCart = useMergeGuestCart();
 
-  // Auto-refresh access token on mount
-  useAuth();
-
   useEffect(() => {
     handleGoogleLogin();
   }, [handleGoogleLogin]);
-
-  // Helper to get cookie value
-  const getCookie = (name: string) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop()?.split(";").shift();
-    return null;
-  };
 
   // Listen for Google login success to merge cart and redirect
   useEffect(() => {

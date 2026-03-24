@@ -1,44 +1,28 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useAccountContext } from "../content";
-import { useProfile, useUpdateProfile } from "@/src/queries/useAccount";
-import { ProfileForm, StatusMessage, profileFormSchema } from "../types";
+import { useUpdateProfile } from "@/src/queries/useAccount";
+import { StatusMessage, profileFormSchema } from "../types";
 import styles from "./Profile.module.scss";
-
-const initialProfileForm: ProfileForm = {
-  name: "",
-  email: "",
-  phone: "",
-};
 
 const ProfileSection = () => {
   const { user, isLoading } = useAccountContext();
   const updateProfileMutation = useUpdateProfile();
-  const [profileForm, setProfileForm] =
-    useState<ProfileForm>(initialProfileForm);
   const [profileMessage, setProfileMessage] = useState<StatusMessage | null>(
     null,
   );
 
-  useEffect(() => {
-    if (user) {
-      setProfileForm({
-        name: user.name ?? "",
-        email: user.email ?? "",
-        phone: user.phone ?? "",
-      });
-    }
-  }, [user]);
-
-  const handleProfileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setProfileForm((prev) => ({ ...prev, [name]: value }));
-  };
-
   const handleProfileSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const parsed = profileFormSchema.safeParse(profileForm);
+
+    const formData = new FormData(event.currentTarget);
+    const parsed = profileFormSchema.safeParse({
+      name: String(formData.get("name") ?? ""),
+      email: user?.email ?? "",
+      phone: String(formData.get("phone") ?? ""),
+    });
+
     if (!parsed.success) {
       const message =
         parsed.error.issues[0]?.message ?? "Vui lòng kiểm tra thông tin";
@@ -48,7 +32,10 @@ const ProfileSection = () => {
 
     try {
       // Remove email from data sent to API (email cannot be changed)
-      const { email, ...dataToUpdate } = parsed.data;
+      const dataToUpdate = {
+        name: parsed.data.name,
+        phone: parsed.data.phone,
+      };
       await updateProfileMutation.mutateAsync(dataToUpdate);
       setProfileMessage({
         type: "success",
@@ -86,8 +73,7 @@ const ProfileSection = () => {
           <span>Họ và tên</span>
           <input
             name="name"
-            value={profileForm.name}
-            onChange={handleProfileChange}
+            defaultValue={user?.name ?? ""}
             placeholder="Ví dụ: Nguyễn Văn A"
             required
           />
@@ -97,7 +83,7 @@ const ProfileSection = () => {
           <input
             name="email"
             type="email"
-            value={profileForm.email}
+            value={user?.email ?? ""}
             placeholder="name@example.com"
             disabled
             title="Email không thể thay đổi"
@@ -108,12 +94,7 @@ const ProfileSection = () => {
         </label>
         <label>
           <span>Số điện thoại</span>
-          <input
-            name="phone"
-            type="tel"
-            value={profileForm.phone}
-            onChange={handleProfileChange}
-          />
+          <input name="phone" type="tel" defaultValue={user?.phone ?? ""} />
         </label>
         <button
           type="submit"

@@ -5,7 +5,7 @@
 
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { API_URL } from "@/src/constants/api";
+import { API_URL } from "@/src/store/constants";
 
 interface RefreshTokenResponse {
   success: boolean;

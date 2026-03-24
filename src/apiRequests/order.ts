@@ -4,146 +4,83 @@
  */
 
 import apiClient from "@/src/lib/axios";
+import {
+  CancelOrderPayloadSchema,
+  CreateOrderPayloadSchema,
+  OrderListParamsSchema,
+  OrderSchema,
+  OrderStatusHistorySchema,
+  PaginatedOrderListSchema,
+  type CancelOrderPayloadData,
+  type CreateOrderPayloadData,
+  type OrderAddressData,
+  type OrderCouponData,
+  type OrderData,
+  type OrderItemData,
+  type OrderListParamsData,
+  type OrderPaymentData,
+  type OrderShipmentData,
+  type OrderStatusHistoryData,
+  type OrderUserData,
+  type PaginatedOrderListData,
+} from "@/src/schema/order.schema";
 
 // Types
-export interface OrderItem {
-  id: number;
-  productId: number | null;
-  variantId: number | null;
-  name: string;
-  variant: string | null;
-  sku: string | null;
-  image: string | null;
-  unitPrice: number;
-  quantity: number;
-  lineTotal: number;
-}
+export type OrderItem = OrderItemData;
+export type OrderAddress = OrderAddressData;
+export type OrderUser = OrderUserData;
+export type OrderCoupon = OrderCouponData;
+export type OrderStatusHistory = OrderStatusHistoryData;
+export type OrderPayment = OrderPaymentData;
+export type OrderShipment = OrderShipmentData;
+export type Order = OrderData;
+export type CreateOrderPayload = CreateOrderPayloadData;
+export type CancelOrderPayload = CancelOrderPayloadData;
+export type OrderListParams = OrderListParamsData;
+export type PaginatedOrderList = PaginatedOrderListData;
 
-export interface OrderAddress {
-  id: number;
-  name: string;
-  phone: string;
-  company: string | null;
-  addressLine: string;
-  province: string;
-  district: string;
-  ward: string;
-}
+const parseOrder = (payload: unknown): Order => {
+  const parsed = OrderSchema.safeParse(payload);
 
-export interface OrderUser {
-  id: number;
-  name: string;
-  email: string;
-  phone: string | null;
-}
+  if (!parsed.success) {
+    console.error("Unexpected order shape", parsed.error);
+    throw new Error("Không thể tải đơn hàng");
+  }
 
-export interface OrderCoupon {
-  id: number;
-  code: string;
-  type: "PERCENT" | "FIXED";
-  value: number;
-}
+  return parsed.data;
+};
 
-export interface OrderStatusHistory {
-  id: number;
-  fromStatus: string | null;
-  toStatus: string;
-  reason: string | null;
-  changedBy: {
-    id: number;
-    name: string;
-  } | null;
-  createdAt: string;
-}
+const parseOrderList = (payload: unknown): PaginatedOrderList => {
+  const parsed = PaginatedOrderListSchema.safeParse(payload);
 
-export interface OrderPayment {
-  id: number;
-  provider: string;
-  amount: number;
-  status: "UNPAID" | "AUTHORIZED" | "PAID" | "FAILED" | "REFUNDED";
-  paidAt: string | null;
-  createdAt: string;
-}
+  if (!parsed.success) {
+    console.error("Unexpected order list shape", parsed.error);
+    throw new Error("Không thể tải danh sách đơn hàng");
+  }
 
-export interface OrderShipment {
-  id: number;
-  carrier: string | null;
-  trackingCode: string | null;
-  status: string | null;
-  shippedAt: string | null;
-  deliveredAt: string | null;
-}
+  return parsed.data;
+};
 
-export interface Order {
-  id: number;
-  code: string;
-  status:
-    | "PENDING"
-    | "CONFIRMED"
-    | "PREPARING"
-    | "READY"
-    | "OUT_FOR_DELIVERY"
-    | "COMPLETED"
-    | "CANCELED"
-    | "REFUNDED";
-  method: "DELIVERY" | "PICKUP";
-  currency: string;
-  itemsSubtotal: number;
-  shippingFee: number;
-  discount: number;
-  total: number;
-  customerNote: string | null;
-  internalNote: string | null;
-  pickupAt: string | null;
-  scheduledAt: string | null;
-  createdAt: string;
-  updatedAt: string;
-  userId: number | null;
-  user: OrderUser | null;
-  address: OrderAddress | null;
-  items: OrderItem[];
-  coupon: OrderCoupon | null;
-  statusHistory: OrderStatusHistory[];
-  payments: OrderPayment[];
-  shipment: OrderShipment | null;
-}
+const parseOrderHistory = (payload: unknown): OrderStatusHistory[] => {
+  const parsed = OrderStatusHistorySchema.array().safeParse(payload);
 
-export interface CreateOrderPayload {
-  method: "DELIVERY" | "PICKUP";
-  addressId?: number;
-  customerNote?: string;
-  pickupAt?: string; // ISO datetime
-  scheduledAt?: string; // ISO datetime
-}
+  if (!parsed.success) {
+    console.error("Unexpected order history shape", parsed.error);
+    throw new Error("Không thể tải lịch sử đơn hàng");
+  }
 
-export interface CancelOrderPayload {
-  reason: string;
-}
+  return parsed.data;
+};
 
-export interface OrderListParams {
-  page?: number;
-  limit?: number;
-  status?:
-    | "PENDING"
-    | "CONFIRMED"
-    | "PREPARING"
-    | "READY"
-    | "OUT_FOR_DELIVERY"
-    | "COMPLETED"
-    | "CANCELED"
-    | "REFUNDED";
-}
+const extractOrder = (payload: unknown): Order => {
+  const order = (payload as { order?: unknown })?.order;
 
-export interface PaginatedOrderList {
-  success: boolean;
-  orders: Order[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
-}
+  if (!order) {
+    throw new Error("Không thể tải đơn hàng");
+  }
+
+  return parseOrder(order);
+};
 
 // API Functions
 export const orderAPI = {
@@ -151,16 +88,18 @@ export const orderAPI = {
    * Create order from cart
    */
   createOrder: async (payload: CreateOrderPayload): Promise<Order> => {
-    const response = await apiClient.post("/api/order/create", payload);
-    return response.data.order;
+    const body = CreateOrderPayloadSchema.parse(payload);
+    const response = await apiClient.post("/api/order/create", body);
+    return extractOrder(response.data);
   },
 
   /**
    * Get user's orders
    */
   getMyOrders: async (params?: OrderListParams): Promise<PaginatedOrderList> => {
-    const response = await apiClient.get("/api/order/my", { params });
-    return response.data;
+    const query = params ? OrderListParamsSchema.parse(params) : undefined;
+    const response = await apiClient.get("/api/order/my", { params: query });
+    return parseOrderList(response.data);
   },
 
   /**
@@ -168,7 +107,7 @@ export const orderAPI = {
    */
   getOrderById: async (orderId: number): Promise<Order> => {
     const response = await apiClient.get(`/api/order/${orderId}`);
-    return response.data.order;
+    return extractOrder(response.data);
   },
 
   /**
@@ -178,8 +117,9 @@ export const orderAPI = {
     orderId: number,
     payload: CancelOrderPayload
   ): Promise<Order> => {
-    const response = await apiClient.post(`/api/order/${orderId}/cancel`, payload);
-    return response.data.order;
+    const body = CancelOrderPayloadSchema.parse(payload);
+    const response = await apiClient.post(`/api/order/${orderId}/cancel`, body);
+    return extractOrder(response.data);
   },
 
   /**
@@ -187,6 +127,12 @@ export const orderAPI = {
    */
   getOrderHistory: async (orderId: number): Promise<OrderStatusHistory[]> => {
     const response = await apiClient.get(`/api/order/${orderId}/history`);
-    return response.data.history;
+    const history = (response.data as { history?: unknown })?.history;
+
+    if (!history) {
+      return [];
+    }
+
+    return parseOrderHistory(history);
   },
 };

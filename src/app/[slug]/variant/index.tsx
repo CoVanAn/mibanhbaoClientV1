@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import { useAddToCart } from "@/src/queries/useCart";
 import { useToast } from "@/src/components/common/toast";
 import styles from "./Variant.module.scss";
@@ -50,12 +50,16 @@ const VariantSelector = ({ variants, productId }: VariantSelectorProps) => {
   const availableStock = Math.max(selectedVariant?.quantity ?? 0, 0);
   const canOrder = availableStock > 0;
 
-  useEffect(() => {
-    if (!selectedVariant) return;
+  const handleSelectVariant = (variantId: string) => {
+    const nextVariant =
+      variants.find((variant) => variant.id === variantId) ?? variants[0];
+    const nextStock = Math.max(nextVariant?.quantity ?? 0, 0);
+
+    setSelectedVariantId(variantId);
     setStatusMessage("");
     setStatus("idle");
-    setQuantity(canOrder ? 1 : 0);
-  }, [selectedVariantId, canOrder, selectedVariant]);
+    setQuantity(nextStock > 0 ? 1 : 0);
+  };
 
   const updateQuantity = (delta: number) => {
     if (!canOrder) return;
@@ -84,6 +88,10 @@ const VariantSelector = ({ variants, productId }: VariantSelectorProps) => {
 
   const handleAddToCart = async () => {
     if (!selectedVariant || !canOrder || quantity <= 0 || !productId) return;
+    const finalQuantity = Math.min(quantity, availableStock);
+
+    if (finalQuantity <= 0) return;
+
     setStatus("adding");
     setStatusMessage("");
 
@@ -91,7 +99,7 @@ const VariantSelector = ({ variants, productId }: VariantSelectorProps) => {
       await addToCart.mutateAsync({
         productId,
         variantId: Number(selectedVariant.id),
-        quantity,
+        quantity: finalQuantity,
       });
       setStatus("success");
       setStatusMessage(`Thêm giỏ hàng`);
@@ -124,7 +132,7 @@ const VariantSelector = ({ variants, productId }: VariantSelectorProps) => {
               className={`${styles.variantCard} ${
                 isActive ? styles.variantCardActive : ""
               }`}
-              onClick={() => setSelectedVariantId(variant.id)}
+                onClick={() => handleSelectVariant(variant.id)}
             >
               <span className={styles.variantName}>{variant.name}</span>
               <span className={styles.variantPrice}>
