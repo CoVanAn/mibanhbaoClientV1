@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { assets } from "@/src/assets/assets";
+import Image from "next/image";
 import "./Slider.scss";
 
 const Slider = () => {
@@ -27,7 +28,12 @@ const Slider = () => {
                 index === currentSlide ? "active" : ""
               }`}
             >
-              <img src={slide} alt={`Slider ${index + 1}`} />
+              <Image
+                src={slide}
+                alt={`Slider ${index + 1}`}
+                width={1400}
+                height={560}
+              />
             </div>
           ))}
         </div>

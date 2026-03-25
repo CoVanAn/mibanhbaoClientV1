@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { assets } from "@/src/assets/assets";
 import { productAPI } from "@/src/apiRequests/product";
@@ -68,7 +69,7 @@ const ProductSearch = () => {
         onClick={() => setSearchOpen((prev) => !prev)}
         aria-label="Mở tìm kiếm"
       >
-        <img src={assets.search_icon} alt="Tìm kiếm" />
+        <Image src={assets.search_icon} alt="Tìm kiếm" width={22} height={22} />
       </button>
 
       {searchOpen && (
@@ -105,10 +106,13 @@ const ProductSearch = () => {
                     onClick={() => handleProductSelect(product.slug)}
                   >
                     {product.image ? (
-                      <img
+                      <Image
                         src={product.image}
                         alt={product.name}
                         className="search-result-image"
+                        width={56}
+                        height={56}
+                        unoptimized
                       />
                     ) : (
                       <div className="search-result-image search-result-image-placeholder" />

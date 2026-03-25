@@ -1,4 +1,5 @@
-@import "@/src/styles/variables";
+@use "sass:color";
+@use "../../../../styles/variables" as *;
 
 .summary {
   padding: $spacing-xl $spacing-2xl;
@@ -59,7 +60,7 @@
   align-items: center;
   gap: $spacing-sm;
   font-size: $font-size-14;
-  color: darken($color-success, 20%);
+  color: color.adjust($color-success, $lightness: -20%);
   font-weight: $font-weight-medium;
 
   svg {

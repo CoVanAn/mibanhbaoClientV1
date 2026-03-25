@@ -1,4 +1,4 @@
-@import "@/src/styles/variables";
+@use "../../../../styles/variables" as *;
 
 .cartItem {
   display: grid;
@@ -72,17 +72,6 @@
 
   @include tablet {
     font-size: $font-size-12;
-  }
-}
-
-.price {
-  margin: 0;
-  font-size: $font-size-14;
-  font-weight: $font-weight-semibold;
-  color: $primary-light;
-
-  @include tablet {
-    display: none;
   }
 }
 

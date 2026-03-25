@@ -9,6 +9,7 @@ import {
   useRemoveCoupon,
 } from "@/src/queries/useCart";
 import { useToast } from "@/src/components/common/toast";
+import { getApiErrorMessage } from "@/src/lib/error";
 import styles from "./Summary.module.scss";
 
 interface CartSummaryProps {
@@ -42,9 +43,8 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
       await applyCoupon.mutateAsync(couponCode.trim().toUpperCase());
       setCouponCode("");
       toast.success("Áp dụng mã giảm giá thành công");
-    } catch (error: any) {
-      const errorMsg =
-        error.response?.data?.message || "Mã giảm giá không hợp lệ";
+    } catch (error: unknown) {
+      const errorMsg = getApiErrorMessage(error, "Mã giảm giá không hợp lệ");
       setCouponError(errorMsg);
       toast.error(errorMsg);
     }
@@ -54,9 +54,8 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
     try {
       await removeCoupon.mutateAsync();
       toast.success("Đã xóa mã giảm giá");
-    } catch (error: any) {
-      const errorMsg =
-        error.response?.data?.message || "Không thể xóa mã giảm giá";
+    } catch (error: unknown) {
+      const errorMsg = getApiErrorMessage(error, "Không thể xóa mã giảm giá");
       toast.error(errorMsg);
     }
   };
@@ -101,7 +100,8 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
             <Tag size={16} />
             <span>{cart.coupon.code}</span>
             <span className={styles.couponValue}>
-              -{cart.coupon.type === "PERCENT"
+              -
+              {cart.coupon.type === "PERCENT"
                 ? `${cart.coupon.value}% (${formatPrice(discount)})`
                 : formatPrice(discount)}
             </span>

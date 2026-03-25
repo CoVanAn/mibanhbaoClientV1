@@ -1,4 +1,5 @@
 import "./About.scss";
+import Image from "next/image";
 import { assets } from "@/src/assets/assets";
 
 export default function Page() {
@@ -12,7 +13,13 @@ export default function Page() {
           của bánh bao. Mỗi chiếc bánh bao được làm thủ công với tình yêu thương
           và sự chăm sóc tỉ mỉ của đôi tay người thợ.
         </p>
-        <img src={assets.gioithieu} alt="Bánh Bao" />
+        <Image
+          src={assets.gioithieu}
+          alt="Bánh Bao"
+          width={960}
+          height={540}
+          style={{ width: "100%", height: "auto" }}
+        />
         <p>
           Ở đây, bạn có thể thưởng thức những loại bánh bao đa dạng, từ những
           loại nhân truyền thống như thịt heo trứng cút, màn thầu, cadé (nhân

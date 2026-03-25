@@ -1,12 +1,17 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
+import Image from "next/image";
 import "./Footer.scss";
 import { assets } from "@/src/assets/assets";
 import { useRouter } from "next/navigation";
 import useIsMobile from "../../../hooks/useIsMobile";
 
-const Footer = ({ setShowLogin }: any) => {
+type FooterProps = {
+  setShowLogin: (isOpen: boolean) => void;
+};
+
+const Footer = ({ setShowLogin }: FooterProps) => {
   const router = useRouter();
   const [showPolicy, setShowPolicy] = useState(false);
   const [showSupport, setShowSupport] = useState(false);
@@ -47,7 +52,6 @@ const Footer = ({ setShowLogin }: any) => {
                   : "footer-list"
                 : ""
             }
-            aria-expanded={showPolicy}
           >
             <li
               onClick={() => {
@@ -94,7 +98,6 @@ const Footer = ({ setShowLogin }: any) => {
                   : "footer-list"
                 : ""
             }
-            aria-expanded={showSupport}
           >
             <li
               onClick={() => {
@@ -149,9 +152,24 @@ const Footer = ({ setShowLogin }: any) => {
           <div className="social-section">
             <h3>Theo dõi chúng tôi</h3>
             <div className="footer-social-icon">
-              <img src={assets.twitter_icon} alt="Twitter" />
-              <img src={assets.facebook_icon} alt="Facebook" />
-              <img src={assets.linkedin_icon} alt="YouTube" />
+              <Image
+                src={assets.twitter_icon}
+                alt="Twitter"
+                width={24}
+                height={24}
+              />
+              <Image
+                src={assets.facebook_icon}
+                alt="Facebook"
+                width={24}
+                height={24}
+              />
+              <Image
+                src={assets.linkedin_icon}
+                alt="YouTube"
+                width={24}
+                height={24}
+              />
             </div>
           </div>
         </div>

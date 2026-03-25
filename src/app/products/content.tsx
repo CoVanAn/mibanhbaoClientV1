@@ -4,10 +4,7 @@ import { createContext, useMemo, useCallback, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { productAPI, type ProductSummary } from "@/src/apiRequests/product";
-import {
-  categoryAPI,
-  type CategorySummary,
-} from "@/src/apiRequests/category";
+import { categoryAPI, type CategorySummary } from "@/src/apiRequests/category";
 import useIsMobile from "@/src/hooks/useIsMobile";
 import type { PaginationData } from "@/src/schema/product.schema";
 import { SortOption, sortOptions } from "./types";
@@ -85,7 +82,7 @@ export const ProductsProvider = ({
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  const products = productData?.data ?? [];
+  const products = useMemo(() => productData?.data ?? [], [productData?.data]);
   const pagination = productData?.pagination ?? null;
 
   // Fetch categories with React Query

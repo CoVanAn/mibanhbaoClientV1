@@ -3,6 +3,7 @@
 import { ChangeEvent, useMemo, useState } from "react";
 import { useAddToCart } from "@/src/queries/useCart";
 import { useToast } from "@/src/components/common/toast";
+import { getApiErrorMessage } from "@/src/lib/error";
 import styles from "./Variant.module.scss";
 
 const formatCurrency = (value: number | null | undefined) =>
@@ -110,10 +111,10 @@ const VariantSelector = ({ variants, productId }: VariantSelectorProps) => {
         setStatusMessage("");
         setStatus("idle");
       }, 3000);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Add to cart failed", error);
       setStatus("error");
-      const errorMsg = error.response?.data?.message || "Vui lòng thử lại.";
+      const errorMsg = getApiErrorMessage(error, "Vui lòng thử lại.");
       setStatusMessage(errorMsg);
       toast.error(errorMsg);
     }
@@ -132,7 +133,7 @@ const VariantSelector = ({ variants, productId }: VariantSelectorProps) => {
               className={`${styles.variantCard} ${
                 isActive ? styles.variantCardActive : ""
               }`}
-                onClick={() => handleSelectVariant(variant.id)}
+              onClick={() => handleSelectVariant(variant.id)}
             >
               <span className={styles.variantName}>{variant.name}</span>
               <span className={styles.variantPrice}>

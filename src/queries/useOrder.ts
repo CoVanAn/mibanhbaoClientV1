@@ -5,7 +5,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { orderAPI, type Order, type CreateOrderPayload, type CancelOrderPayload, type OrderListParams } from "@/src/apiRequests/order";
+import { orderAPI, type CreateOrderPayload, type CancelOrderPayload, type OrderListParams } from "@/src/apiRequests/order";
 import { cartKeys } from "./useCart";
 
 // Query Keys
@@ -67,7 +67,7 @@ export const useCreateOrder = () => {
     onSuccess: (order) => {
       // Invalidate cart (it's now empty)
       queryClient.invalidateQueries({ queryKey: cartKeys.all });
-      
+
       // Invalidate order lists
       queryClient.invalidateQueries({ queryKey: orderKeys.lists() });
 

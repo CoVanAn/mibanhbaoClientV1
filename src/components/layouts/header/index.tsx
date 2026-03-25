@@ -1,19 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Header.scss";
-import useStore from "@/src/store/user";
+import useStore, { UserSlice } from "@/src/store/user";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ConfirmModal from "@/src/components/common/ConfirmModal";
 
-const Header = ({ setShowLogin }: any) => {
-  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+type HeaderProps = {
+  setShowLogin: (isOpen: boolean) => void;
+};
+
+const Header = ({ setShowLogin }: HeaderProps) => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  const token = useStore((state: any) => state.token);
-  const setToken = useStore((state: any) => state.setToken);
-  const isInitialized = useStore((state: any) => state.isInitialized);
+  const token = useStore((state: UserSlice) => state.token);
+  const clearToken = useStore((state: UserSlice) => state.clearToken);
+  const isInitialized = useStore((state: UserSlice) => state.isInitialized);
   const router = useRouter();
 
   const handleLogout = () => {
@@ -32,7 +35,7 @@ const Header = ({ setShowLogin }: any) => {
       console.error("Logout error:", error);
     } finally {
       // Clear token from memory
-      setToken("");
+      clearToken();
 
       // Redirect to home
       router.push("/");
@@ -42,20 +45,6 @@ const Header = ({ setShowLogin }: any) => {
   const cancelLogout = () => {
     setShowLogoutModal(false);
   };
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      if (showProfileDropdown && !event.target.closest(".navbar-profile")) {
-        setShowProfileDropdown(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showProfileDropdown]);
 
   return (
     <div className="header">

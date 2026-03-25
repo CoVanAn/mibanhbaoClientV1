@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, ReactNode, useEffect } from "react";
+import { createContext, useContext, ReactNode } from "react";
 import { useProfile } from "@/src/queries/useAccount";
 import { User } from "./types";
 

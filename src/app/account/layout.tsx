@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import useStore from "@/src/store/user";
+import useStore, { UserSlice } from "@/src/store/user";
 import { AccountProvider } from "./content";
 import { FiUser, FiLock, FiMapPin, FiShoppingBag } from "react-icons/fi";
 import styles from "./layout.module.scss";
@@ -40,7 +40,7 @@ export default function AccountLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const token = useStore((state: any) => state.token);
+  const token = useStore((state: UserSlice) => state.token);
 
   if (!token) {
     return (

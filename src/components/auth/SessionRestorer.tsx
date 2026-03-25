@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import useStore from "@/src/store/user";
+import useStore, { UserSlice } from "@/src/store/user";
 import authApiRequest from "@/src/apiRequests/auth";
 
 /**
@@ -10,10 +10,10 @@ import authApiRequest from "@/src/apiRequests/auth";
  * No longer uses localStorage for security (XSS protection)
  */
 export function SessionRestorer() {
-  const setToken = useStore((state: any) => state.setToken);
-  const setInitialized = useStore((state: any) => state.setInitialized);
-  const isInitialized = useStore((state: any) => state.isInitialized);
-  const token = useStore((state: any) => state.token);
+  const setToken = useStore((state: UserSlice) => state.setToken);
+  const setInitialized = useStore((state: UserSlice) => state.setInitialized);
+  const isInitialized = useStore((state: UserSlice) => state.isInitialized);
+  const token = useStore((state: UserSlice) => state.token);
 
   // Use ref to ensure we only try once per mount (avoid double-run in React Strict Mode)
   const hasAttemptedRestore = useRef(false);
@@ -49,9 +49,18 @@ export function SessionRestorer() {
             "[SessionRestorer] No active session found - this is normal for logged out users",
           );
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         // Only log actual errors, not 401 (which is normal for logged out users)
-        if (error?.response?.status !== 401) {
+        const status =
+          typeof error === "object" &&
+          error !== null &&
+          "response" in error &&
+          typeof (error as { response?: { status?: number } }).response
+            ?.status === "number"
+            ? (error as { response?: { status?: number } }).response?.status
+            : undefined;
+
+        if (status !== 401) {
           console.error("[SessionRestorer] Unexpected error:", error);
         } else {
           console.log(
@@ -65,7 +74,7 @@ export function SessionRestorer() {
     };
 
     restoreSession();
-  }, []); // Empty dependency array - run ONLY once on mount
+  }, [isInitialized, setInitialized, setToken, token]);
 
   // This component doesn't render anything
   return null;

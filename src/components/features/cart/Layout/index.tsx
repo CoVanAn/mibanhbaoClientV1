@@ -4,6 +4,7 @@ import React from "react";
 import { X, ShoppingCart, Trash2 } from "lucide-react";
 import { useCart, useClearCart } from "@/src/queries/useCart";
 import { useToast } from "@/src/components/common/toast";
+import { getApiErrorMessage } from "@/src/lib/error";
 import { CartItemCard } from "../Items";
 import { CartSummary } from "../Summary";
 import styles from "./Layout.module.scss";
@@ -23,9 +24,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
       try {
         await clearCart.mutateAsync();
         toast.success("Đã xóa toàn bộ giỏ hàng");
-      } catch (error: any) {
-        const errorMsg =
-          error.response?.data?.message || "Không thể xóa giỏ hàng";
+      } catch (error: unknown) {
+        const errorMsg = getApiErrorMessage(error, "Không thể xóa giỏ hàng");
         toast.error(errorMsg);
       }
     }

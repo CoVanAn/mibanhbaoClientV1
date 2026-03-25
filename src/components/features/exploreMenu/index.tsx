@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import "./ExploreMenu.scss";
 import { menu_list } from "@/src/assets/assets";
 
@@ -15,7 +16,12 @@ const ExploreMenu = () => {
             key={index}
             className="explore-menu-list-item"
           >
-            <img src={menu.menu_image} alt={`Danh mục ${menu.category}`} />
+            <Image
+              src={menu.menu_image}
+              alt={`Danh mục ${menu.category}`}
+              width={110}
+              height={110}
+            />
           </Link>
         ))}
       </div>

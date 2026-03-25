@@ -5,6 +5,7 @@ import { CartItemCard, CartSummary } from "@/src/components/features/cart";
 import { ShoppingCart, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/src/components/common/toast";
+import { getApiErrorMessage } from "@/src/lib/error";
 import styles from "./Cart.module.scss";
 
 export default function CartPage() {
@@ -17,9 +18,8 @@ export default function CartPage() {
       try {
         await clearCart.mutateAsync();
         toast.success("Đã xóa toàn bộ giỏ hàng");
-      } catch (error: any) {
-        const errorMsg =
-          error.response?.data?.message || "Không thể xóa giỏ hàng";
+      } catch (error: unknown) {
+        const errorMsg = getApiErrorMessage(error, "Không thể xóa giỏ hàng");
         toast.error(errorMsg);
       }
     }

@@ -2,32 +2,45 @@
 
 import React, { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import Image from "next/image";
 import "./LoginPopup.scss";
 import { assets } from "@/src/assets/assets";
-import useStore from "@/src/store/user";
+import useStore, { UserSlice } from "@/src/store/user";
 import authApiRequest from "@/src/apiRequests/auth";
 import { useMergeGuestCart } from "@/src/queries/useCart";
 import { API_URL } from "@/src/store/constants";
 import { getCookie } from "@/src/lib/cookies";
 
-const LoginPopup = ({ setShowLogin }: any) => {
+type LoginPopupProps = {
+  setShowLogin: (isOpen: boolean) => void;
+};
+
+type LoginState = "Đăng nhập" | "Đăng ký";
+
+type LoginFormData = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
   const queryClient = useQueryClient();
-  const setToken = useStore((state: any) => state.setToken);
+  const setToken = useStore((state: UserSlice) => state.setToken);
   const mergeGuestCart = useMergeGuestCart();
 
-  const [currState, setCurrState] = useState("Đăng nhập");
-  const [data, setData] = useState({
+  const [currState, setCurrState] = useState<LoginState>("Đăng nhập");
+  const [data, setData] = useState<LoginFormData>({
     name: "",
     email: "",
     password: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
 
-  const onhandleChange = (e: any) => {
+  const onhandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData((data) => ({ ...data, [e.target.name]: e.target.value }));
   };
 
-  const onLogin = async (e: any) => {
+  const onLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessage(""); // Clear previous error
 
@@ -129,13 +142,21 @@ const LoginPopup = ({ setShowLogin }: any) => {
           setErrorMessage(message || "Đăng ký thất bại");
         }
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("[LoginPopup] Error:", error);
-      console.error("Error response:", error.response);
+
+      const errorPayload =
+        typeof error === "object" &&
+        error !== null &&
+        "payload" in error &&
+        typeof (error as { payload?: { message?: string } }).payload
+          ?.message === "string"
+          ? (error as { payload?: { message?: string } }).payload
+          : undefined;
 
       // Route Handlers return errors via response.data
-      if (error.payload) {
-        const errorMsg = error.payload.message;
+      if (errorPayload) {
+        const errorMsg = errorPayload.message;
 
         setErrorMessage(errorMsg || "Đăng nhập thất bại");
       } else {
@@ -224,9 +245,11 @@ const LoginPopup = ({ setShowLogin }: any) => {
                 window.location.href = `${API_URL}/auth/google`;
               }}
             >
-              <img
+              <Image
                 src={assets.google_icon}
                 alt="Google"
+                width={20}
+                height={20}
                 style={{ width: 20, marginRight: 8 }}
               />{" "}
               <p>Đăng nhập với Google</p>

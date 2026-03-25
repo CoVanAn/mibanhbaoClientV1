@@ -22,7 +22,7 @@ class HttpClient {
   private async request<T>(
     method: HttpMethod,
     url: string,
-    body?: any,
+    body?: unknown,
     options?: RequestOptions
   ): Promise<T> {
     const headers: Record<string, string> = {
@@ -53,15 +53,15 @@ class HttpClient {
     return this.request<T>("GET", url, undefined, options);
   }
 
-  post<T>(url: string, body: any, options?: RequestOptions): Promise<T> {
+  post<T>(url: string, body?: unknown, options?: RequestOptions): Promise<T> {
     return this.request<T>("POST", url, body, options);
   }
 
-  put<T>(url: string, body: any, options?: RequestOptions): Promise<T> {
+  put<T>(url: string, body?: unknown, options?: RequestOptions): Promise<T> {
     return this.request<T>("PUT", url, body, options);
   }
 
-  patch<T>(url: string, body: any, options?: RequestOptions): Promise<T> {
+  patch<T>(url: string, body?: unknown, options?: RequestOptions): Promise<T> {
     return this.request<T>("PATCH", url, body, options);
   }
 
@@ -72,10 +72,17 @@ class HttpClient {
 
 export class HttpError extends Error {
   status: number;
-  payload: any;
+  payload: unknown;
 
-  constructor(status: number, payload: any) {
-    super(payload?.message || "HTTP Error");
+  constructor(status: number, payload: unknown) {
+    const message =
+      typeof payload === "object" &&
+        payload !== null &&
+        "message" in payload &&
+        typeof payload.message === "string"
+        ? payload.message
+        : "HTTP Error";
+    super(message);
     this.status = status;
     this.payload = payload;
   }

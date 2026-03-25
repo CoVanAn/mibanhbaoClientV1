@@ -7,13 +7,15 @@ import Header from "@/src/components/layouts/header";
 import Navbar from "@/src/components/layouts/navbar";
 import Footer from "@/src/components/layouts/footer";
 import LoginPopup from "@/src/components/common/loginPopup";
-import useStore from "@/src/store/user";
+import useStore, { UserSlice } from "@/src/store/user";
 import { useMergeGuestCart } from "@/src/queries/useCart";
 import { getCookie } from "@/src/lib/cookies";
 
 const ClientShell = ({ children }: { children: React.ReactNode }) => {
   const [showLogin, setShowLogin] = useState(false);
-  const handleGoogleLogin = useStore((state: any) => state.handleGoogleLogin);
+  const handleGoogleLogin = useStore(
+    (state: UserSlice) => state.handleGoogleLogin,
+  );
   const queryClient = useQueryClient();
   const router = useRouter();
   const mergeGuestCart = useMergeGuestCart();

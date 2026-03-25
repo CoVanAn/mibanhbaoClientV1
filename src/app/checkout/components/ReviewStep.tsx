@@ -1,6 +1,7 @@
 "use client";
 
 import { MapPin, CreditCard, ShoppingBag, AlertCircle } from "lucide-react";
+import Image from "next/image";
 import type { Cart } from "@/src/apiRequests/cart";
 import type { Address } from "@/src/app/account/types";
 import styles from "./ReviewStep.module.scss";
@@ -112,10 +113,13 @@ export default function ReviewStep({
           {cart.items.map((item) => (
             <div key={item.id} className={styles.orderItem}>
               {item.productImage && (
-                <img
+                <Image
                   src={item.productImage}
                   alt={item.productName}
                   className={styles.itemImage}
+                  width={80}
+                  height={80}
+                  unoptimized
                 />
               )}
               <div className={styles.itemDetails}>

@@ -9,7 +9,7 @@ import {
   resolveProductSlug,
 } from "../../../components/features/products";
 import { Pagination } from "../../../components/common/pagination";
-import { sortOptions } from "../types";
+import { sortOptions, type SortOption } from "../types";
 import styles from "./ProductDisplay.module.scss";
 
 const ProductGridSection = () => {
@@ -55,7 +55,7 @@ const ProductGridSection = () => {
           <select
             className={styles.filterSelect}
             value={sortOption}
-            onChange={(e) => handleSortChange(e.target.value as any)}
+            onChange={(e) => handleSortChange(e.target.value as SortOption)}
           >
             {sortOptions.map((option) => (
               <option key={option.value} value={option.value}>

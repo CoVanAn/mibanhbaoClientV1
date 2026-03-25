@@ -62,7 +62,7 @@ export const removeTokensFromLocalStorage = (): void => {
 /**
  * Decode JWT token to get payload
  */
-export const decodeJWT = <T = any>(token: string): T | null => {
+export const decodeJWT = <T = unknown>(token: string): T | null => {
   try {
     const payload = JSON.parse(atob(token.split(".")[1]));
     return payload as T;
@@ -123,7 +123,7 @@ export const checkAndRefreshToken = async (params?: {
       removeTokensFromLocalStorage();
       params?.onError?.();
     }
-  } catch (error) {
+  } catch {
     removeTokensFromLocalStorage();
     params?.onError?.();
   }

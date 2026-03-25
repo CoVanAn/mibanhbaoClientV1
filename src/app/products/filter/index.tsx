@@ -6,7 +6,7 @@ import { ProductsContext } from "../content";
 import { sortOptions } from "../types";
 import styles from "./ProductFilters.module.scss";
 
-function FilterControls({ isTablet }: { isTablet: boolean }) {
+function FilterControls() {
   const context = useContext(ProductsContext);
   if (!context) return null;
 
@@ -71,7 +71,7 @@ function FilterControls({ isTablet }: { isTablet: boolean }) {
 export function ProductFilterPanel() {
   return (
     <aside className={styles.filtersPanel}>
-      <FilterControls isTablet={false} />
+      <FilterControls />
     </aside>
   );
 }
@@ -100,7 +100,7 @@ export function ProductFilterDrawer() {
             Đóng
           </button>
         </div>
-        <FilterControls isTablet />
+        <FilterControls />
       </div>
     </div>
   );

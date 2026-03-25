@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useState } from "react";
-import useStore from "@/src/store/user";
+import useStore, { UserSlice } from "@/src/store/user";
 import { PasswordForm, StatusMessage, passwordFormSchema } from "../types";
 import { accountAPI } from "@/src/apiRequests/account";
 import { useProfile } from "@/src/queries/useAccount";
@@ -20,7 +20,7 @@ const getStatusVariantClass = (type?: string) => {
 };
 
 const PasswordSection = () => {
-  const token = useStore((state: any) => state.token);
+  const token = useStore((state: UserSlice) => state.token);
   const { data: profile } = useProfile();
   const hasPassword = profile?.hasPassword ?? true;
 

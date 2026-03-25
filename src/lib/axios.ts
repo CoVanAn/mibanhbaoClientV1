@@ -1,4 +1,9 @@
-import axios, { AxiosInstance } from "axios";
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  InternalAxiosRequestConfig,
+} from "axios";
 import { API_URL } from "@/src/store/constants";
 import useStore from "@/src/store/user";
 import {
@@ -12,7 +17,7 @@ import {
  */
 const getAccessToken = (): string | null => {
   if (typeof window === "undefined") return null;
-  return (useStore.getState() as any).token || null;
+  return useStore.getState().token || null;
 };
 
 /**
@@ -20,7 +25,7 @@ const getAccessToken = (): string | null => {
  */
 const setTokenToStore = (token: string): void => {
   if (typeof window === "undefined") return;
-  (useStore.getState() as any).setToken(token);
+  useStore.getState().setToken(token);
 };
 
 /**
@@ -28,7 +33,7 @@ const setTokenToStore = (token: string): void => {
  */
 const clearTokenFromStore = (): void => {
   if (typeof window === "undefined") return;
-  (useStore.getState() as any).clearToken();
+  useStore.getState().clearToken();
 };
 
 // Create axios instance with credentials enabled for HttpOnly cookies
@@ -43,11 +48,11 @@ const apiClient: AxiosInstance = axios.create({
 // Track if we're currently refreshing token to prevent multiple refresh calls
 let isRefreshing = false;
 let failedQueue: Array<{
-  resolve: (value?: any) => void;
-  reject: (reason?: any) => void;
+  resolve: (value: string | null) => void;
+  reject: (reason?: unknown) => void;
 }> = [];
 
-const processQueue = (error: any, token: string | null = null) => {
+const processQueue = (error: unknown, token: string | null = null) => {
   failedQueue.forEach((prom) => {
     if (error) {
       prom.reject(error);
@@ -81,19 +86,28 @@ const refreshAccessToken = async (): Promise<string | null> => {
       },
     });
 
-    const data = await response.json();
+    const data: unknown = await response.json();
 
-    if (data.success && data.accessToken) {
+    const isRefreshSuccess =
+      typeof data === "object" &&
+      data !== null &&
+      "success" in data &&
+      "accessToken" in data &&
+      (data as { success: boolean }).success === true &&
+      typeof (data as { accessToken: unknown }).accessToken === "string";
+
+    if (isRefreshSuccess) {
+      const accessToken = (data as { accessToken: string }).accessToken;
       // Store new access token in Zustand store (memory only)
-      setTokenToStore(data.accessToken);
+      setTokenToStore(accessToken);
 
       // Update authorization header
-      apiClient.defaults.headers.common["Authorization"] = `Bearer ${data.accessToken}`;
+      apiClient.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
 
-      processQueue(null, data.accessToken);
+      processQueue(null, accessToken);
       isRefreshing = false;
 
-      return data.accessToken;
+      return accessToken;
     }
 
     isRefreshing = false;
@@ -112,7 +126,7 @@ const refreshAccessToken = async (): Promise<string | null> => {
 
 // Request interceptor - add access token and proactively refresh if expiring soon
 apiClient.interceptors.request.use(
-  async (config) => {
+  async (config: InternalAxiosRequestConfig) => {
     // Get token from Zustand store (memory)
     if (typeof window !== "undefined") {
       const token = getAccessToken();
@@ -124,15 +138,15 @@ apiClient.interceptors.request.use(
             // Proactively refresh before making the request
             const newToken = await refreshAccessToken();
             if (newToken) {
-              config.headers.Authorization = `Bearer ${newToken}`;
+              config.headers.set("Authorization", `Bearer ${newToken}`);
             }
-          } catch (error) {
+          } catch {
             // If refresh fails, try with current token anyway
-            config.headers.Authorization = `Bearer ${token}`;
+            config.headers.set("Authorization", `Bearer ${token}`);
           }
         } else {
           // Token still valid, use it
-          config.headers.Authorization = `Bearer ${token}`;
+          config.headers.set("Authorization", `Bearer ${token}`);
         }
       }
     }
@@ -146,25 +160,32 @@ apiClient.interceptors.request.use(
 // Response interceptor - handle token refresh on 401 (fallback)
 apiClient.interceptors.response.use(
   (response) => response,
-  async (error) => {
+  async (error: AxiosError<{ code?: string }>) => {
     const originalRequest = error.config;
+    const retriableRequest = originalRequest as
+      | (AxiosRequestConfig & { _retry?: boolean })
+      | undefined;
 
     // If error is 401 and has TOKEN_EXPIRED code (fallback if proactive refresh missed)
     if (
       error.response?.status === 401 &&
       error.response?.data?.code === "TOKEN_EXPIRED" &&
-      !originalRequest._retry
+      retriableRequest &&
+      !retriableRequest._retry
     ) {
-      originalRequest._retry = true;
+      retriableRequest._retry = true;
 
       try {
         // Call refresh token via Route Handler
         const newToken = await refreshAccessToken();
 
         if (newToken) {
-          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+          retriableRequest.headers = {
+            ...(retriableRequest.headers ?? {}),
+            Authorization: `Bearer ${newToken}`,
+          };
           // Retry original request with new token
-          return apiClient(originalRequest);
+          return apiClient(retriableRequest);
         }
       } catch (refreshError) {
         // Clear tokens and reject

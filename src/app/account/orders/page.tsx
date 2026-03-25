@@ -2,14 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useMyOrders } from "@/src/queries/useOrder";
-import useStore from "@/src/store/user";
+import useStore, { UserSlice } from "@/src/store/user";
 import { Package, ChevronRight, Filter } from "lucide-react";
 import { orderStatusConfig, type OrderStatus } from "./statusConfig";
 import styles from "./page.module.scss";
 
 export default function OrdersPage() {
-  const token = useStore((state: any) => state.token);
+  const token = useStore((state: UserSlice) => state.token);
   const [statusFilter, setStatusFilter] = useState<OrderStatus | "ALL">("ALL");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -137,10 +138,13 @@ export default function OrdersPage() {
                         {order.items.slice(0, 4).map((item) => (
                           <div key={item.id} className={styles.orderItem}>
                             {item.image && (
-                              <img
+                              <Image
                                 src={item.image}
                                 alt={item.name}
                                 className={styles.itemImage}
+                                width={80}
+                                height={80}
+                                unoptimized
                               />
                             )}
                             <div className={styles.itemInfo}>

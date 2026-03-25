@@ -6,15 +6,16 @@ import {
   resolveProductSlug,
   buildProductKey,
 } from "../../features/products";
-import Link from "next/dist/client/link";
+import Link from "next/link";
+import type { ProductSummary } from "@/src/apiRequests/product";
 import {
   usePowderProducts,
   useFeaturedProducts,
 } from "@/src/queries/useProduct";
 
-const renderProductCards = (products: any[]) =>
+const renderProductCards = (products: ProductSummary[]) =>
   products
-    .map((product: any) => {
+    .map((product) => {
       const linkTarget = resolveProductSlug(product);
       if (!linkTarget) {
         console.warn("Missing slug/id on product", product);
@@ -39,7 +40,7 @@ function ProductSection({
 }: {
   title: string;
   ariaLabel: string;
-  products: any[];
+  products: ProductSummary[];
   loading: boolean;
   error: string | null;
   emptyMessage?: string;

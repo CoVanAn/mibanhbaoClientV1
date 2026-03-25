@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useOrder, useCancelOrder } from "@/src/queries/useOrder";
-import useStore from "@/src/store/user";
+import useStore, { UserSlice } from "@/src/store/user";
 import {
   ArrowLeft,
   Package,
@@ -15,7 +15,9 @@ import {
   XCircle,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { orderStatusConfig, type OrderStatus } from "../statusConfig";
+import { getApiErrorMessage } from "@/src/lib/error";
 import styles from "./page.module.scss";
 
 const statusIconConfig = {
@@ -40,7 +42,7 @@ const paymentStatusConfig = {
 export default function OrderDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const token = useStore((state: any) => state.token);
+  const token = useStore((state: UserSlice) => state.token);
   const orderId = Number(params.id);
 
   const { data: order, isLoading, error } = useOrder(orderId);
@@ -120,8 +122,9 @@ export default function OrderDetailPage() {
       });
       alert("Đã hủy đơn hàng thành công");
       setShowCancelModal(false);
-    } catch (error: any) {
-      alert(error?.response?.data?.message || "Không thể hủy đơn hàng");
+    } catch (error: unknown) {
+      const message = getApiErrorMessage(error, "Không thể hủy đơn hàng");
+      alert(message);
     } finally {
       setIsCancelling(false);
     }
@@ -181,10 +184,13 @@ export default function OrderDetailPage() {
                 {order.items.map((item) => (
                   <div key={item.id} className={styles.item}>
                     {item.image && (
-                      <img
+                      <Image
                         src={item.image}
                         alt={item.name}
                         className={styles.itemImage}
+                        width={96}
+                        height={96}
+                        unoptimized
                       />
                     )}
                     <div className={styles.itemInfo}>

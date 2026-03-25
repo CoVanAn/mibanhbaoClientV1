@@ -9,6 +9,7 @@ import {
   type CartItem,
 } from "@/src/queries/useCart";
 import { useToast } from "@/src/components/common/toast";
+import { getApiErrorMessage } from "@/src/lib/error";
 import styles from "./Item.module.scss";
 
 interface CartItemCardProps {
@@ -35,9 +36,8 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({ item }) => {
           quantity: newQuantity,
         });
       }
-    } catch (error: any) {
-      const errorMsg =
-        error.response?.data?.message || "Không thể cập nhật số lượng";
+    } catch (error: unknown) {
+      const errorMsg = getApiErrorMessage(error, "Không thể cập nhật số lượng");
       toast.error(errorMsg);
     } finally {
       setIsUpdating(false);
@@ -49,9 +49,8 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({ item }) => {
       try {
         await removeItem.mutateAsync(item.id);
         toast.success("Đã xóa sản phẩm khỏi giỏ hàng");
-      } catch (error: any) {
-        const errorMsg =
-          error.response?.data?.message || "Không thể xóa sản phẩm";
+      } catch (error: unknown) {
+        const errorMsg = getApiErrorMessage(error, "Không thể xóa sản phẩm");
         toast.error(errorMsg);
       }
     }

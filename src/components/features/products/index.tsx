@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
+import type { ProductSummary } from "@/src/apiRequests/product";
 import "./Product.scss";
 
 const currencyFormatter = new Intl.NumberFormat("vi-VN", {
@@ -9,7 +11,11 @@ const currencyFormatter = new Intl.NumberFormat("vi-VN", {
   maximumFractionDigits: 0,
 });
 
-const slugify = (value: any) =>
+type ProductCardData = ProductSummary & {
+  _id?: string | number;
+};
+
+const slugify = (value: unknown) =>
   typeof value === "string"
     ? value
         .toLowerCase()
@@ -19,17 +25,17 @@ const slugify = (value: any) =>
         .replace(/^-|-$/g, "")
     : "";
 
-export function resolveProductSlug(product: any) {
+export function resolveProductSlug(product: ProductCardData) {
   return (
     product.slug ?? product.id ?? product._id ?? slugify(product.name) ?? null
   );
 }
 
-export function buildProductKey(product: any, slug: string) {
+export function buildProductKey(product: ProductCardData, slug: string) {
   return `${product.id ?? product.slug ?? product._id}-${slug}`;
 }
 
-export function ProductCard({ product }: { product: any }) {
+export function ProductCard({ product }: { product: ProductCardData }) {
   const price =
     product.currentPrice != null ? product.currentPrice : product.price;
 
@@ -52,7 +58,13 @@ export function ProductCard({ product }: { product: any }) {
           <span className="powder-card__badge">Nổi bật</span>
         )}
         {product.image ? (
-          <img src={product.image} alt={product.name} loading="lazy" />
+          <Image
+            src={product.image}
+            alt={product.name}
+            width={320}
+            height={320}
+            unoptimized
+          />
         ) : (
           <div className="powder-card__placeholder">Hình ảnh đang cập nhật</div>
         )}

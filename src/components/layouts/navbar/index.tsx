@@ -1,26 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./Navbar.scss";
 import { assets } from "@/src/assets/assets";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useCart } from "@/src/queries/useCart";
 import Link from "next/link";
 import ProductSearch from "@/src/components/features/search";
 
 const Navbar = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const slides = [assets.slider_1, assets.slider_2];
   const router = useRouter();
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 8000); // Chuyển slide mỗi 5 giây
-
-    return () => clearInterval(interval);
-  }, [slides.length]);
 
   const { data: cart } = useCart();
   const itemCount = cart?.totalItems || 0;
@@ -29,11 +20,13 @@ const Navbar = () => {
     <div className="navbar-container">
       <div className="logo-section">
         <div className="logo-container">
-          <img
+          <Image
             src={assets.logo}
             alt="Logo"
             className="main-logo"
             onClick={() => router.push("/")}
+            width={200}
+            height={140}
           />
         </div>
       </div>
@@ -66,7 +59,12 @@ const Navbar = () => {
                   {itemCount > 99 ? "99+" : itemCount}
                 </span>
               )}
-              <img src={assets.basket_icon} alt="Giỏ hàng" />
+              <Image
+                src={assets.basket_icon}
+                alt="Giỏ hàng"
+                width={24}
+                height={24}
+              />
             </Link>
           </div>
         </div>

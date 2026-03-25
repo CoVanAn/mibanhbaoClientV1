@@ -4,16 +4,12 @@ import { useEffect, useRef } from "react";
 import { MapPin, Plus, Home, Building } from "lucide-react";
 import Link from "next/link";
 import type { Address } from "@/src/app/account/types";
+import type { CheckoutData, FulfillmentMethod } from "../types";
 import styles from "./ShippingStep.module.scss";
 
 interface ShippingStepProps {
-  data: {
-    method: "DELIVERY" | "PICKUP";
-    addressId?: number;
-    scheduledAt?: string;
-    customerNote: string;
-  };
-  onChange: (data: any) => void;
+  data: CheckoutData;
+  onChange: (data: CheckoutData) => void;
   onNext: () => void;
   addresses: Address[];
 }
@@ -37,9 +33,9 @@ export default function ShippingStep({
       hasAutoSelected.current = true;
       onChange({ ...data, addressId: addresses[0].id });
     }
-  }, [addresses]);
+  }, [addresses, data, onChange]);
 
-  const handleMethodChange = (method: "DELIVERY" | "PICKUP") => {
+  const handleMethodChange = (method: FulfillmentMethod) => {
     if (method === data.method) return;
 
     const newData = {

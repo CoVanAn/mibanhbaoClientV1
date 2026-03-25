@@ -2,15 +2,28 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useCart, useApplyCoupon, useRemoveCoupon } from "@/src/queries/useCart";
+import {
+  useCart,
+  useApplyCoupon,
+  useRemoveCoupon,
+} from "@/src/queries/useCart";
 import { useCreateOrder } from "@/src/queries/useOrder";
 import { useProfile, useAddresses } from "@/src/queries/useAccount";
 import { useToast } from "@/src/components/common/toast";
-import { ShoppingCart, MapPin, CreditCard, CheckCircle, Tag, X } from "lucide-react";
+import {
+  ShoppingCart,
+  MapPin,
+  CreditCard,
+  CheckCircle,
+  Tag,
+  X,
+} from "lucide-react";
 import Link from "next/link";
 import ShippingStep from "./components/ShippingStep";
 import PaymentStep from "./components/PaymentStep";
 import ReviewStep from "./components/ReviewStep";
+import type { CheckoutData } from "./types";
+import { getApiErrorMessage } from "@/src/lib/error";
 import styles from "./Checkout.module.scss";
 
 type Step = "shipping" | "payment" | "review";
@@ -28,13 +41,13 @@ export default function CheckoutPage() {
   const [currentStep, setCurrentStep] = useState<Step>("shipping");
   const [couponCode, setCouponCode] = useState("");
   const [couponError, setCouponError] = useState("");
-  const [checkoutData, setCheckoutData] = useState({
-    method: "DELIVERY" as "DELIVERY" | "PICKUP",
-    addressId: undefined as number | undefined,
+  const [checkoutData, setCheckoutData] = useState<CheckoutData>({
+    method: "DELIVERY",
+    addressId: undefined,
     customerNote: "",
-    pickupAt: undefined as string | undefined,
-    scheduledAt: undefined as string | undefined,
-    paymentMethod: "COD" as "COD" | "BANKING", // For future use
+    pickupAt: undefined,
+    scheduledAt: undefined,
+    paymentMethod: "COD",
   });
 
   // Redirect if not logged in
@@ -101,8 +114,8 @@ export default function CheckoutPage() {
       await applyCoupon.mutateAsync(couponCode.trim().toUpperCase());
       setCouponCode("");
       toast.success("Áp dụng mã giảm giá thành công");
-    } catch (error: any) {
-      const msg = error.response?.data?.message || "Mã giảm giá không hợp lệ";
+    } catch (error: unknown) {
+      const msg = getApiErrorMessage(error, "Mã giảm giá không hợp lệ");
       setCouponError(msg);
       toast.error(msg);
     }
@@ -112,8 +125,9 @@ export default function CheckoutPage() {
     try {
       await removeCoupon.mutateAsync();
       toast.success("Đã xóa mã giảm giá");
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Không thể xóa mã giảm giá");
+    } catch (error: unknown) {
+      const message = getApiErrorMessage(error, "Không thể xóa mã giảm giá");
+      toast.error(message);
     }
   };
 
@@ -152,18 +166,9 @@ export default function CheckoutPage() {
         scheduledAt: checkoutData.scheduledAt,
       });
       // Redirect is handled in mutation onSuccess
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Order creation error:", error);
-      console.error("Error response:", error.response);
-      console.error("Error data:", error.response?.data);
-      console.error("Error message:", error.response?.data?.message);
-      console.error("Error errors:", error.response?.data?.errors);
-
-      const errorMsg =
-        error.response?.data?.message ||
-        error.response?.data?.errors?.join(", ") ||
-        error.message ||
-        "Không thể tạo đơn hàng";
+      const errorMsg = getApiErrorMessage(error, "Không thể tạo đơn hàng");
       toast.error(errorMsg);
     }
   };
@@ -274,7 +279,9 @@ export default function CheckoutPage() {
                         setCouponCode(e.target.value.toUpperCase());
                         setCouponError("");
                       }}
-                      onKeyDown={(e) => e.key === "Enter" && handleApplyCoupon()}
+                      onKeyDown={(e) =>
+                        e.key === "Enter" && handleApplyCoupon()
+                      }
                       placeholder="Mã giảm giá"
                       className={styles.couponInput}
                     />

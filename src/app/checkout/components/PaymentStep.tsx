@@ -1,13 +1,20 @@
 "use client";
 
 import { Banknote, CreditCard, Wallet } from "lucide-react";
+import type { CheckoutData, PaymentMethod } from "../types";
 import styles from "./PaymentStep.module.scss";
 
+type PaymentOption = {
+  id: PaymentMethod | "CREDIT_CARD";
+  name: string;
+  description: string;
+  icon: typeof Banknote;
+  available: boolean;
+};
+
 interface PaymentStepProps {
-  data: {
-    paymentMethod: "COD" | "BANKING";
-  };
-  onChange: (data: any) => void;
+  data: CheckoutData;
+  onChange: (data: CheckoutData) => void;
   onNext: () => void;
   onBack: () => void;
 }
@@ -18,7 +25,7 @@ export default function PaymentStep({
   onNext,
   onBack,
 }: PaymentStepProps) {
-  const paymentMethods = [
+  const paymentMethods: PaymentOption[] = [
     {
       id: "COD",
       name: "Thanh toán khi nhận hàng (COD)",
@@ -55,7 +62,10 @@ export default function PaymentStep({
               data.paymentMethod === method.id ? styles.selected : ""
             } ${!method.available ? styles.disabled : ""}`}
             onClick={() => {
-              if (method.available) {
+              if (
+                method.available &&
+                (method.id === "COD" || method.id === "BANKING")
+              ) {
                 onChange({ ...data, paymentMethod: method.id });
               }
             }}

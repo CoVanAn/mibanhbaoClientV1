@@ -1,6 +1,7 @@
 "use client";
 
 import { useContext, useMemo, useState } from "react";
+import Image from "next/image";
 import { ProductDetailContext } from "../content";
 import VariantSelector from "../variant";
 import styles from "./Hero.module.scss";
@@ -55,11 +56,13 @@ export default function ProductHero() {
     <section className={styles.hero}>
       <div className={styles.heroMedia}>
         {displayImage ? (
-          <img
+          <Image
             src={displayImage}
             alt={product.name}
             className={styles.heroImage}
-            loading="lazy"
+            width={800}
+            height={800}
+            unoptimized
             onClick={openPreview}
           />
         ) : (
@@ -75,11 +78,13 @@ export default function ProductHero() {
               }`}
               onClick={() => handleThumbnailClick(image.url)}
             >
-              <img
+              <Image
                 src={image.url}
                 alt={product.name}
                 className={styles.thumbnail}
-                loading="lazy"
+                width={120}
+                height={120}
+                unoptimized
               />
             </button>
           ))}
@@ -98,11 +103,13 @@ export default function ProductHero() {
             >
               ×
             </button>
-            <img
+            <Image
               src={displayImage}
               alt={product.name}
               className={styles.imagePreview}
-              loading="lazy"
+              width={1200}
+              height={1200}
+              unoptimized
             />
           </div>
         </div>
