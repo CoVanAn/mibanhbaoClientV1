@@ -1,11 +1,10 @@
-import React from "react";
-import "./TermsofService.scss";
+import "../chinh-sach-bao-mat/PrivacyPolicy.scss";
 
 const TermsofService = () => (
-  <div className="termsofservice-container">
+  <div className="privacy-policy-container">
     <h1>Điều Khoản Dịch Vụ</h1>
-    <li>
-      <strong>1. Hướng dẫn sử dụng web:</strong>
+    <div className="policy-section">
+      <h2>1. Hướng dẫn sử dụng web</h2>
       <ul>
         <li>
           - Người dùng tối thiểu phải 18 tuổi hoặc truy cập dưới sự giám sát của
@@ -34,9 +33,9 @@ const TermsofService = () => (
           từ website. Có thể từ chối bất cứ lúc nào.
         </li>
       </ul>
-    </li>
-    <li>
-      <strong>2. Chấp nhận đơn hàng và giá cả:</strong>
+    </div>
+    <div className="policy-section">
+      <h2>2. Chấp nhận đơn hàng và giá cả</h2>
       <ul>
         <li>
           - Chúng tôi có quyền từ chối hoặc hủy đơn hàng vì bất kỳ lý do gì vào
@@ -48,9 +47,9 @@ const TermsofService = () => (
           nếu có sai sót.
         </li>
       </ul>
-    </li>
-    <li>
-      <strong>3. Thương hiệu và bản quyền:</strong>
+    </div>
+    <div className="policy-section">
+      <h2>3. Thương hiệu và bản quyền</h2>
       <ul>
         <li>
           - Mọi quyền sở hữu trí tuệ, nội dung thông tin và tất cả các thiết kế,
@@ -63,18 +62,18 @@ const TermsofService = () => (
           Việt Nam và các công ước quốc tế.
         </li>
       </ul>
-    </li>
-    <li>
-      <strong>4. Quyền pháp lý:</strong>
+    </div>
+    <div className="policy-section">
+      <h2>4. Quyền pháp lý</h2>
       <ul>
         <li>
           - Các điều kiện, điều khoản và nội dung của trang web này được điều
           chỉnh bởi luật pháp Việt Nam và Tòa án có thẩm quyền tại Việt Nam.
         </li>
       </ul>
-    </li>
-    <li>
-      <strong>5. Quy định về bảo mật:</strong>
+    </div>
+    <div className="policy-section">
+      <h2>5. Quy định về bảo mật</h2>
       <ul>
         <li>
           - Trang web của chúng tôi coi trọng việc bảo mật thông tin và sử dụng
@@ -92,9 +91,9 @@ const TermsofService = () => (
           tin này cho các cơ quan pháp luật.
         </li>
       </ul>
-    </li>
-    <li>
-      <strong>6. Thay đổi, hủy bỏ giao dịch tại website:</strong>
+    </div>
+    <div className="policy-section">
+      <h2>6. Thay đổi, hủy bỏ giao dịch tại website</h2>
       <ul>
         <li>
           - Khách hàng có quyền chấm dứt giao dịch nếu đã thực hiện các biện
@@ -102,7 +101,7 @@ const TermsofService = () => (
           ích nào từ hàng hóa đó (theo quy định của chính sách đổi trả hàng).
         </li>
       </ul>
-    </li>
+    </div>
     <p>
       Quý khách vui lòng kiểm tra thường xuyên để cập nhật những thay đổi của
       chúng tôi.

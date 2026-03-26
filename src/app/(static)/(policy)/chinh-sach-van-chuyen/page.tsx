@@ -1,8 +1,8 @@
-import "./ShippingPolicy.scss";
+import "../chinh-sach-bao-mat/PrivacyPolicy.scss";
 
 export default function Page() {
   return (
-    <div className="shipping-policy-container">
+    <div className="privacy-policy-container">
       <h1>Chính Sách Vận Chuyển</h1>
       <div className="policy-section">
         <h2>1. Sản phẩm Bột Bánh Bao Pha Sẵn</h2>

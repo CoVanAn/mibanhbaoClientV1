@@ -18,6 +18,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { orderStatusConfig, type OrderStatus } from "../statusConfig";
 import { getApiErrorMessage } from "@/src/lib/error";
+import { useToast } from "@/src/components/common/toast";
 import styles from "./page.module.scss";
 
 const statusIconConfig = {
@@ -47,6 +48,7 @@ export default function OrderDetailPage() {
 
   const { data: order, isLoading, error } = useOrder(orderId);
   const cancelOrder = useCancelOrder();
+  const toast = useToast();
 
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [cancelReason, setCancelReason] = useState("");
@@ -110,7 +112,7 @@ export default function OrderDetailPage() {
 
   const handleCancelOrder = async () => {
     if (!cancelReason.trim()) {
-      alert("Vui lòng nhập lý do hủy đơn");
+      toast.error("Vui lòng nhập lý do hủy đơn");
       return;
     }
 
@@ -120,11 +122,12 @@ export default function OrderDetailPage() {
         orderId: order.id,
         payload: { reason: cancelReason },
       });
-      alert("Đã hủy đơn hàng thành công");
+      toast.success("Đã hủy đơn hàng thành công");
       setShowCancelModal(false);
+      setCancelReason("");
     } catch (error: unknown) {
       const message = getApiErrorMessage(error, "Không thể hủy đơn hàng");
-      alert(message);
+      toast.error(message);
     } finally {
       setIsCancelling(false);
     }

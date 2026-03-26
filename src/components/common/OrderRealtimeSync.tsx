@@ -3,8 +3,9 @@
 import { useEffect } from "react";
 import { io } from "socket.io-client";
 import { useQueryClient } from "@tanstack/react-query";
-import { API_URL } from "@/src/constants/api";
-import useStore from "@/src/store/useStore";
+import { API_URL } from "@/src/store/constants";
+import useStore from "@/src/store/user";
+
 import { orderKeys } from "@/src/queries/useOrder";
 import { cartKeys } from "@/src/queries/useCart";
 

@@ -122,15 +122,6 @@
   &-social-icon {
     display: flex;
     gap: 15px;
-
-    img {
-      width: 35px;
-      cursor: pointer;
-
-      &:hover {
-        transform: scale(1.1);
-      }
-    }
   }
 
   hr {
