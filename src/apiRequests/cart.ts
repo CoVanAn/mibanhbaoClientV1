@@ -71,7 +71,7 @@ export const cartAPI = {
   },
 
   clearCart: async (): Promise<void> => {
-    await apiClient.delete("/api/cart");
+    await apiClient.delete("/api/cart/clear");
   },
 
   applyCoupon: async (couponCode: string): Promise<Cart> => {

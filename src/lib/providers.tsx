@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode, useState } from "react";
 import { ToastProvider } from "@/src/components/common/toast";
 import { SessionRestorer } from "@/src/components/auth/SessionRestorer";
+import OrderRealtimeSync from "@/src/components/common/OrderRealtimeSync";
 
 export function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(
@@ -23,6 +24,7 @@ export function Providers({ children }: { children: ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <ToastProvider>
         <SessionRestorer />
+        <OrderRealtimeSync />
         {children}
       </ToastProvider>
     </QueryClientProvider>
