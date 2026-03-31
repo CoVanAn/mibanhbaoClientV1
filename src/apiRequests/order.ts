@@ -43,7 +43,6 @@ const parseOrder = (payload: unknown): Order => {
   const parsed = OrderSchema.safeParse(payload);
 
   if (!parsed.success) {
-    console.error("Unexpected order shape", parsed.error);
     throw new Error("Không thể tải đơn hàng");
   }
 
@@ -54,7 +53,6 @@ const parseOrderList = (payload: unknown): PaginatedOrderList => {
   const parsed = PaginatedOrderListSchema.safeParse(payload);
 
   if (!parsed.success) {
-    console.error("Unexpected order list shape", parsed.error);
     throw new Error("Không thể tải danh sách đơn hàng");
   }
 
@@ -65,7 +63,6 @@ const parseOrderHistory = (payload: unknown): OrderStatusHistory[] => {
   const parsed = OrderStatusHistorySchema.array().safeParse(payload);
 
   if (!parsed.success) {
-    console.error("Unexpected order history shape", parsed.error);
     throw new Error("Không thể tải lịch sử đơn hàng");
   }
 

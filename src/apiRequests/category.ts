@@ -13,7 +13,6 @@ const parseCategoryList = (payload: unknown): CategoryData[] => {
   const parsed = CategoryListSchema.safeParse(payload);
 
   if (!parsed.success) {
-    console.error("Unexpected category list shape", parsed.error);
     throw new Error("Không thể tải danh mục");
   }
 

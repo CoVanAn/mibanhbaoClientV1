@@ -42,7 +42,6 @@ export function ProductCard({ product }: { product: ProductCardData }) {
   const linkTarget = resolveProductSlug(product);
 
   if (!linkTarget) {
-    console.warn("Product missing slug/id", product);
     return null;
   }
 

@@ -112,7 +112,6 @@ const VariantSelector = ({ variants, productId }: VariantSelectorProps) => {
         setStatus("idle");
       }, 3000);
     } catch (error: unknown) {
-      console.error("Add to cart failed", error);
       setStatus("error");
       const errorMsg = getApiErrorMessage(error, "Vui lòng thử lại.");
       setStatusMessage(errorMsg);

@@ -5,6 +5,7 @@
 
 import { NextResponse } from "next/server";
 import { API_URL } from "@/src/store/constants";
+import logger from "@/src/lib/logger";
 
 interface LoginBody {
   email: string;
@@ -38,10 +39,6 @@ export async function POST(request: Request) {
   try {
     const body: LoginBody = await request.json();
 
-    // Log API URL for debugging
-    console.log("[Login Route] API_URL:", API_URL);
-    console.log("[Login Route] Calling:", `${API_URL}/api/user/login`);
-
     // Call backend API to login
     const response = await fetch(`${API_URL}/api/user/login`, {
       method: "POST",
@@ -51,10 +48,7 @@ export async function POST(request: Request) {
       body: JSON.stringify(body),
     });
 
-    console.log("[Login Route] Response status:", response.status);
-
     const data: LoginResponse = await response.json();
-    console.log("[Login Route] Response data:", data);
 
     if (!response.ok || !data.success) {
       return NextResponse.json(
@@ -83,7 +77,6 @@ export async function POST(request: Request) {
 
     // Get backend's refreshToken cookie
     const backendCookies = response.headers.get("set-cookie");
-    console.log("[Login Route] Backend set-cookie header:", backendCookies);
 
     // Parse refreshToken from backend cookie
     let refreshTokenValue = null;
@@ -91,12 +84,7 @@ export async function POST(request: Request) {
       const refreshTokenMatch = backendCookies.match(/refreshToken=([^;]+)/);
       if (refreshTokenMatch) {
         refreshTokenValue = refreshTokenMatch[1];
-        console.log("[Login Route] Parsed refreshToken, length:", refreshTokenValue.length);
-      } else {
-        console.log("[Login Route] WARNING: Could not parse refreshToken from backend cookie");
       }
-    } else {
-      console.log("[Login Route] WARNING: No set-cookie header from backend");
     }
 
     // Build Set-Cookie headers
@@ -125,14 +113,11 @@ export async function POST(request: Request) {
     if (refreshTokenValue) {
       const refreshTokenCookie = `refreshToken=${refreshTokenValue}; Path=/; HttpOnly; SameSite=Lax${secureFlag}; Expires=${refreshTokenExpiry}`;
       jsonResponse.headers.append("Set-Cookie", refreshTokenCookie);
-      console.log("[Login Route] Both cookies set via headers");
-    } else {
-      console.log("[Login Route] Only accessToken cookie set (no refreshToken from backend)");
     }
 
     return jsonResponse;
   } catch (error) {
-    console.error("[Login Route] Error:", error);
+    logger.error("[auth/login] Request failed", error);
 
     // More detailed error message
     const errorMessage = error instanceof Error

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { io } from "socket.io-client";
 import { useQueryClient } from "@tanstack/react-query";
 import { API_URL } from "@/src/store/constants";
-import useStore from "@/src/store/user";
+import useStore, { UserSlice } from "@/src/store/user";
 
 import { orderKeys } from "@/src/queries/useOrder";
 import { cartKeys } from "@/src/queries/useCart";
@@ -30,7 +30,7 @@ const invalidateOrderQueries = (
 
 const OrderRealtimeSync = () => {
   const queryClient = useQueryClient();
-  const token = useStore((state: any) => state.token as string);
+  const token = useStore((state: UserSlice) => state.token);
 
   useEffect(() => {
     if (!token) {

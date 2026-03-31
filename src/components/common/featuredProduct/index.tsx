@@ -18,7 +18,6 @@ const renderProductCards = (products: ProductSummary[]) =>
     .map((product) => {
       const linkTarget = resolveProductSlug(product);
       if (!linkTarget) {
-        console.warn("Missing slug/id on product", product);
         return null;
       }
       return (

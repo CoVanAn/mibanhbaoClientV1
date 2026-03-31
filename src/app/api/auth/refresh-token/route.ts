@@ -6,6 +6,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { API_URL } from "@/src/store/constants";
+import logger from "@/src/lib/logger";
 
 interface RefreshTokenResponse {
   success: boolean;
@@ -28,11 +29,7 @@ export async function POST() {
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get("refreshToken")?.value;
 
-  console.log("[Refresh Token Route] Checking for refreshToken cookie...");
-  console.log("[Refresh Token Route] RefreshToken found:", !!refreshToken);
-
   if (!refreshToken) {
-    console.log("[Refresh Token Route] No refreshToken cookie found");
     return NextResponse.json(
       {
         success: false,
@@ -43,8 +40,6 @@ export async function POST() {
   }
 
   try {
-    console.log("[Refresh Token Route] Calling backend refresh API...");
-    
     // Call backend API to refresh token
     // IMPORTANT: Backend reads refreshToken from cookie, so we need to forward it
     const response = await fetch(`${API_URL}/api/user/refresh-token`, {
@@ -58,11 +53,8 @@ export async function POST() {
     });
 
     const data: RefreshTokenResponse = await response.json();
-    console.log("[Refresh Token Route] Backend response:", data);
 
     if (!response.ok || !data.success) {
-      console.log("[Refresh Token Route] Refresh failed, clearing cookies");
-      
       // Clear invalid cookies via Set-Cookie headers
       const clearResponse = NextResponse.json(
         {
@@ -71,7 +63,7 @@ export async function POST() {
         },
         { status: 401 }
       );
-      
+
       // Clear cookies by setting them with Max-Age=0
       clearResponse.headers.set("Set-Cookie", "accessToken=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0");
       clearResponse.headers.append("Set-Cookie", "refreshToken=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0");
@@ -82,7 +74,6 @@ export async function POST() {
     const { accessToken: newAccessToken } = data;
 
     if (!newAccessToken) {
-      console.log("[Refresh Token Route] No new access token received");
       return NextResponse.json(
         {
           success: false,
@@ -92,11 +83,8 @@ export async function POST() {
       );
     }
 
-    console.log("[Refresh Token Route] Setting new tokens...");
-
     // Get backend's new refreshToken cookie from Set-Cookie header
     const backendCookies = response.headers.get("set-cookie");
-    console.log("[Refresh Token Route] Backend set-cookie header:", backendCookies);
 
     // Decode tokens to get expiration
     const decodedAccessToken = decodeJWT(newAccessToken);
@@ -123,28 +111,20 @@ export async function POST() {
     // Parse and set new refreshToken cookie from backend
     if (backendCookies) {
       const refreshTokenMatch = backendCookies.match(/refreshToken=([^;]+)/);
-      
+
       if (refreshTokenMatch) {
         const newRefreshTokenValue = refreshTokenMatch[1];
-        console.log("[Refresh Token Route] Parsed new refreshToken, length:", newRefreshTokenValue.length);
-        
+
         const refreshTokenExpiry = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString(); // 30 days
         const refreshTokenCookie = `refreshToken=${newRefreshTokenValue}; Path=/; HttpOnly; SameSite=Lax${secureFlag}; Expires=${refreshTokenExpiry}`;
         jsonResponse.headers.append("Set-Cookie", refreshTokenCookie);
-        
-        console.log("[Refresh Token Route] Both tokens set via headers");
-      } else {
-        console.log("[Refresh Token Route] WARNING: Could not parse new refreshToken from backend");
-        console.log("[Refresh Token Route] Only accessToken set via headers");
       }
-    } else {
-      console.log("[Refresh Token Route] WARNING: No set-cookie header from backend");
-      console.log("[Refresh Token Route] Only accessToken set via headers");
     }
 
     return jsonResponse;
   } catch (error) {
-    console.error("[Refresh Token Route] Error:", error);
+    logger.error("[auth/refresh-token] Request failed", error);
+
     return NextResponse.json(
       {
         success: false,

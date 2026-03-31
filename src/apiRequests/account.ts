@@ -20,7 +20,6 @@ const parseUser = (payload: unknown): User => {
   const parsed = userSchema.safeParse(payload);
 
   if (!parsed.success) {
-    console.error("Unexpected profile user shape", parsed.error);
     throw new Error("Không thể tải hồ sơ");
   }
 
@@ -31,7 +30,6 @@ const parseAddressList = (payload: unknown): Address[] => {
   const parsed = addressSchema.array().safeParse(payload);
 
   if (!parsed.success) {
-    console.error("Unexpected address list shape", parsed.error);
     throw new Error("Không thể tải địa chỉ");
   }
 

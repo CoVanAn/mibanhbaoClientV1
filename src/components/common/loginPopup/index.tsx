@@ -10,6 +10,7 @@ import authApiRequest from "@/src/apiRequests/auth";
 import { useMergeGuestCart } from "@/src/queries/useCart";
 import { API_URL } from "@/src/store/constants";
 import { getCookie } from "@/src/lib/cookies";
+import logger from "@/src/lib/logger";
 
 type LoginPopupProps = {
   setShowLogin: (isOpen: boolean) => void;
@@ -35,6 +36,7 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
     password: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onhandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData((data) => ({ ...data, [e.target.name]: e.target.value }));
@@ -42,6 +44,11 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
 
   const onLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (isSubmitting) {
+      return;
+    }
+
     setErrorMessage(""); // Clear previous error
 
     const isValidEmail = (email: string) => {
@@ -65,17 +72,17 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
       return;
     }
 
+    setIsSubmitting(true);
+
     try {
       let response;
 
       if (currState === "Đăng nhập") {
-        console.log("[LoginPopup] Calling login Route Handler...");
         response = await authApiRequest.login({
           email: data.email,
           password: data.password,
         });
       } else {
-        console.log("[LoginPopup] Calling register Route Handler...");
         response = await authApiRequest.register({
           name: data.name,
           email: data.email,
@@ -83,21 +90,15 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
         });
       }
 
-      console.log("[LoginPopup] Response:", response);
-      console.log("[LoginPopup] Response success:", response.success);
-      console.log("[LoginPopup] Has accessToken:", !!response.accessToken);
-
       if (response.success) {
         // Set access token in memory only (Zustand store)
         // Do NOT save to localStorage for security (XSS protection)
         if (response.accessToken) {
-          console.log("[LoginPopup] Setting token in Zustand store");
           setToken(response.accessToken);
         }
 
         // Note: Cookies are HttpOnly and cannot be read by JavaScript
         // They are automatically sent with requests by the browser
-        console.log("[LoginPopup] Login successful, cookies set by server");
 
         // Merge guest cart if exists (only on login, not register)
         if (currState === "Đăng nhập") {
@@ -105,18 +106,13 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
           if (guestToken) {
             try {
               await mergeGuestCart.mutateAsync(guestToken);
-              console.log("Guest cart merged successfully");
             } catch (mergeError) {
-              console.error("Failed to merge guest cart:", mergeError);
-              // Don't show error to user, just log it
+              logger.warn("[loginPopup] Guest cart merge failed", mergeError);
             }
           }
         }
 
         // Refetch cart and account data after successful login/register
-        console.log(
-          "Login/Register successful, refetching cart and account...",
-        );
         await Promise.all([
           queryClient.invalidateQueries({ queryKey: ["cart"] }),
           queryClient.invalidateQueries({ queryKey: ["account"] }),
@@ -143,7 +139,7 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
         }
       }
     } catch (error: unknown) {
-      console.error("[LoginPopup] Error:", error);
+      logger.error("[loginPopup] Authentication request failed", error);
 
       const errorPayload =
         typeof error === "object" &&
@@ -162,6 +158,8 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
       } else {
         setErrorMessage("Không thể kết nối tới server. Vui lòng thử lại sau.");
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -174,14 +172,15 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
       >
         <div className="login-popup-title">
           <h2>{currState}</h2>
-          <p
+          <button
+            type="button"
             onClick={() => setShowLogin(false)}
-            style={{
-              cursor: "pointer",
-            }}
+            className="login-popup-close"
+            aria-label="Đóng cửa sổ đăng nhập"
+            disabled={isSubmitting}
           >
             X
-          </p>
+          </button>
         </div>
         <div className="login-popup-inputs">
           {currState === "Đăng nhập" ? (
@@ -193,6 +192,7 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
               value={data.name}
               type="text"
               placeholder="Họ và tên"
+              disabled={isSubmitting}
               required
             />
           )}
@@ -204,6 +204,7 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
             placeholder="Email"
             pattern="^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$"
             title="Vui lòng nhập email hợp lệ"
+            disabled={isSubmitting}
             required
           />
           <input
@@ -212,35 +213,42 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
             value={data.password}
             type="password"
             placeholder="Mật khẩu"
+            disabled={isSubmitting}
             required
           />
         </div>
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-        <button type="submit">
-          {currState === "Đăng ký" ? "Tạo tài khoản" : "Đăng nhập"}
+        {errorMessage && (
+          <p className="error-message" aria-live="polite">
+            {errorMessage}
+          </p>
+        )}
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting
+            ? "Đang xử lý..."
+            : currState === "Đăng ký"
+              ? "Tạo tài khoản"
+              : "Đăng nhập"}
         </button>
         {currState === "Đăng nhập" ? (
           <>
             <p>
               Chưa có tài khoản?{" "}
-              <span onClick={() => setCurrState("Đăng ký")}>Đăng ký ngay</span>
+              <button
+                type="button"
+                className="text-action-btn"
+                onClick={() => {
+                  setErrorMessage("");
+                  setCurrState("Đăng ký");
+                }}
+                disabled={isSubmitting}
+              >
+                Đăng ký ngay
+              </button>
             </p>
             <button
               type="button"
               className="google-login-btn"
-              // style={{
-              //   display: "flex",
-              //   justifyContent: "center",
-              //   alignItems: "center",
-              //   width: "100%",
-              //   marginTop: "16px",
-              //   background: "#fff",
-              //   color: "#333",
-              //   border: "1px solid #ccc",
-              //   padding: "8px 16px",
-              //   borderRadius: "4px",
-              //   cursor: "pointer",
-              // }}
+              disabled={isSubmitting}
               onClick={() => {
                 window.location.href = `${API_URL}/auth/google`;
               }}
@@ -250,17 +258,25 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
                 alt="Google"
                 width={20}
                 height={20}
-                style={{ width: 20, marginRight: 8 }}
-              />{" "}
-              <p>Đăng nhập với Google</p>
+                className="google-login-icon"
+              />
+              <span>Đăng nhập với Google</span>
             </button>
           </>
         ) : (
           <p>
             Đã có tài khoản?{" "}
-            <span onClick={() => setCurrState("Đăng nhập")}>
+            <button
+              type="button"
+              className="text-action-btn"
+              onClick={() => {
+                setErrorMessage("");
+                setCurrState("Đăng nhập");
+              }}
+              disabled={isSubmitting}
+            >
               Đăng nhập tại đây
-            </span>
+            </button>
           </p>
         )}
       </form>

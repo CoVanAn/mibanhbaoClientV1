@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import useStore, { UserSlice } from "@/src/store/user";
 import authApiRequest from "@/src/apiRequests/auth";
+import logger from "@/src/lib/logger";
 
 /**
  * SessionRestorer Component
@@ -29,47 +30,17 @@ export function SessionRestorer() {
       hasAttemptedRestore.current = true;
 
       try {
-        console.log(
-          "[SessionRestorer] Attempting to restore session via refreshToken...",
-        );
-
         // Try to refresh token using refreshToken from HttpOnly cookie
         // This is the ONLY way to restore session after reload
         const response = await authApiRequest.refreshToken();
 
         if (response.success && response.accessToken) {
-          console.log("[SessionRestorer] Session restored successfully");
-          console.log(
-            "[SessionRestorer] AccessToken length:",
-            response.accessToken.length,
-          );
           setToken(response.accessToken);
-        } else {
-          console.log(
-            "[SessionRestorer] No active session found - this is normal for logged out users",
-          );
         }
-      } catch (error: unknown) {
-        // Only log actual errors, not 401 (which is normal for logged out users)
-        const status =
-          typeof error === "object" &&
-          error !== null &&
-          "response" in error &&
-          typeof (error as { response?: { status?: number } }).response
-            ?.status === "number"
-            ? (error as { response?: { status?: number } }).response?.status
-            : undefined;
-
-        if (status !== 401) {
-          console.error("[SessionRestorer] Unexpected error:", error);
-        } else {
-          console.log(
-            "[SessionRestorer] No valid refresh token - user needs to login",
-          );
-        }
+      } catch (error) {
+        logger.warn("[sessionRestorer] Session restore failed", error);
       } finally {
         setInitialized(true);
-        console.log("[SessionRestorer] Initialization complete");
       }
     };
 

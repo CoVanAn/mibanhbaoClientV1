@@ -6,6 +6,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { API_URL } from "@/src/store/constants";
+import logger from "@/src/lib/logger";
 
 export async function POST() {
   const cookieStore = await cookies();
@@ -13,11 +14,6 @@ export async function POST() {
   // Get tokens before clearing (for backend logout call)
   const accessToken = cookieStore.get("accessToken")?.value;
   const refreshToken = cookieStore.get("refreshToken")?.value;
-
-  console.log("[Logout Route] Logging out, has tokens:", { 
-    hasAccessToken: !!accessToken, 
-    hasRefreshToken: !!refreshToken 
-  });
 
   try {
     // Call backend API to logout (invalidate tokens on server) if tokens exist
@@ -48,12 +44,10 @@ export async function POST() {
       "refreshToken=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0"
     );
 
-    console.log("[Logout Route] Cookies cleared via headers");
-
     return response;
   } catch (error) {
-    console.error("[Logout Route] Error:", error);
-    
+    logger.warn("[auth/logout] Backend logout failed, clearing cookies locally", error);
+
     // Still clear cookies even if backend call fails
     const response = NextResponse.json({
       success: true,

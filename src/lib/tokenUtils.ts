@@ -24,9 +24,6 @@ export const getAccessTokenFromLocalStorage = (): string | null =>
  * @deprecated Use Zustand store instead. AccessToken should not be in localStorage.
  */
 export const setAccessTokenToLocalStorage = (token: string): void => {
-  console.warn(
-    "[DEPRECATED] setAccessTokenToLocalStorage: Do not save accessToken to localStorage. Use Zustand store instead."
-  );
   if (isBrowser) {
     localStorage.setItem("accessToken", token);
   }
@@ -43,9 +40,6 @@ export const getRefreshTokenFromLocalStorage = (): string | null =>
  * @deprecated Refresh token is managed via HttpOnly cookie by server.
  */
 export const setRefreshTokenToLocalStorage = (token: string): void => {
-  console.warn(
-    "[DEPRECATED] setRefreshTokenToLocalStorage: Refresh token is managed by HttpOnly cookie."
-  );
   if (isBrowser) {
     localStorage.setItem("refreshToken", token);
   }

@@ -19,17 +19,8 @@ export const useCart = () => {
     queryFn: async () => {
       try {
         const cart = await cartAPI.getCart();
-        console.log("Cart loaded successfully:", cart);
         return cart;
-      } catch (error: unknown) {
-        const errorResponse =
-          typeof error === "object" && error !== null && "response" in error
-            ? (error as { response?: { data?: unknown; status?: number } })
-              .response
-            : undefined;
-        console.error("Error loading cart:", error);
-        console.error("Error response:", errorResponse?.data);
-        console.error("Error status:", errorResponse?.status);
+      } catch {
 
         // Return empty cart on error instead of throwing
         // This prevents the page from breaking

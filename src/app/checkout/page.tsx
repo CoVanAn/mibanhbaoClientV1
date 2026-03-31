@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   useCart,
@@ -50,17 +50,25 @@ export default function CheckoutPage() {
     paymentMethod: "COD",
   });
 
-  // Redirect if not logged in
-  if (!userLoading && !user) {
-    router.push("/account/login?redirect=/checkout");
-    return null;
-  }
+  const shouldRedirectToLogin = !userLoading && !user;
+  const shouldRedirectToCart =
+    !userLoading &&
+    !!user &&
+    !cartLoading &&
+    (!cart || cart.items.length === 0);
 
-  // Redirect if cart is empty
-  if (!cartLoading && (!cart || cart.items.length === 0)) {
-    console.log("Cart check - redirecting to /cart");
-    console.log("Cart data:", cart);
-    router.push("/cart");
+  useEffect(() => {
+    if (shouldRedirectToLogin) {
+      router.replace("/account/login?redirect=/checkout");
+      return;
+    }
+
+    if (shouldRedirectToCart) {
+      router.replace("/cart");
+    }
+  }, [router, shouldRedirectToCart, shouldRedirectToLogin]);
+
+  if (shouldRedirectToLogin || shouldRedirectToCart) {
     return null;
   }
 
@@ -71,12 +79,6 @@ export default function CheckoutPage() {
       </div>
     );
   }
-
-  console.log("=== CHECKOUT PAGE STATE ===");
-  console.log("Cart:", cart);
-  console.log("Cart items count:", cart?.items?.length);
-  console.log("User:", user);
-  console.log("Addresses:", addresses);
 
   const steps = [
     { id: "shipping", label: "Giao hàng", icon: MapPin },
@@ -145,19 +147,6 @@ export default function CheckoutPage() {
         return;
       }
 
-      // Check authentication status
-      console.log("User data:", user);
-      console.log("User ID:", user?.id);
-
-      // Log the payload for debugging
-      console.log("Creating order with payload:", {
-        method: checkoutData.method,
-        addressId: checkoutData.addressId,
-        customerNote: checkoutData.customerNote || undefined,
-        pickupAt: checkoutData.pickupAt,
-        scheduledAt: checkoutData.scheduledAt,
-      });
-
       await createOrder.mutateAsync({
         method: checkoutData.method,
         addressId: checkoutData.addressId,
@@ -167,7 +156,6 @@ export default function CheckoutPage() {
       });
       // Redirect is handled in mutation onSuccess
     } catch (error: unknown) {
-      console.error("Order creation error:", error);
       const errorMsg = getApiErrorMessage(error, "Không thể tạo đơn hàng");
       toast.error(errorMsg);
     }

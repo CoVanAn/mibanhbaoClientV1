@@ -6,14 +6,15 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { API_URL } from "@/src/store/constants";
+import logger from "@/src/lib/logger";
 
 export async function GET(request: Request) {
   const cookieStore = await cookies();
-  
+
   // Try to get token from Authorization header first (for localStorage verification)
   const authHeader = request.headers.get("authorization");
   const headerToken = authHeader?.replace("Bearer ", "");
-  
+
   // Fall back to cookie if no header token
   const accessToken = headerToken || cookieStore.get("accessToken")?.value;
 
@@ -51,7 +52,8 @@ export async function GET(request: Request) {
 
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Get current user error:", error);
+    logger.error("[auth/me] Request failed", error);
+
     return NextResponse.json(
       {
         success: false,

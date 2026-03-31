@@ -6,6 +6,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { API_URL } from "@/src/store/constants";
+import logger from "@/src/lib/logger";
 
 interface RegisterBody {
   name: string;
@@ -100,7 +101,8 @@ export async function POST(request: Request) {
       user,
     });
   } catch (error) {
-    console.error("Register error:", error);
+    logger.error("[auth/register] Request failed", error);
+
     return NextResponse.json(
       {
         success: false,

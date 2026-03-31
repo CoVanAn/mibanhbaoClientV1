@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { getCookie } from "@/src/lib/cookies";
+import authApiRequest from "@/src/apiRequests/auth";
 
 export type UserSlice = {
   token: string;
@@ -34,25 +34,25 @@ const createUserSlice = (set: (partial: Partial<UserSlice>) => void): UserSlice 
     const googleAuthStatus = params.get("googleAuth");
 
     if (googleAuthStatus === "success") {
-      // Google login successful, access token is in cookie
-      // Read access token from cookie (non-HttpOnly)
-      const accessToken = getCookie("accessToken");
+      try {
+        const response = await authApiRequest.refreshToken();
 
-      if (accessToken) {
-        set({ token: accessToken, isInitialized: true });
-
-        // Clean up URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-
-        // Dispatch custom event to trigger refetch in other components
-        if (typeof window !== "undefined") {
+        if (response.success && response.accessToken) {
+          set({ token: response.accessToken, isInitialized: true });
           window.dispatchEvent(new Event("google-login-success"));
+        } else {
+          set({ isInitialized: true });
+          alert("Không thể khôi phục phiên đăng nhập Google. Vui lòng thử lại.");
         }
-
-        console.log("[Google Login] Token set successfully, triggering refetch");
+      } catch {
+        set({ isInitialized: true });
+        alert("Đăng nhập Google thất bại. Vui lòng thử lại.");
+      } finally {
+        // Clean up URL regardless of refresh outcome
+        window.history.replaceState({}, document.title, window.location.pathname);
       }
     } else if (googleAuthStatus === "error") {
-      console.error("Google authentication failed");
+      set({ isInitialized: true });
       window.history.replaceState({}, document.title, window.location.pathname);
       alert("Đăng nhập Google thất bại. Vui lòng thử lại.");
     }

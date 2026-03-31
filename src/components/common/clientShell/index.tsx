@@ -27,26 +27,17 @@ const ClientShell = ({ children }: { children: React.ReactNode }) => {
   // Listen for Google login success to merge cart and redirect
   useEffect(() => {
     const handleGoogleLoginSuccess = async () => {
-      console.log("[ClientShell] Google login success detected");
-
       // Try to merge guest cart if exists
       const guestToken = getCookie("guestToken");
       if (guestToken) {
         try {
-          console.log("[ClientShell] Merging guest cart...");
           await mergeGuestCart.mutateAsync(guestToken);
-          console.log("[ClientShell] Guest cart merged successfully");
-        } catch (mergeError) {
-          console.error(
-            "[ClientShell] Failed to merge guest cart:",
-            mergeError,
-          );
-          // Don't block user flow, just log the error
+        } catch {
+          // Don't block user flow if guest cart merge fails.
         }
       }
 
       // Refetch cart after merge
-      console.log("[ClientShell] Refetching cart");
       queryClient.invalidateQueries({ queryKey: ["cart"] });
 
       // Redirect to account page to show user info

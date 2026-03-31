@@ -24,7 +24,6 @@ const parseCart = (payload: unknown): Cart => {
   const parsed = CartSchema.safeParse(payload);
 
   if (!parsed.success) {
-    console.error("Unexpected cart shape", parsed.error);
     throw new Error("Không thể đồng bộ giỏ hàng");
   }
 

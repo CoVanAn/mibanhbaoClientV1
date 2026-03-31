@@ -13,7 +13,6 @@ export async function GET(request: NextRequest) {
 
   // Handle error case
   if (error) {
-    console.log("[Google Callback Route] Error from backend:", error);
     return NextResponse.redirect(
       new URL("/?googleAuth=error", request.url)
     );
@@ -21,13 +20,10 @@ export async function GET(request: NextRequest) {
 
   // Validate tokens
   if (!accessToken || !refreshToken) {
-    console.log("[Google Callback Route] Missing tokens");
     return NextResponse.redirect(
       new URL("/?googleAuth=error", request.url)
     );
   }
-
-  console.log("[Google Callback Route] Received tokens, setting cookies...");
 
   // Create redirect response
   const response = NextResponse.redirect(
@@ -43,16 +39,14 @@ export async function GET(request: NextRequest) {
     path: "/",
   });
 
-  // Set access token as regular cookie for client-side access (15 minutes)
+  // Set access token as HttpOnly cookie (15 minutes)
   response.cookies.set("accessToken", accessToken, {
-    httpOnly: false, // Client needs to read this
+    httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
     maxAge: 15 * 60, // 15 minutes
     path: "/",
   });
-
-  console.log("[Google Callback Route] Cookies set successfully");
 
   return response;
 }

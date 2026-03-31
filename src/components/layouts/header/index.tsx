@@ -6,6 +6,7 @@ import useStore, { UserSlice } from "@/src/store/user";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ConfirmModal from "@/src/components/common/ConfirmModal";
+import logger from "@/src/lib/logger";
 
 type HeaderProps = {
   setShowLogin: (isOpen: boolean) => void;
@@ -32,7 +33,7 @@ const Header = ({ setShowLogin }: HeaderProps) => {
         method: "POST",
       });
     } catch (error) {
-      console.error("Logout error:", error);
+      logger.warn("[header] Logout request failed", error);
     } finally {
       // Clear token from memory
       clearToken();

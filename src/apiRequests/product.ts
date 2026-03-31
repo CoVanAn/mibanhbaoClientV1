@@ -23,7 +23,6 @@ export type FetchProductListOptions = {
 const parseProductDetail = (payload: unknown): ProductDetailData => {
   const parsed = ProductDetailSchema.safeParse(payload);
   if (!parsed.success) {
-    console.error("Unexpected product detail shape", parsed.error);
     throw new Error("Dữ liệu sản phẩm không hợp lệ");
   }
   return parsed.data;
@@ -34,7 +33,6 @@ const parsePaginatedProductList = (
 ): PaginatedProductListData => {
   const parsed = PaginatedProductListSchema.safeParse(payload);
   if (!parsed.success) {
-    console.error("Unexpected paginated product list shape", parsed.error);
     throw new Error("Không thể tải danh sách sản phẩm");
   }
   return parsed.data;

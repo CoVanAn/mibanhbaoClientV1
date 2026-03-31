@@ -19,8 +19,7 @@ export default async function Page({ params }: PageProps) {
   let product;
   try {
     product = await productAPI.getBySlug(slug);
-  } catch (error) {
-    console.error("Unable to load product", error);
+  } catch {
     return <ProductNotFound />;
   }
 
