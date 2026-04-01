@@ -1,73 +1,107 @@
 @use "@/src/styles/_variables.scss" as vars;
 
+// ===== Layout =====
 .ordersPage {
   width: 100%;
   min-height: 70vh;
   color: vars.$text-main;
-  padding: 0;
 }
 
 .ordersWrapper {
   max-width: 1000px;
   margin: 0 auto;
+  padding: 0 0.85rem;
 }
 
-// Filter Bar
+// ===== Filter Bar =====
 .filterBar {
+  width: 100%;
+  background: #fff;
+  border-bottom: 1px solid vars.$text-light;
+  margin-bottom: 1.5rem;
+  color: vars.$text-muted;
+
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 1rem 1.25rem;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  margin-bottom: 1.5rem;
-  color: vars.$text-muted;
+  overflow-x: auto;
+
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: vars.$primary transparent;
+
+  padding: 1rem 0;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: vars.$primary;
+    border-radius: 3px;
+  }
 }
 
 .filterSelect {
-  flex: 1;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
   color: vars.$text-main;
-  background: #fff;
   cursor: pointer;
-  transition: all 0.2s;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
 
   &:hover {
-    border-color: vars.$primary;
+    color: vars.$primary;
   }
 
-  &:focus {
-    outline: none;
-    border-color: vars.$primary;
-    box-shadow: 0 0 0 3px rgba(160, 6, 5, 0.1);
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.75rem;
   }
 }
 
-// Orders List
+.filterSelectActive {
+  color: vars.$primary;
+}
+
+// ===== Orders List =====
 .ordersList {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    gap: 0.85rem;
+  }
 }
 
+// ===== Order Card =====
 .orderCard {
   background: #fff;
   padding: 1.25rem;
-  border-top: 1px solid vars.$text-light;
-  transition: all 0.3s;
+  border-bottom: 1px solid vars.$text-light;
+
+  display: block;
   text-decoration: none;
   color: inherit;
-  display: block;
+  transition: all 0.3s;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  }
 }
 
 .orderHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   margin-bottom: 0.75rem;
   padding-bottom: 0.75rem;
 }
@@ -81,7 +115,6 @@
 
 .orderCode {
   font-weight: 600;
-  color: vars.$text-main;
   font-size: 1.05rem;
 }
 
@@ -97,6 +130,7 @@
   flex-shrink: 0;
 }
 
+// ===== Order Content =====
 .orderContent {
   display: flex;
   flex-direction: column;
@@ -105,9 +139,12 @@
 
 .orderItems {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
   gap: 0.75rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 }
 
 .orderItem {
@@ -115,14 +152,29 @@
   gap: 0.5rem;
   flex: 0 0 calc(50% - 0.375rem);
   min-width: 0;
+
+  @media (max-width: 1024px) {
+    flex: 0 0 100%;
+  }
+
+  @media (max-width: 768px) {
+    flex: 1;
+    gap: 0.6rem;
+  }
 }
 
+// ===== Item =====
 .itemImage {
   width: 50px;
   height: 50px;
   object-fit: cover;
   border-radius: 8px;
   flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    width: 48px;
+    height: 48px;
+  }
 }
 
 .itemInfo {
@@ -133,49 +185,64 @@
   min-width: 0;
 }
 
+.itemName,
+.itemVariant {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .itemName {
   font-weight: 500;
-  color: vars.$text-main;
   font-size: 0.9rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+  }
 }
 
-.itemVariant {
-  font-size: 0.8rem;
-  color: vars.$text-muted;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
+.itemVariant,
 .itemQuantity {
   font-size: 0.8rem;
   color: vars.$text-muted;
+
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+  }
 }
 
 .moreItems {
-  font-size: 0.85rem;
-  color: vars.$text-muted;
-  font-style: italic;
   width: 100%;
   text-align: center;
+  font-style: italic;
+  color: vars.$text-muted;
+  font-size: 0.85rem;
 }
 
+// ===== Meta =====
 .orderMeta {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   flex-wrap: wrap;
   gap: 0.75rem;
   padding-top: 0.75rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
 }
 
 .metaItem {
   display: flex;
   align-items: center;
   gap: 0.4rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
+  }
 }
 
 .metaLabel {
@@ -185,12 +252,11 @@
 
 .metaValue {
   font-weight: 600;
-  color: vars.$text-main;
   font-size: 0.9rem;
 }
 
-// Empty State
-.emptyState {
+// ===== Shared Card State =====
+.cardState {
   text-align: center;
   padding: 4rem 2rem;
   background: #fff;
@@ -198,42 +264,21 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
+.emptyState {
+  @extend .cardState;
+}
+
+.errorState {
+  @extend .cardState;
+}
+
 .emptyIcon {
-  color: vars.$text-muted;
   margin-bottom: 1.5rem;
   opacity: 0.5;
-}
-
-.emptyState h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: vars.$text-main;
-  margin-bottom: 0.5rem;
-}
-
-.emptyState p {
   color: vars.$text-muted;
-  margin-bottom: 1.5rem;
 }
 
-.shopButton {
-  display: inline-block;
-  padding: 0.75rem 2rem;
-  background: vars.$primary;
-  color: #fff;
-  font-weight: 500;
-  border-radius: 8px;
-  text-decoration: none;
-  transition: all 0.3s;
-
-  &:hover {
-    background: vars.$primary-hover;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-  }
-}
-
-// Loading State
+// ===== Loading =====
 .loadingState {
   text-align: center;
   padding: 4rem 2rem;
@@ -255,39 +300,20 @@
   }
 }
 
-.loadingState p {
-  color: vars.$text-muted;
-}
-
-// Error State
-.errorState {
-  text-align: center;
-  padding: 4rem 2rem;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-
-  h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: vars.$text-main;
-    margin-bottom: 0.5rem;
-  }
-
-  p {
-    color: vars.$text-muted;
-  }
-}
-
-// Pagination
+// ===== Pagination =====
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1rem;
+
   margin-top: 2rem;
   padding-top: 2rem;
-  // border-top: 1px solid #f3f4f6;
+
+  @media (max-width: 768px) {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+  }
 }
 
 .pageButton {
@@ -295,8 +321,8 @@
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
+
   font-weight: 500;
-  color: vars.$text-main;
   cursor: pointer;
   transition: all 0.2s;
 
@@ -313,180 +339,6 @@
 }
 
 .pageInfo {
-  color: vars.$text-muted;
   font-size: 0.95rem;
-}
-
-// Responsive
-@media (max-width: 1024px) {
-  .orderItem {
-    flex: 0 0 100%;
-  }
-}
-
-@media (max-width: 768px) {
-  .ordersPage {
-    padding: 0;
-  }
-
-  .ordersWrapper {
-    padding: 0.85rem;
-  }
-
-  .filterBar {
-    padding: 0.85rem 1rem;
-    margin-bottom: 1rem;
-    border-radius: 10px;
-  }
-
-  .filterSelect {
-    padding: 0.6rem 0.75rem;
-    font-size: 0.9rem;
-  }
-
-  .ordersList {
-    gap: 0.85rem;
-  }
-
-  .orderCard {
-    padding: 1rem;
-    border-radius: 10px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-    border-top: none;
-  }
-
-  .orderHeader {
-    margin-bottom: 0.65rem;
-    padding-bottom: 0.65rem;
-  }
-
-  .orderItems {
-    flex-direction: column;
-  }
-
-  .orderItem {
-    flex: 1;
-    gap: 0.6rem;
-  }
-
-  .orderMeta {
-    flex-direction: column;
-    align-items: flex-start;
-    padding-top: 0.65rem;
-    gap: 0.5rem;
-  }
-
-  .metaItem {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .metaLabel {
-    font-size: 0.8rem;
-  }
-
-  .metaValue {
-    font-size: 0.9rem;
-  }
-
-  .itemImage {
-    width: 48px;
-    height: 48px;
-  }
-
-  .itemName {
-    font-size: 0.85rem;
-  }
-
-  .itemVariant {
-    font-size: 0.75rem;
-  }
-
-  .itemQuantity {
-    font-size: 0.75rem;
-  }
-
-  .moreItems {
-    font-size: 0.8rem;
-  }
-
-  .emptyState {
-    margin: 1rem;
-    padding: 3rem 1.5rem;
-
-    h2 {
-      font-size: 1.3rem;
-    }
-
-    p {
-      font-size: 0.85rem;
-    }
-  }
-
-  .pagination {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .ordersWrapper {
-    padding: 0.75rem;
-  }
-
-  .filterBar {
-    padding: 0.75rem 0.85rem;
-    margin-bottom: 0.85rem;
-  }
-
-  .filterSelect {
-    padding: 0.55rem 0.65rem;
-    font-size: 0.85rem;
-  }
-
-  .ordersList {
-    gap: 0.75rem;
-  }
-
-  .orderCard {
-    padding: 0.85rem;
-    border-radius: 10px;
-  }
-
-  .orderCode {
-    font-size: 0.9rem;
-  }
-
-  .orderStatus {
-    padding: 0.3rem 0.65rem;
-    font-size: 0.75rem;
-  }
-
-  .itemImage {
-    width: 44px;
-    height: 44px;
-  }
-
-  .itemName {
-    font-size: 0.8rem;
-  }
-
-  .emptyState {
-    margin: 0.75rem;
-    padding: 2.5rem 1rem;
-
-    h2 {
-      font-size: 1.2rem;
-    }
-  }
-
-  .shopButton {
-    padding: 0.7rem 1.5rem;
-    font-size: 0.9rem;
-  }
-
-  .pageButton {
-    padding: 0.55rem 1rem;
-    font-size: 0.9rem;
-  }
+  color: vars.$text-muted;
 }

@@ -23,10 +23,11 @@ export const orderKeys = {
 /**
  * Get user's orders
  */
-export const useMyOrders = (params?: OrderListParams) => {
+export const useMyOrders = (params?: OrderListParams, enabled: boolean = true) => {
   return useQuery({
     queryKey: orderKeys.list(params),
     queryFn: () => orderAPI.getMyOrders(params),
+    enabled,
     staleTime: 1000 * 60 * 2, // 2 minutes
   });
 };

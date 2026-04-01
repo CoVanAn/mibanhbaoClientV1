@@ -4,6 +4,7 @@
  */
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
 import { cartAPI, type Cart } from "@/src/apiRequests/cart";
 
 // Query Keys
@@ -20,22 +21,27 @@ export const useCart = () => {
       try {
         const cart = await cartAPI.getCart();
         return cart;
-      } catch {
+      } catch (error) {
+        const status = (error as AxiosError)?.response?.status;
 
-        // Return empty cart on error instead of throwing
-        // This prevents the page from breaking
-        return {
-          id: null,
-          items: [],
-          coupon: null,
-          subtotal: 0,
-          totalItems: 0,
-          currency: "VND",
-        } as Cart;
+        // Treat unauthenticated/missing cart as an empty cart state.
+        if (status === 401 || status === 404) {
+          return {
+            id: null,
+            items: [],
+            coupon: null,
+            subtotal: 0,
+            totalItems: 0,
+            currency: "VND",
+          } as Cart;
+        }
+
+        // Surface network/server issues to UI instead of masking as "empty cart".
+        throw error;
       }
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
-    retry: false, // Don't retry on error, just return empty cart
+    retry: false,
     refetchOnMount: true, // Always refetch when component mounts
     refetchOnWindowFocus: false, // Don't refetch on window focus
   });

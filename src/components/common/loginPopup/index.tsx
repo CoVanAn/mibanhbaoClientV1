@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import "./LoginPopup.scss";
 import { assets } from "@/src/assets/assets";
@@ -25,6 +26,7 @@ type LoginFormData = {
 };
 
 const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const setToken = useStore((state: UserSlice) => state.setToken);
   const mergeGuestCart = useMergeGuestCart();
@@ -118,7 +120,14 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
           queryClient.invalidateQueries({ queryKey: ["account"] }),
         ]);
 
+        const params = new URLSearchParams(window.location.search);
+        const redirectPath = params.get("redirect");
+
         setShowLogin(false);
+
+        if (redirectPath && redirectPath.startsWith("/")) {
+          router.replace(redirectPath);
+        }
       }
 
       // Refresh token is automatically stored in HttpOnly cookie by server

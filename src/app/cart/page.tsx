@@ -9,7 +9,7 @@ import { getApiErrorMessage } from "@/src/lib/error";
 import styles from "./Cart.module.scss";
 
 export default function CartPage() {
-  const { data: cart, isLoading } = useCart();
+  const { data: cart, isLoading, isError, refetch } = useCart();
   const clearCart = useClearCart();
   const toast = useToast();
 
@@ -29,6 +29,24 @@ export default function CartPage() {
     return (
       <div className={styles.loading}>
         <h2>Đang tải giỏ hàng...</h2>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className={styles.empty}>
+        <h2>Không thể tải giỏ hàng</h2>
+        <p>Vui lòng kiểm tra kết nối và thử lại.</p>
+        <button
+          type="button"
+          className={styles.continueBtn}
+          onClick={() => {
+            void refetch();
+          }}
+        >
+          Thử lại
+        </button>
       </div>
     );
   }

@@ -3,8 +3,6 @@
 .container {
   width: 100%;
   min-height: 70vh;
-  padding: 2rem 0 3rem;
-  // background: #f9fafb;
 }
 
 .wrapper {
@@ -66,6 +64,7 @@
   display: flex;
   flex-direction: column;
   padding-right: 2rem;
+  margin-top: 1rem;
 }
 
 .sidebarHeader {
@@ -98,9 +97,7 @@
   font-weight: 500;
   font-size: 0.95rem;
   border: 1px solid transparent;
-
   &:hover {
-    border: 1px solid vars.$primary;
     color: vars.$primary;
   }
 }
@@ -166,8 +163,8 @@
   }
 
   .sidebar {
-    position: sticky;
-    top: 0;
+    // position: sticky;
+    // top: 0;
     z-index: 100;
     background: #fff;
     border-right: none;
@@ -208,7 +205,6 @@
     font-size: 1.1rem;
   }
 
-  // Show short labels on mobile
   .navLabel {
     display: none;
   }
@@ -218,7 +214,6 @@
   }
 
   .content {
-    padding: 1rem;
     min-height: auto;
   }
 
@@ -241,17 +236,11 @@
   .nav {
     padding: 0.4rem 0.4rem 0.5rem;
   }
-
   .navItem {
     padding: 0.6rem 0.4rem;
     font-size: 0.65rem;
   }
-
   .navIcon {
     font-size: 1.05rem;
-  }
-
-  .content {
-    padding: 0.85rem;
   }
 }

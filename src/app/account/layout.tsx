@@ -41,6 +41,19 @@ export default function AccountLayout({
 }) {
   const pathname = usePathname();
   const token = useStore((state: UserSlice) => state.token);
+  const isInitialized = useStore((state: UserSlice) => state.isInitialized);
+
+  if (!isInitialized) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.wrapper}>
+          <div className={styles.emptyCard}>
+            <h2>Đang kiểm tra phiên đăng nhập...</h2>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!token) {
     return (
@@ -49,7 +62,10 @@ export default function AccountLayout({
           <div className={styles.emptyCard}>
             <h2>Đăng nhập để quản lý tài khoản</h2>
             <p>Hãy đăng nhập để xem thông tin hồ sơ, địa chỉ và đơn hàng.</p>
-            <Link href="/login" className={styles.loginButton}>
+            <Link
+              href="/?auth=login&redirect=/account/profile"
+              className={styles.loginButton}
+            >
               Đăng nhập
             </Link>
           </div>

@@ -31,7 +31,12 @@ type Step = "shipping" | "payment" | "review";
 export default function CheckoutPage() {
   const router = useRouter();
   const { data: user, isLoading: userLoading } = useProfile();
-  const { data: cart, isLoading: cartLoading } = useCart();
+  const {
+    data: cart,
+    isLoading: cartLoading,
+    isError: isCartError,
+    refetch: refetchCart,
+  } = useCart();
   const { data: addresses = [], isLoading: addressesLoading } = useAddresses();
   const createOrder = useCreateOrder();
   const applyCoupon = useApplyCoupon();
@@ -55,11 +60,12 @@ export default function CheckoutPage() {
     !userLoading &&
     !!user &&
     !cartLoading &&
+    !isCartError &&
     (!cart || cart.items.length === 0);
 
   useEffect(() => {
     if (shouldRedirectToLogin) {
-      router.replace("/account/login?redirect=/checkout");
+      router.replace("/?auth=login&redirect=/checkout");
       return;
     }
 
@@ -76,6 +82,22 @@ export default function CheckoutPage() {
     return (
       <div className={styles.loading}>
         <h2>Đang tải...</h2>
+      </div>
+    );
+  }
+
+  if (isCartError) {
+    return (
+      <div className={styles.loading}>
+        <h2>Không thể tải giỏ hàng</h2>
+        <button
+          type="button"
+          onClick={() => {
+            void refetchCart();
+          }}
+        >
+          Thử lại
+        </button>
       </div>
     );
   }

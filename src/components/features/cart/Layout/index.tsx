@@ -15,7 +15,7 @@ interface CartDrawerProps {
 }
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
-  const { data: cart, isLoading } = useCart();
+  const { data: cart, isLoading, isError, refetch } = useCart();
   const clearCart = useClearCart();
   const toast = useToast();
 
@@ -55,6 +55,18 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
         <div className={styles.content}>
           {isLoading ? (
             <div className={styles.loading}>Đang tải...</div>
+          ) : isError ? (
+            <div className={styles.empty}>
+              <p>Không thể tải giỏ hàng</p>
+              <button
+                className={styles.continueBtn}
+                onClick={() => {
+                  void refetch();
+                }}
+              >
+                Thử lại
+              </button>
+            </div>
           ) : !cart?.items || cart.items.length === 0 ? (
             <div className={styles.empty}>
               <ShoppingCart size={64} />
