@@ -1,7 +1,7 @@
-import "../chinh-sach-bao-mat/PrivacyPolicy.scss";
+import "./TermsofService.scss";
 
 const TermsofService = () => (
-  <div className="privacy-policy-container">
+  <div className="terms-of-service-container">
     <h1>Điều Khoản Dịch Vụ</h1>
     <div className="policy-section">
       <h2>1. Hướng dẫn sử dụng web</h2>

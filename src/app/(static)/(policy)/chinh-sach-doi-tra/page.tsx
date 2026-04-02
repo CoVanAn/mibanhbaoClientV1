@@ -1,20 +1,17 @@
-import "../chinh-sach-bao-mat/PrivacyPolicy.scss";
+import "./ExchangePolicy.scss";
 
 export default function Page() {
   return (
-    <div className="privacy-policy-container">
+    <div className="exchange-policy-container">
       <h1>Chính Sách Đổi Trả Hàng</h1>
-
       <p>
         Mi Bánh Bao cam kết cung cấp sản phẩm bánh bao chất lượng cao và dịch vụ
         khách hàng tốt nhất có thể. Tuy nhiên, nếu có bất kỳ vấn đề nào liên
         quan đến sản phẩm của chúng tôi, chúng tôi sẽ hỗ trợ bạn với quy trình
         đổi trả hàng sau đây:
       </p>
-      <br />
       <div className="policy-section">
         <h2>1. Điều Kiện Đổi Trả Hàng</h2>
-
         <ul>
           <li>
             - Bánh bao phải còn nguyên vẹn, chưa qua sử dụng, không bị hỏng hoặc
@@ -73,7 +70,6 @@ export default function Page() {
           </li>
         </ul>
       </div>
-      <br />
       <p>
         Chúng tôi mong rằng quy trình đổi trả hàng này sẽ mang lại sự thoải mái
         và hài lòng cho bạn. Xin vui lòng liên hệ với chúng tôi nếu bạn có bất

@@ -1,14 +1,14 @@
-import "../chinh-sach-bao-mat/PrivacyPolicy.scss";
+import "./ShippingPolicy.scss";
 
 export default function Page() {
   return (
-    <div className="privacy-policy-container">
+    <div className="shipping-policy-container">
       <h1>Chính Sách Vận Chuyển</h1>
       <div className="policy-section">
         <h2>1. Sản phẩm Bột Bánh Bao Pha Sẵn</h2>
         <ul>
           <li>
-            - Đồng giá vận chuyển 15,000vnđ toàn lãnh thổ Việt Nam và{" "}
+            - Đồng giá vận chuyển 30,000vnđ toàn lãnh thổ Việt Nam và{" "}
             <b>miễn phí vận chuyển</b> khi mua từ 2 gói bất kỳ trở lên.
           </li>
           <li>- Thời gian vận chuyển 2-7 ngày tùy khu vực.</li>
