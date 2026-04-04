@@ -39,20 +39,17 @@
 .nav-left {
   display: flex;
   gap: 40px;
+  .item {
+    cursor: pointer;
+    font-weight: 600;
+    color: $text-main;
+    font-size: $font-size-base;
+    transition: color 0.3s ease;
+  }
+  .item:hover {
+    color: $primary-light;
+  }
 }
-
-.nav-left span {
-  cursor: pointer;
-  font-weight: 600;
-  color: $text-main;
-  font-size: $font-size-base;
-  transition: color 0.3s ease;
-}
-
-.nav-left span:hover {
-  color: $primary-light;
-}
-
 .nav-right {
   display: flex;
   gap: 20px;

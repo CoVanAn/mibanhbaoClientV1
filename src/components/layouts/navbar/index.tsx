@@ -3,31 +3,39 @@
 import { useState } from "react";
 import "./Navbar.scss";
 import { assets } from "@/src/assets/assets";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useCart } from "@/src/queries/useCart";
 import Link from "next/link";
 import ProductSearch from "@/src/components/features/search";
 
+const navItems = [
+  { label: "Trang chủ", href: "/" },
+  { label: "Giới thiệu", href: "/about" },
+  { label: "Sản phẩm", href: "/products" },
+  { label: "Liên hệ", href: "/contact" },
+] as const;
+
 const Navbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const router = useRouter();
 
   const { data: cart } = useCart();
   const itemCount = cart?.totalItems || 0;
+
+  const closeSidebar = () => setSidebarOpen(false);
 
   return (
     <div className="navbar-container">
       <div className="logo-section">
         <div className="logo-container">
-          <Image
-            src={assets.logo}
-            alt="Logo"
-            className="main-logo"
-            onClick={() => router.push("/")}
-            width={200}
-            height={140}
-          />
+          <Link href="/" aria-label="Về trang chủ">
+            <Image
+              src={assets.logo}
+              alt="Logo"
+              className="main-logo"
+              width={200}
+              height={140}
+            />
+          </Link>
         </div>
       </div>
 
@@ -36,15 +44,15 @@ const Navbar = () => {
       <div className="nav-bar">
         <div className="nav-container">
           <div className="nav-left">
-            <span onClick={() => router.push("/")}>Trang chủ</span>
-            <span onClick={() => router.push("/about")}>Giới thiệu</span>
-            <span onClick={() => router.push("/products")}>Sản phẩm</span>
-            {/* <span onClick={() => router.push("/news")}>Tin tức</span> */}
-            <span onClick={() => router.push("/contact")}>Liên hệ</span>
+            {navItems.map((item) => (
+              <Link key={item.href} href={item.href} className="item">
+                {item.label}
+              </Link>
+            ))}
           </div>
           <div
             className="hamburger-menu"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
+            onClick={() => setSidebarOpen((prev) => !prev)}
           >
             <span></span>
             <span></span>
@@ -75,52 +83,26 @@ const Navbar = () => {
         <div className="sidebar-content">
           <div className="sidebar-header">
             <h3>Menu</h3>
-            <span className="close-btn" onClick={() => setSidebarOpen(false)}>
+            <span className="close-btn" onClick={closeSidebar}>
               ×
             </span>
           </div>
           <div className="sidebar-menu">
-            <span
-              onClick={() => {
-                setSidebarOpen(false);
-                router.push("/");
-              }}
-            >
-              Trang chủ
-            </span>
-            <span
-              onClick={() => {
-                setSidebarOpen(false);
-                router.push("/about");
-              }}
-            >
-              Giới thiệu
-            </span>
-            <span
-              onClick={() => {
-                setSidebarOpen(false);
-                router.push("/products");
-              }}
-            >
-              Sản phẩm
-            </span>
-            <span
-              onClick={() => {
-                setSidebarOpen(false);
-                router.push("/contact");
-              }}
-            >
-              Liên hệ
-            </span>
+            {navItems.map((item) => (
+              <Link
+                key={`mobile-${item.href}`}
+                href={item.href}
+                onClick={closeSidebar}
+              >
+                {item.label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>
 
       {sidebarOpen && (
-        <div
-          className="sidebar-overlay"
-          onClick={() => setSidebarOpen(false)}
-        ></div>
+        <div className="sidebar-overlay" onClick={closeSidebar}></div>
       )}
     </div>
   );
