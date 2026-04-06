@@ -28,6 +28,15 @@ import styles from "./Checkout.module.scss";
 
 type Step = "shipping" | "payment" | "review";
 
+const toIsoDateTime = (value?: string): string | undefined => {
+  if (!value) return undefined;
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return undefined;
+
+  return date.toISOString();
+};
+
 export default function CheckoutPage() {
   const router = useRouter();
   const { data: user, isLoading: userLoading } = useProfile();
@@ -169,12 +178,25 @@ export default function CheckoutPage() {
         return;
       }
 
+      const pickupAt = toIsoDateTime(checkoutData.pickupAt);
+      const scheduledAt = toIsoDateTime(checkoutData.scheduledAt);
+
+      if (checkoutData.pickupAt && !pickupAt) {
+        toast.error("Thời gian nhận hàng không hợp lệ");
+        return;
+      }
+
+      if (checkoutData.scheduledAt && !scheduledAt) {
+        toast.error("Thời gian dự kiến nhận hàng không hợp lệ");
+        return;
+      }
+
       await createOrder.mutateAsync({
         method: checkoutData.method,
         addressId: checkoutData.addressId,
         customerNote: checkoutData.customerNote || undefined,
-        pickupAt: checkoutData.pickupAt,
-        scheduledAt: checkoutData.scheduledAt,
+        pickupAt,
+        scheduledAt,
       });
       // Redirect is handled in mutation onSuccess
     } catch (error: unknown) {

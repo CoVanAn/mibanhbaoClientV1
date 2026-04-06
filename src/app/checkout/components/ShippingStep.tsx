@@ -158,9 +158,9 @@ export default function ShippingStep({
             <label>Thời gian dự kiến nhận hàng (tùy chọn)</label>
             <input
               type="datetime-local"
-              value={data.scheduledAt || ""}
+              value={data.pickupAt || ""}
               onChange={(e) =>
-                onChange({ ...data, scheduledAt: e.target.value || undefined })
+                onChange({ ...data, pickupAt: e.target.value || undefined })
               }
               min={new Date().toISOString().slice(0, 16)}
             />

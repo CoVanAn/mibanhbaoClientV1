@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import "./Header.scss";
 import useStore, { UserSlice } from "@/src/store/user";
 import { useRouter } from "next/navigation";
@@ -19,6 +20,7 @@ const Header = ({ setShowLogin }: HeaderProps) => {
   const clearToken = useStore((state: UserSlice) => state.clearToken);
   const isInitialized = useStore((state: UserSlice) => state.isInitialized);
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const handleLogout = () => {
     setShowLogoutModal(true);
@@ -37,6 +39,11 @@ const Header = ({ setShowLogin }: HeaderProps) => {
     } finally {
       // Clear token from memory
       clearToken();
+
+      // Drop user-scoped caches to prevent stale data after auth state changes
+      queryClient.removeQueries({ queryKey: ["cart"] });
+      queryClient.removeQueries({ queryKey: ["account"] });
+      queryClient.removeQueries({ queryKey: ["orders"] });
 
       // Redirect to home
       router.push("/");

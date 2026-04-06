@@ -51,7 +51,7 @@ export const accountAPI = {
   updateProfile: async (form: UpdateProfileData): Promise<User> => {
     const response = await apiClient.patch("/api/user/profile", {
       name: form.name.trim(),
-      phone: form.phone.trim() || null,
+      phone: form.phone || null,
     });
     const payload = response.data as { user?: unknown; message?: string };
 
@@ -84,7 +84,7 @@ export const accountAPI = {
 
     const response = await apiClient[method](endpoint, {
       name: form.name.trim(),
-      phone: form.phone.trim(),
+      phone: form.phone,
       company: form.company.trim() || null,
       addressLine: form.addressLine.trim(),
       province: form.province.trim(),

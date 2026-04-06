@@ -7,6 +7,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { orderAPI, type CreateOrderPayload, type CancelOrderPayload, type OrderListParams } from "@/src/apiRequests/order";
 import { cartKeys } from "./useCart";
+import useStore, { UserSlice } from "@/src/store/user";
 
 // Query Keys
 export const orderKeys = {
@@ -24,10 +25,14 @@ export const orderKeys = {
  * Get user's orders
  */
 export const useMyOrders = (params?: OrderListParams, enabled: boolean = true) => {
+  const token = useStore((state: UserSlice) => state.token);
+  const isInitialized = useStore((state: UserSlice) => state.isInitialized);
+  const scope = token ? "authenticated" : "guest";
+
   return useQuery({
-    queryKey: orderKeys.list(params),
+    queryKey: [...orderKeys.list(params), scope],
     queryFn: () => orderAPI.getMyOrders(params),
-    enabled,
+    enabled: enabled && isInitialized && !!token,
     staleTime: 1000 * 60 * 2, // 2 minutes
   });
 };
@@ -36,10 +41,14 @@ export const useMyOrders = (params?: OrderListParams, enabled: boolean = true) =
  * Get order by ID
  */
 export const useOrder = (orderId: number) => {
+  const token = useStore((state: UserSlice) => state.token);
+  const isInitialized = useStore((state: UserSlice) => state.isInitialized);
+  const scope = token ? "authenticated" : "guest";
+
   return useQuery({
-    queryKey: orderKeys.detail(orderId),
+    queryKey: [...orderKeys.detail(orderId), scope],
     queryFn: () => orderAPI.getOrderById(orderId),
-    enabled: !!orderId,
+    enabled: isInitialized && !!token && !!orderId,
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 };
@@ -48,10 +57,14 @@ export const useOrder = (orderId: number) => {
  * Get order status history
  */
 export const useOrderHistory = (orderId: number) => {
+  const token = useStore((state: UserSlice) => state.token);
+  const isInitialized = useStore((state: UserSlice) => state.isInitialized);
+  const scope = token ? "authenticated" : "guest";
+
   return useQuery({
-    queryKey: orderKeys.history(orderId),
+    queryKey: [...orderKeys.history(orderId), scope],
     queryFn: () => orderAPI.getOrderHistory(orderId),
-    enabled: !!orderId,
+    enabled: isInitialized && !!token && !!orderId,
     staleTime: 1000 * 60 * 2, // 2 minutes
   });
 };
@@ -73,7 +86,7 @@ export const useCreateOrder = () => {
       queryClient.invalidateQueries({ queryKey: orderKeys.lists() });
 
       // Cache the new order
-      queryClient.setQueryData(orderKeys.detail(order.id), order);
+      queryClient.setQueriesData({ queryKey: orderKeys.detail(order.id) }, order);
 
       // Redirect to order success page
       router.push(`/order-success/${order.code}`);
@@ -92,7 +105,7 @@ export const useCancelOrder = () => {
       orderAPI.cancelOrder(orderId, payload),
     onSuccess: (order) => {
       // Update cached order
-      queryClient.setQueryData(orderKeys.detail(order.id), order);
+      queryClient.setQueriesData({ queryKey: orderKeys.detail(order.id) }, order);
 
       // Invalidate order lists
       queryClient.invalidateQueries({ queryKey: orderKeys.lists() });

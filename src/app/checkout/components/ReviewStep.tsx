@@ -12,6 +12,7 @@ interface ReviewStepProps {
     addressId?: number;
     customerNote: string;
     paymentMethod: "COD" | "BANKING";
+    pickupAt?: string;
     scheduledAt?: string;
   };
   cart: Cart;
@@ -72,10 +73,10 @@ export default function ReviewStep({
             <>
               <strong>Cửa hàng Mì Bánh Bao</strong>
               <p>123 Lê Văn Sỹ, Phường 13, Quận 3, TP. Hồ Chí Minh</p>
-              {data.scheduledAt && (
+              {data.pickupAt && (
                 <p className={styles.scheduledTime}>
                   <strong>Thời gian nhận:</strong>{" "}
-                  {new Date(data.scheduledAt).toLocaleString("vi-VN")}
+                  {new Date(data.pickupAt).toLocaleString("vi-VN")}
                 </p>
               )}
             </>

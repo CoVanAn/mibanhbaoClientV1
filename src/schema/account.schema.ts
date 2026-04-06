@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+const normalizePhone = (value: string) => value.replace(/\D/g, "");
+
+const isValidPhoneDigits = (value: string) => /^\d{10,11}$/.test(value);
+
 const trimmedString = (message: string) =>
   z
     .string()
@@ -24,12 +28,26 @@ export const profileFormSchema = z.object({
     .string()
     .trim()
     .email("Email không hợp lệ"),
-  phone: optionalTrimmedString(),
+  phone: z
+    .string()
+    .trim()
+    .optional()
+    .transform((value) => normalizePhone(value ?? ""))
+    .refine((value) => value.length === 0 || isValidPhoneDigits(value), {
+      message: "Số điện thoại phải có 10-11 chữ số",
+    }),
 });
 
 export const addressFormSchema = z.object({
   name: trimmedString("Tên người nhận không được để trống"),
-  phone: trimmedString("Số điện thoại không được để trống"),
+  phone: z
+    .string()
+    .trim()
+    .min(1, { message: "Số điện thoại không được để trống" })
+    .transform((value) => normalizePhone(value))
+    .refine((value) => isValidPhoneDigits(value), {
+      message: "Số điện thoại phải có 10-11 chữ số",
+    }),
   company: optionalTrimmedString(),
   addressLine: trimmedString("Địa chỉ chi tiết không được để trống"),
   province: trimmedString("Tỉnh/Thành phố không được để trống"),

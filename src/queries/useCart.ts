@@ -6,17 +6,22 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { cartAPI, type Cart } from "@/src/apiRequests/cart";
+import useStore, { UserSlice } from "@/src/store/user";
 
 // Query Keys
 export const cartKeys = {
   all: ["cart"] as const,
-  detail: () => [...cartKeys.all] as const,
+  detail: (scope: "guest" | "authenticated" = "guest") =>
+    [...cartKeys.all, scope] as const,
 };
 
 // Hooks
 export const useCart = () => {
+  const token = useStore((state: UserSlice) => state.token);
+  const scope = token ? "authenticated" : "guest";
+
   return useQuery({
-    queryKey: cartKeys.detail(),
+    queryKey: cartKeys.detail(scope),
     queryFn: async () => {
       try {
         const cart = await cartAPI.getCart();
@@ -53,7 +58,7 @@ export const useAddToCart = () => {
   return useMutation({
     mutationFn: cartAPI.addItem,
     onSuccess: (data) => {
-      queryClient.setQueryData(cartKeys.detail(), data);
+      queryClient.setQueriesData({ queryKey: cartKeys.all }, data);
     },
   });
 };
@@ -64,7 +69,7 @@ export const useUpdateCartItem = () => {
   return useMutation({
     mutationFn: cartAPI.updateItem,
     onSuccess: (data) => {
-      queryClient.setQueryData(cartKeys.detail(), data);
+      queryClient.setQueriesData({ queryKey: cartKeys.all }, data);
     },
   });
 };
@@ -75,7 +80,7 @@ export const useRemoveCartItem = () => {
   return useMutation({
     mutationFn: cartAPI.removeItem,
     onSuccess: (data) => {
-      queryClient.setQueryData(cartKeys.detail(), data);
+      queryClient.setQueriesData({ queryKey: cartKeys.all }, data);
     },
   });
 };
@@ -86,7 +91,7 @@ export const useClearCart = () => {
   return useMutation({
     mutationFn: cartAPI.clearCart,
     onSuccess: () => {
-      queryClient.setQueryData(cartKeys.detail(), {
+      queryClient.setQueriesData({ queryKey: cartKeys.all }, {
         id: null,
         items: [],
         coupon: null,
@@ -104,7 +109,7 @@ export const useApplyCoupon = () => {
   return useMutation({
     mutationFn: cartAPI.applyCoupon,
     onSuccess: (data) => {
-      queryClient.setQueryData(cartKeys.detail(), data);
+      queryClient.setQueriesData({ queryKey: cartKeys.all }, data);
     },
   });
 };
@@ -115,7 +120,7 @@ export const useRemoveCoupon = () => {
   return useMutation({
     mutationFn: cartAPI.removeCoupon,
     onSuccess: (data) => {
-      queryClient.setQueryData(cartKeys.detail(), data);
+      queryClient.setQueriesData({ queryKey: cartKeys.all }, data);
     },
   });
 };
@@ -126,7 +131,7 @@ export const useMergeGuestCart = () => {
   return useMutation({
     mutationFn: cartAPI.mergeGuestCart,
     onSuccess: (data) => {
-      queryClient.setQueryData(cartKeys.detail(), data);
+      queryClient.setQueriesData({ queryKey: cartKeys.all }, data);
     },
   });
 };

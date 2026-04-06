@@ -6,6 +6,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { accountAPI } from "@/src/apiRequests/account";
 import type { AddressForm, ProfileForm } from "@/src/apiRequests/account";
+import useStore, { UserSlice } from "@/src/store/user";
 
 // Query Keys
 export const accountKeys = {
@@ -16,9 +17,14 @@ export const accountKeys = {
 
 // Hooks
 export const useProfile = () => {
+  const token = useStore((state: UserSlice) => state.token);
+  const isInitialized = useStore((state: UserSlice) => state.isInitialized);
+  const scope = token ? "authenticated" : "guest";
+
   return useQuery({
-    queryKey: accountKeys.profile(),
+    queryKey: [...accountKeys.profile(), scope],
     queryFn: accountAPI.getProfile,
+    enabled: isInitialized && !!token,
     staleTime: 5 * 60 * 1000, // 5 minutes
     refetchOnMount: true,
   });
@@ -30,16 +36,20 @@ export const useUpdateProfile = () => {
   return useMutation({
     mutationFn: (form: Omit<ProfileForm, "email">) => accountAPI.updateProfile(form),
     onSuccess: (data) => {
-      queryClient.setQueryData(accountKeys.profile(), data);
+      queryClient.setQueriesData({ queryKey: accountKeys.profile() }, data);
     },
   });
 };
 
 export const useAddresses = (enabled: boolean = true) => {
+  const token = useStore((state: UserSlice) => state.token);
+  const isInitialized = useStore((state: UserSlice) => state.isInitialized);
+  const scope = token ? "authenticated" : "guest";
+
   return useQuery({
-    queryKey: accountKeys.addresses(),
+    queryKey: [...accountKeys.addresses(), scope],
     queryFn: accountAPI.getAddresses,
-    enabled,
+    enabled: enabled && isInitialized && !!token,
     staleTime: 5 * 60 * 1000, // 5 minutes
     refetchOnMount: true,
   });
