@@ -102,7 +102,7 @@ export default function ShippingStep({
               <MapPin size={20} />
               Địa chỉ giao hàng
             </h3>
-            <Link href="/account/address" className={styles.addButton}>
+            <Link href="/account#address-section" className={styles.addButton}>
               <Plus size={18} />
               Thêm địa chỉ mới
             </Link>

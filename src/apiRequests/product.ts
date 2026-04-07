@@ -17,7 +17,6 @@ export type FetchProductListOptions = {
   categoryId?: number | null;
   page?: number;
   limit?: number;
-  search?: string;
 };
 
 const parseProductDetail = (payload: unknown): ProductDetailData => {
@@ -60,9 +59,6 @@ export const productAPI = {
     }
     if (options?.limit) {
       params.append("limit", String(options.limit));
-    }
-    if (options?.search?.trim()) {
-      params.append("search", options.search.trim());
     }
     const query = params.toString();
     const url = `/api/product/list${query ? `?${query}` : ""}`;

@@ -6,7 +6,6 @@ import { assets } from "@/src/assets/assets";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/src/queries/useCart";
 import Link from "next/link";
-import ProductSearch from "@/src/components/features/search";
 
 const Navbar = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -59,7 +58,9 @@ const Navbar = () => {
           </div>
           <div className="nav-right">
             {/* Menu hamburger cho tablet/mobile */}
-            <ProductSearch />
+            <div className="nav-icon">
+              <img src={assets.search_icon} alt="Tìm kiếm" />
+            </div>
             <Link href="/cart" className="nav-icon">
               {itemCount > 0 && (
                 <span className="badge">
