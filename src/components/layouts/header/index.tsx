@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import "./Header.scss";
+import styles from "./Header.module.scss";
 import useStore, { UserSlice } from "@/src/store/user";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -55,28 +55,28 @@ const Header = ({ setShowLogin }: HeaderProps) => {
   };
 
   return (
-    <div className="header">
-      <div className="header-container">
-        <div className="header-left">
+    <div className={styles.header}>
+      <div className={styles.headerContainer}>
+        <div className={styles.headerLeft}>
           <span>Hotline: 0942 5533 42</span>
           <span>Email: hotro@mibanhbao.vn</span>
         </div>
-        <div className="header-right">
+        <div className={styles.headerRight}>
           {!isInitialized ? (
             // Show loading or placeholder while checking session
-            <span className="header-login-btn" style={{ opacity: 0.5 }}>
+            <span className={styles.headerLoginBtn} style={{ opacity: 0.5 }}>
               Đang tải...
             </span>
           ) : !token ? (
             <>
               <span
                 onClick={() => setShowLogin(true)}
-                className="header-login-btn"
+                className={styles.headerLoginBtn}
               >
                 Đăng nhập
               </span>
               <span
-                className="header-login-btn"
+                className={styles.headerLoginBtn}
                 onClick={() => setShowLogin(true)}
               >
                 Đăng ký
@@ -84,10 +84,10 @@ const Header = ({ setShowLogin }: HeaderProps) => {
             </>
           ) : (
             <>
-              <Link href="/account" className="header-login-btn">
+              <Link href="/account" className={styles.headerLoginBtn}>
                 Tài khoản
               </Link>
-              <span className="login-btn" onClick={handleLogout}>
+              <span className={styles.loginBtn} onClick={handleLogout}>
                 Đăng xuất
               </span>
             </>

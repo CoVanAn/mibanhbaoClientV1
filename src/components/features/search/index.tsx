@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { assets } from "@/src/assets/assets";
 import { productAPI } from "@/src/apiRequests/product";
-import "./Search.scss";
+import styles from "./Search.module.scss";
 
 const ProductSearch = () => {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -62,10 +62,10 @@ const ProductSearch = () => {
   };
 
   return (
-    <div className="search-wrapper" ref={searchWrapperRef}>
+    <div className={styles.searchWrapper} ref={searchWrapperRef}>
       <button
         type="button"
-        className="nav-icon nav-icon-btn"
+        className={styles.navIconBtn}
         onClick={() => setSearchOpen((prev) => !prev)}
         aria-label="Mở tìm kiếm"
       >
@@ -73,10 +73,10 @@ const ProductSearch = () => {
       </button>
 
       {searchOpen && (
-        <div className="search-popover">
+        <div className={styles.searchPopover}>
           <input
             type="text"
-            className="search-input"
+            className={styles.searchInput}
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             placeholder="Tìm theo tên sản phẩm..."
@@ -84,15 +84,19 @@ const ProductSearch = () => {
           />
 
           {showSearchResult && (
-            <div className="search-result-list">
+            <div className={styles.searchResultList}>
               {isSearching && (
-                <div className="search-result-item search-result-empty">
+                <div
+                  className={`${styles.searchResultItem} ${styles.searchResultEmpty}`}
+                >
                   Đang tìm kiếm...
                 </div>
               )}
 
               {!isSearching && products.length === 0 && (
-                <div className="search-result-item search-result-empty">
+                <div
+                  className={`${styles.searchResultItem} ${styles.searchResultEmpty}`}
+                >
                   Không tìm thấy sản phẩm
                 </div>
               )}
@@ -102,22 +106,26 @@ const ProductSearch = () => {
                   <button
                     type="button"
                     key={product.id}
-                    className="search-result-item"
+                    className={styles.searchResultItem}
                     onClick={() => handleProductSelect(product.slug)}
                   >
                     {product.image ? (
                       <Image
                         src={product.image}
                         alt={product.name}
-                        className="search-result-image"
+                        className={styles.searchResultImage}
                         width={56}
                         height={56}
                         unoptimized
                       />
                     ) : (
-                      <div className="search-result-image search-result-image-placeholder" />
+                      <div
+                        className={`${styles.searchResultImage} ${styles.searchResultImagePlaceholder}`}
+                      />
                     )}
-                    <span className="search-result-name">{product.name}</span>
+                    <span className={styles.searchResultName}>
+                      {product.name}
+                    </span>
                   </button>
                 ))}
             </div>

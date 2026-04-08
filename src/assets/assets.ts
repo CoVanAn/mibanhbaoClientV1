@@ -1,4 +1,4 @@
-const baseAssetsPath = "/assets";
+const baseAssetsPath = "";
 
 const withPath = (fileName: string) => `${baseAssetsPath}/${fileName}`;
 

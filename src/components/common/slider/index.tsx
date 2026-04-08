@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { assets } from "@/src/assets/assets";
 import Image from "next/image";
-import "./Slider.scss";
+import styles from "./Slider.module.scss";
 
 const Slider = () => {
   const slides = [assets.slider_1, assets.slider_2];
@@ -19,14 +19,12 @@ const Slider = () => {
 
   return (
     <div>
-      <div className="slider-section">
-        <div className="slider-container">
+      <div className={styles.sliderSection}>
+        <div className={styles.sliderContainer}>
           {slides.map((slide, index) => (
             <div
               key={index}
-              className={`slider-item ${
-                index === currentSlide ? "active" : ""
-              }`}
+              className={`${styles.sliderItem} ${index === currentSlide ? styles.active : ""} ${index === 0 ? styles.first : ""}`}
             >
               <Image
                 src={slide}
@@ -37,11 +35,11 @@ const Slider = () => {
             </div>
           ))}
         </div>
-        <div className="slider-dots">
+        <div className={styles.sliderDots}>
           {slides.map((_, index) => (
             <div key={index}>
               <span
-                className={`dot ${index === currentSlide ? "active" : ""}`}
+                className={`${styles.dot} ${index === currentSlide ? styles.dotActive : ""}`}
                 onClick={() => setCurrentSlide(index)}
               ></span>
             </div>

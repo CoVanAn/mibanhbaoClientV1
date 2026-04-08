@@ -9,7 +9,11 @@
 .container {
   max-width: $container-xl;
   margin: 0 auto;
-  padding: 0;
+  padding: 1rem;
+
+  @media (max-width: 750px) {
+    padding: 0;
+  }
 }
 
 .header {

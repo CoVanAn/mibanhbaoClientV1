@@ -1,16 +1,22 @@
 @use "../../../styles/variables" as *;
 
-.nav-icon-btn {
+.navIconBtn {
   border: none;
   background: transparent;
   padding: 0;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
-.search-wrapper {
+.searchWrapper {
   position: relative;
 }
 
-.search-popover {
+.searchPopover {
   position: absolute;
   right: 2rem;
   top: -1.2rem;
@@ -21,7 +27,7 @@
   z-index: 1200;
 }
 
-.search-input {
+.searchInput {
   width: 100%;
   height: 36px;
   border: 1px solid #ddd;
@@ -29,13 +35,13 @@
   padding: 0 10px;
   font-size: 14px;
   outline: none;
+
+  &:focus {
+    border-color: $primary;
+  }
 }
 
-.search-input:focus {
-  border-color: $primary;
-}
-
-.search-result-list {
+.searchResultList {
   margin-top: 8px;
   max-height: 280px;
   overflow-y: auto;
@@ -44,7 +50,7 @@
   gap: 6px;
 }
 
-.search-result-item {
+.searchResultItem {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -55,13 +61,13 @@
   padding: 8px;
   text-align: left;
   cursor: pointer;
+
+  &:hover {
+    background: #f8f8f8;
+  }
 }
 
-.search-result-item:hover {
-  background: #f8f8f8;
-}
-
-.search-result-image {
+.searchResultImage {
   width: 40px;
   height: 40px;
   border-radius: 6px;
@@ -69,24 +75,24 @@
   flex-shrink: 0;
 }
 
-.search-result-image-placeholder {
+.searchResultImagePlaceholder {
   background: #efefef;
 }
 
-.search-result-name {
+.searchResultName {
   color: $text-main;
   font-size: 14px;
   line-height: 1.2;
 }
 
-.search-result-empty {
+.searchResultEmpty {
   justify-content: center;
   color: #777;
   cursor: default;
 }
 
 @media (max-width: 768px) {
-  .search-popover {
+  .searchPopover {
     width: min(82vw, 300px);
     right: -8px;
   }

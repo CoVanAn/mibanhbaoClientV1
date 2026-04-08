@@ -1,6 +1,6 @@
 "use client";
 
-import "./FeaturedProduct.scss";
+import styles from "./FeaturedProduct.module.scss";
 import {
   ProductCard,
   resolveProductSlug,
@@ -46,23 +46,23 @@ function ProductSection({
 }) {
   let statusNode = null;
   if (loading) {
-    statusNode = <p className="powder-grid__status">Đang tải sản phẩm…</p>;
+    statusNode = <p className={styles.powderGridStatus}>Đang tải sản phẩm…</p>;
   } else if (error) {
-    statusNode = <p className="powder-grid__status">{error}</p>;
+    statusNode = <p className={styles.powderGridStatus}>{error}</p>;
   } else if (!products.length) {
     statusNode = (
-      <p className="powder-grid__status">
+      <p className={styles.powderGridStatus}>
         {emptyMessage ?? "Không có sản phẩm"}
       </p>
     );
   }
 
   return (
-    <section className="powder-showcase" aria-label={ariaLabel}>
-      <header className="powder-showcase__header">
+    <section className={styles.powderShowcase} aria-label={ariaLabel}>
+      <header className={styles.powderShowcaseHeader}>
         <h2>{title}</h2>
       </header>
-      <div className="powder-grid">
+      <div className={styles.powderGrid}>
         {statusNode ?? renderProductCards(products)}
       </div>
     </section>
@@ -100,7 +100,7 @@ export function FeaturedProductsSection({ limit = 100 }) {
         error={error ? "Không thể tải sản phẩm nổi bật" : null}
         emptyMessage="Chưa có sản phẩm nổi bật nào."
       />
-      <Link href="/products" className="featured-more-link">
+      <Link href="/products" className={styles.featuredMoreLink}>
         Xem tất cả sản phẩm
       </Link>
     </>

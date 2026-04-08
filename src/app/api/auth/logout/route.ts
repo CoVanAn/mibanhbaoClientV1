@@ -16,15 +16,20 @@ export async function POST() {
   const refreshToken = cookieStore.get("refreshToken")?.value;
 
   try {
-    // Call backend API to logout (invalidate tokens on server) if tokens exist
-    if (accessToken && refreshToken) {
+    // Call backend API to revoke refresh token if available
+    if (refreshToken) {
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+        Cookie: `refreshToken=${refreshToken}`,
+      };
+
+      if (accessToken) {
+        headers.Authorization = `Bearer ${accessToken}`;
+      }
+
       await fetch(`${API_URL}/api/user/logout`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ refreshToken }),
+        headers,
       });
     }
 

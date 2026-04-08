@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import "./LoginPopup.scss";
+import styles from "./LoginPopup.module.scss";
 import { assets } from "@/src/assets/assets";
 import useStore, { UserSlice } from "@/src/store/user";
 import authApiRequest from "@/src/apiRequests/auth";
@@ -173,25 +173,25 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
   };
 
   return (
-    <div className="login-popup" onClick={() => setShowLogin(false)}>
+    <div className={styles.loginPopup} onClick={() => setShowLogin(false)}>
       <form
         onSubmit={onLogin}
         onClick={(e) => e.stopPropagation()}
-        className="login-popup-container"
+        className={styles.loginPopupContainer}
       >
-        <div className="login-popup-title">
+        <div className={styles.loginPopupTitle}>
           <h2>{currState}</h2>
           <button
             type="button"
             onClick={() => setShowLogin(false)}
-            className="login-popup-close"
+            className={styles.loginPopupClose}
             aria-label="Đóng cửa sổ đăng nhập"
             disabled={isSubmitting}
           >
             X
           </button>
         </div>
-        <div className="login-popup-inputs">
+        <div className={styles.loginPopupInputs}>
           {currState === "Đăng nhập" ? (
             <> </>
           ) : (
@@ -227,7 +227,7 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
           />
         </div>
         {errorMessage && (
-          <p className="error-message" aria-live="polite">
+          <p className={styles.errorMessage} aria-live="polite">
             {errorMessage}
           </p>
         )}
@@ -244,7 +244,7 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
               Chưa có tài khoản?{" "}
               <button
                 type="button"
-                className="text-action-btn"
+                className={styles.textActionBtn}
                 onClick={() => {
                   setErrorMessage("");
                   setCurrState("Đăng ký");
@@ -256,7 +256,7 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
             </p>
             <button
               type="button"
-              className="google-login-btn"
+              className={styles.googleLoginBtn}
               disabled={isSubmitting}
               onClick={() => {
                 window.location.href = `${API_URL}/auth/google`;
@@ -267,7 +267,7 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
                 alt="Google"
                 width={20}
                 height={20}
-                className="google-login-icon"
+                className={styles.googleLoginIcon}
               />
               <span>Đăng nhập với Google</span>
             </button>
@@ -277,7 +277,7 @@ const LoginPopup = ({ setShowLogin }: LoginPopupProps) => {
             Đã có tài khoản?{" "}
             <button
               type="button"
-              className="text-action-btn"
+              className={styles.textActionBtn}
               onClick={() => {
                 setErrorMessage("");
                 setCurrState("Đăng nhập");

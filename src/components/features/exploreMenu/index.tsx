@@ -3,18 +3,18 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import "./ExploreMenu.scss";
+import styles from "./ExploreMenu.module.scss";
 import { menu_list } from "@/src/assets/assets";
 
 const ExploreMenu = () => {
   return (
-    <div className="explore-menu" id="explore-menu">
-      <div className="explore-menu-list">
+    <div className={styles.exploreMenu} id="explore-menu">
+      <div className={styles.exploreMenuList}>
         {menu_list.map((menu, index) => (
           <Link
             href={`/products?category=${menu.category}`}
             key={index}
-            className="explore-menu-list-item"
+            className={styles.exploreMenuListItem}
           >
             <Image
               src={menu.menu_image}

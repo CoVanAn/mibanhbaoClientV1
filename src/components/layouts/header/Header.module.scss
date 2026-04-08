@@ -1,0 +1,56 @@
+@use "../../../styles/variables" as *;
+
+.header {
+  background-color: $bg-dark;
+  color: $text-light;
+  font-size: $font-size-sm;
+  width: 100%;
+  min-height: 40px;
+}
+
+.headerContainer {
+  max-width: 1110px;
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerLeft,
+.headerRight {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+
+  span {
+    cursor: pointer;
+    font-size: $font-size-sm;
+    font-weight: 400;
+
+    &:hover {
+      color: $text-white;
+    }
+  }
+}
+
+.headerRight {
+  gap: 20px;
+}
+
+.headerLoginBtn,
+.loginBtn {
+  cursor: pointer;
+}
+
+@media (max-width: 750px) {
+  .headerLeft {
+    span:nth-child(2) {
+      display: none;
+    }
+  }
+
+  .headerRight {
+    gap: 10px;
+  }
+}

@@ -1,0 +1,74 @@
+@use "../../../styles/variables" as *;
+
+.sliderSection {
+  background-color: $bg-light;
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.sliderContainer {
+  width: 100%;
+  position: relative;
+  padding: 0;
+  margin: 0;
+  min-height: 180px;
+}
+
+.sliderItem {
+  width: 100%;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+    min-height: 156px;
+    object-fit: cover;
+  }
+}
+
+.active {
+  opacity: 1;
+}
+
+.first {
+  position: relative;
+}
+
+.sliderDots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  z-index: 20;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: $primary-lighter;
+  border: 2px solid $primary;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.dotActive {
+  background: $primary;
+  border-color: $primary-dark;
+}
+
+@media screen and (max-width: 600px) {
+  .sliderDots {
+    display: none;
+  }
+}

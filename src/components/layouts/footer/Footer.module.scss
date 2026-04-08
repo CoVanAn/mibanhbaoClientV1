@@ -1,0 +1,190 @@
+@use "../../../styles/variables" as *;
+
+.footer {
+  background-color: $bg-dark;
+  color: $text-light;
+  padding: 4rem 0 1rem;
+  width: 100%;
+  margin-top: 100px;
+  font-family: $font-family-main;
+}
+
+.footerContainer {
+  max-width: 1110px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+
+.footerTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.footerTop {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.footerToggle {
+  font-size: $font-size-md;
+  user-select: none;
+  font-weight: bold;
+}
+
+.footerContent {
+  display: flex;
+  flex-direction: column;
+
+  h2 {
+    font-size: $font-size-sm;
+    color: $text-white;
+    font-weight: normal;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  h3 {
+    font-size: $font-size-sm;
+    font-weight: 500;
+    margin: 20px 0 15px;
+    color: $text-white;
+  }
+
+  ul {
+    list-style: none;
+
+    li {
+      margin-bottom: 12px;
+      font-size: $font-size-sm;
+      color: $text-muted;
+      cursor: pointer;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: $text-white;
+      }
+    }
+  }
+}
+
+.companyInfo {
+  p {
+    margin-bottom: 8px;
+    font-size: $font-size-sm;
+    line-height: 1.5;
+    color: $text-muted;
+
+    &:last-child {
+      font-weight: 500;
+      margin-top: 10px;
+    }
+  }
+}
+
+.newsletter {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.newsletterInput {
+  padding: 12px 15px;
+  border: 1px solid $bg-dark;
+  border-radius: 5px;
+  background: $bg-light;
+  color: $text-main;
+  font-size: $font-size-sm;
+
+  &::placeholder {
+    color: $text-muted;
+  }
+}
+
+.newsletterBtn {
+  padding: 12px 20px;
+  background: $primary;
+  color: $text-white;
+  border: none;
+  border-radius: 5px;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: $primary-dark;
+  }
+}
+
+.footerSocialIcon {
+  display: flex;
+  gap: 15px;
+}
+
+.footerCopyright {
+  text-align: center;
+
+  p {
+    font-size: $font-size-sm;
+    color: $text-muted;
+    margin: 0;
+  }
+}
+
+.footerDivider {
+  border: none;
+  height: 1px;
+  background: $bg-dark;
+  margin: 40px 0 20px;
+}
+
+.footerList {
+  list-style: none;
+}
+
+.socialSection {
+}
+
+@media (max-width: 1024px) {
+  .footerContainer {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 40px 0 20px;
+  }
+
+  .footerContainer {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 0 24px;
+  }
+
+  .newsletterInput,
+  .newsletterBtn {
+    width: 100%;
+  }
+
+  .footerList {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition:
+      max-height 0.4s ease-in-out,
+      opacity 0.4s ease-in-out;
+  }
+
+  .active {
+    max-height: 500px;
+    opacity: 1;
+  }
+}

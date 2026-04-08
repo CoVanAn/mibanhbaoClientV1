@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import "./globals.scss";
 import ClientShell from "@/src/components/common/clientShell";
 import { Providers } from "@/src/lib/providers";
-
 
 export const metadata: Metadata = {
   title: "Mi Bánh Bao",
@@ -18,7 +18,9 @@ export default function RootLayout({
     <html lang="vi">
       <body>
         <Providers>
-          <ClientShell>{children}</ClientShell>
+          <Suspense fallback={<main className="app">Đang tải...</main>}>
+            <ClientShell>{children}</ClientShell>
+          </Suspense>
         </Providers>
       </body>
     </html>

@@ -96,13 +96,6 @@ export default function ProductHero() {
             className={styles.imagePreviewContent}
             onClick={(event) => event.stopPropagation()}
           >
-            <button
-              type="button"
-              className={styles.imagePreviewClose}
-              onClick={closePreview}
-            >
-              ×
-            </button>
             <Image
               src={displayImage}
               alt={product.name}

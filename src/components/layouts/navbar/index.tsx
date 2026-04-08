@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import "./Navbar.scss";
+import styles from "./Navbar.module.scss";
 import { assets } from "@/src/assets/assets";
 import Image from "next/image";
 import { useCart } from "@/src/queries/useCart";
@@ -24,14 +24,14 @@ const Navbar = () => {
   const closeSidebar = () => setSidebarOpen(false);
 
   return (
-    <div className="navbar-container">
-      <div className="logo-section">
-        <div className="logo-container">
+    <div className={styles.navbarContainer}>
+      <div className={styles.logoSection}>
+        <div className={styles.logoContainer}>
           <Link href="/" aria-label="Về trang chủ">
             <Image
               src={assets.logo}
               alt="Logo"
-              className="main-logo"
+              className={styles.mainLogo}
               width={200}
               height={140}
             />
@@ -41,29 +41,29 @@ const Navbar = () => {
 
       {/* Navigation Bar */}
       {/* <hr style={{ border: "1px solid #eee" }} /> */}
-      <div className="nav-bar">
-        <div className="nav-container">
-          <div className="nav-left">
+      <div className={styles.navBar}>
+        <div className={styles.navContainer}>
+          <div className={styles.navLeft}>
             {navItems.map((item) => (
-              <Link key={item.href} href={item.href} className="item">
+              <Link key={item.href} href={item.href} className={styles.navItem}>
                 {item.label}
               </Link>
             ))}
           </div>
           <div
-            className="hamburger-menu"
+            className={styles.hamburgerMenu}
             onClick={() => setSidebarOpen((prev) => !prev)}
           >
             <span></span>
             <span></span>
             <span></span>
           </div>
-          <div className="nav-right">
+          <div className={styles.navRight}>
             {/* Menu hamburger cho tablet/mobile */}
             <ProductSearch />
-            <Link href="/cart" className="nav-icon">
+            <Link href="/cart" className={styles.navIcon}>
               {itemCount > 0 && (
-                <span className="badge">
+                <span className={styles.badge}>
                   {itemCount > 99 ? "99+" : itemCount}
                 </span>
               )}
@@ -79,15 +79,15 @@ const Navbar = () => {
       </div>
 
       {/* Sidebar cho tablet/mobile */}
-      <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-        <div className="sidebar-content">
-          <div className="sidebar-header">
+      <div className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}>
+        <div className={styles.sidebarContent}>
+          <div className={styles.sidebarHeader}>
             <h3>Menu</h3>
-            <span className="close-btn" onClick={closeSidebar}>
+            <span className={styles.closeBtn} onClick={closeSidebar}>
               ×
             </span>
           </div>
-          <div className="sidebar-menu">
+          <div className={styles.sidebarMenu}>
             {navItems.map((item) => (
               <Link
                 key={`mobile-${item.href}`}
@@ -102,7 +102,7 @@ const Navbar = () => {
       </div>
 
       {sidebarOpen && (
-        <div className="sidebar-overlay" onClick={closeSidebar}></div>
+        <div className={styles.sidebarOverlay} onClick={closeSidebar}></div>
       )}
     </div>
   );

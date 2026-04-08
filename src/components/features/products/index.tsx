@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { ProductSummary } from "@/src/apiRequests/product";
-import "./Product.scss";
+import styles from "./Product.module.scss";
 
 const currencyFormatter = new Intl.NumberFormat("vi-VN", {
   style: "currency",
@@ -49,12 +49,12 @@ export function ProductCard({ product }: { product: ProductCardData }) {
     <Link
       key={`${product.id ?? product.slug ?? product._id}-${linkTarget}`}
       href={`/${linkTarget}`}
-      className="powder-card"
+      className={styles.powderCard}
       aria-label={product.name}
     >
-      <div className="powder-card__media">
+      <div className={styles.powderCardMedia}>
         {product.isFeatured && (
-          <span className="powder-card__badge">Nổi bật</span>
+          <span className={styles.powderCardBadge}>Nổi bật</span>
         )}
         {product.image ? (
           <Image
@@ -65,12 +65,14 @@ export function ProductCard({ product }: { product: ProductCardData }) {
             unoptimized
           />
         ) : (
-          <div className="powder-card__placeholder">Hình ảnh đang cập nhật</div>
+          <div className={styles.powderCardPlaceholder}>
+            Hình ảnh đang cập nhật
+          </div>
         )}
       </div>
-      <div className="powder-card__body">
-        <p className="powder-card__title">{product.name}</p>
-        <div className="powder-card__price">
+      <div className={styles.powderCardBody}>
+        <p className={styles.powderCardTitle}>{product.name}</p>
+        <div className={styles.powderCardPrice}>
           <span>
             {price != null
               ? currencyFormatter.format(price)

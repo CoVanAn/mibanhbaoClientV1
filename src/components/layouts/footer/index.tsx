@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import "./Footer.scss";
+import styles from "./Footer.module.scss";
 import { assets } from "@/src/assets/assets";
 import { useRouter } from "next/navigation";
 import useIsMobile from "../../../hooks/useIsMobile";
@@ -18,12 +18,12 @@ const Footer = ({ setShowLogin }: FooterProps) => {
   const isMobile = useIsMobile();
 
   return (
-    <div className="footer" id="footer">
-      <div className="footer-container">
+    <div className={styles.footer} id="footer">
+      <div className={styles.footerContainer}>
         {/* Cột 1 - Thông tin công ty */}
-        <div className="footer-content">
+        <div className={styles.footerContent}>
           <h2>HKD MI BÁNH BAO</h2>
-          <div className="company-info">
+          <div className={styles.companyInfo}>
             <p>MST: 8552771447</p>
             <p>68 Tân Sơn, phường 15, quận Tân Bình, HCM</p>
             <p>hotro@mibanhbao.vn</p>
@@ -32,26 +32,22 @@ const Footer = ({ setShowLogin }: FooterProps) => {
         </div>
 
         {/* Cột 2 - Chính sách */}
-        <div className="footer-content">
+        <div className={styles.footerContent}>
           <div
-            className="footer-title-row"
+            className={styles.footerTitleRow}
             onClick={() => isMobile && setShowPolicy(!showPolicy)}
           >
-            <div className="footer-top">
+            <div className={styles.footerTop}>
               <h2>CHÍNH SÁCH</h2>
               {isMobile && (
-                <span className="footer-toggle">{showPolicy ? "-" : "+"}</span>
+                <span className={styles.footerToggle}>
+                  {showPolicy ? "-" : "+"}
+                </span>
               )}
             </div>
           </div>
           <ul
-            className={
-              isMobile
-                ? showPolicy
-                  ? "footer-list active"
-                  : "footer-list"
-                : ""
-            }
+            className={`${styles.footerList} ${isMobile && showPolicy ? styles.active : ""}`}
           >
             <li
               onClick={() => {
@@ -78,26 +74,22 @@ const Footer = ({ setShowLogin }: FooterProps) => {
         </div>
 
         {/* Cột 3 - Hỗ trợ khách hàng */}
-        <div className="footer-content">
+        <div className={styles.footerContent}>
           <div
-            className="footer-title-row"
+            className={styles.footerTitleRow}
             onClick={() => isMobile && setShowSupport(!showSupport)}
           >
-            <div className="footer-top">
+            <div className={styles.footerTop}>
               <h2>HỖ TRỢ KHÁCH HÀNG</h2>
               {isMobile && (
-                <span className="footer-toggle">{showSupport ? "-" : "+"}</span>
+                <span className={styles.footerToggle}>
+                  {showSupport ? "-" : "+"}
+                </span>
               )}
             </div>
           </div>
           <ul
-            className={
-              isMobile
-                ? showSupport
-                  ? "footer-list active"
-                  : "footer-list"
-                : ""
-            }
+            className={`${styles.footerList} ${isMobile && showSupport ? styles.active : ""}`}
           >
             <li
               onClick={() => {
@@ -131,16 +123,16 @@ const Footer = ({ setShowLogin }: FooterProps) => {
         </div>
 
         {/* Cột 4 - Đăng ký nhận khuyến mãi */}
-        <div className="footer-content">
+        <div className={styles.footerContent}>
           <h2>ĐĂNG KÝ NHẬN KHUYẾN MÃI</h2>
-          <div className="newsletter">
+          <div className={styles.newsletter}>
             <input
               type="email"
               placeholder="Nhập địa chỉ email"
-              className="newsletter-input"
+              className={styles.newsletterInput}
             />
             <button
-              className="newsletter-btn"
+              className={styles.newsletterBtn}
               onClick={() => {
                 setShowLogin(true);
                 window.scrollTo({ top: 0, behavior: "smooth" });
@@ -149,9 +141,9 @@ const Footer = ({ setShowLogin }: FooterProps) => {
               Đăng ký
             </button>
           </div>
-          <div className="social-section">
+          <div className={styles.socialSection}>
             <h3>Theo dõi chúng tôi</h3>
-            <div className="footer-social-icon">
+            <div className={styles.footerSocialIcon}>
               <Image
                 src={assets.twitter_icon}
                 alt="Twitter"
@@ -174,9 +166,9 @@ const Footer = ({ setShowLogin }: FooterProps) => {
           </div>
         </div>
       </div>
-      <hr />
+      <hr className={styles.footerDivider} />
       {/* Copyright */}
-      <div className="footer-copyright">
+      <div className={styles.footerCopyright}>
         <p>Copyright © Mi Bánh Bao</p>
       </div>
     </div>

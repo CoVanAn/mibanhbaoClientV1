@@ -3,7 +3,6 @@
  * Handles user registration and sets HttpOnly cookies for tokens
  */
 
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { API_URL } from "@/src/store/constants";
 import logger from "@/src/lib/logger";
@@ -18,7 +17,6 @@ interface RegisterResponse {
   success: boolean;
   message: string;
   accessToken?: string;
-  refreshToken?: string;
   user?: {
     id: number;
     name: string;
@@ -38,8 +36,6 @@ const decodeJWT = (token: string): { exp: number } | null => {
 };
 
 export async function POST(request: Request) {
-  const cookieStore = await cookies();
-
   try {
     const body: RegisterBody = await request.json();
 
@@ -64,42 +60,50 @@ export async function POST(request: Request) {
       );
     }
 
-    const { accessToken, refreshToken, user } = data;
-
-    // If tokens are returned (auto-login after register)
-    if (accessToken && refreshToken) {
-      const decodedAccessToken = decodeJWT(accessToken);
-      const decodedRefreshToken = decodeJWT(refreshToken);
-
-      // Set accessToken cookie (HttpOnly)
-      cookieStore.set("accessToken", accessToken, {
-        path: "/",
-        httpOnly: true,
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
-        expires: decodedAccessToken
-          ? new Date(decodedAccessToken.exp * 1000)
-          : undefined,
-      });
-
-      // Set refreshToken cookie (HttpOnly)
-      cookieStore.set("refreshToken", refreshToken, {
-        path: "/",
-        httpOnly: true,
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
-        expires: decodedRefreshToken
-          ? new Date(decodedRefreshToken.exp * 1000)
-          : undefined,
-      });
+    const { accessToken, user } = data;
+    if (!accessToken) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Không nhận được access token từ server",
+        },
+        { status: 500 }
+      );
     }
 
-    return NextResponse.json({
+    const decodedAccessToken = decodeJWT(accessToken);
+    const backendCookies = response.headers.get("set-cookie");
+    let refreshTokenValue: string | null = null;
+    if (backendCookies) {
+      const refreshTokenMatch = backendCookies.match(/refreshToken=([^;]+)/);
+      if (refreshTokenMatch) {
+        refreshTokenValue = refreshTokenMatch[1];
+      }
+    }
+
+    const isProduction = process.env.NODE_ENV === "production";
+    const secureFlag = isProduction ? "; Secure" : "";
+    const accessTokenExpiry = decodedAccessToken
+      ? new Date(decodedAccessToken.exp * 1000).toUTCString()
+      : new Date(Date.now() + 15 * 60 * 1000).toUTCString();
+    const refreshTokenExpiry = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString();
+
+    const jsonResponse = NextResponse.json({
       success: true,
       message: data.message || "Đăng ký thành công",
       accessToken,
       user,
     });
+
+    const accessTokenCookie = `accessToken=${accessToken}; Path=/; HttpOnly; SameSite=Lax${secureFlag}; Expires=${accessTokenExpiry}`;
+    jsonResponse.headers.set("Set-Cookie", accessTokenCookie);
+
+    if (refreshTokenValue) {
+      const refreshTokenCookie = `refreshToken=${refreshTokenValue}; Path=/; HttpOnly; SameSite=Lax${secureFlag}; Expires=${refreshTokenExpiry}`;
+      jsonResponse.headers.append("Set-Cookie", refreshTokenCookie);
+    }
+
+    return jsonResponse;
   } catch (error) {
     logger.error("[auth/register] Request failed", error);
 
