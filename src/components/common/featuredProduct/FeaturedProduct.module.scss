@@ -41,17 +41,20 @@
 
 @media (max-width: 1024px) {
   .powderGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 720px) {
+  .powderGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .powderShowcase {
     padding: 1.5rem 1rem;
   }
 
   .powderShowcaseHeader h2 {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   .featuredMoreLink {

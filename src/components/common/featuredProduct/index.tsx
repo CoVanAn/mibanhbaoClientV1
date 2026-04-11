@@ -91,7 +91,6 @@ export function FeaturedProductsSection({ limit = 100 }) {
 
   return (
     <>
-      <br />
       <ProductSection
         title="Sản phẩm nổi bật"
         ariaLabel="Danh sách sản phẩm nổi bật"

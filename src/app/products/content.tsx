@@ -29,7 +29,7 @@ interface ProductsContextType {
   openFilterDrawer: () => void;
   closeFilterDrawer: () => void;
   handleCategoryChange: (categoryId: number | null) => void;
-  handleSortChange: (option: SortOption) => void;
+  handleSortChange: (option: SortOption | null) => void;
   handlePageChange: (page: number) => void;
 }
 
@@ -42,7 +42,7 @@ export const ProductsProvider = ({
 }) => {
   // Desktop (>=1024): 9 products (3 columns x 3 rows)
   // Mobile (<1024): 8 products (2 columns x 4 rows)
-  const isTabletOrDown = useIsMobile(1023);
+  const isTabletOrDown = useIsMobile(768);
   const perPage = isTabletOrDown ? 8 : 9;
 
   // Filter drawer state (mobile)
@@ -122,7 +122,7 @@ export const ProductsProvider = ({
     (updates: {
       page?: number;
       category?: number | null;
-      sort?: SortOption;
+      sort?: SortOption | null;
     }) => {
       const params = new URLSearchParams(searchParams.toString());
 
@@ -151,7 +151,7 @@ export const ProductsProvider = ({
         if (updates.sort === "newest") {
           params.delete("sort");
         } else {
-          params.set("sort", updates.sort);
+          params.set("sort", String(updates.sort));
         }
       }
 
@@ -171,7 +171,7 @@ export const ProductsProvider = ({
   );
 
   const handleSortChange = useCallback(
-    (option: SortOption) => {
+    (option: SortOption | null) => {
       updateUrl({ sort: option });
     },
     [updateUrl],

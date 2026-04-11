@@ -5,13 +5,21 @@
 // ========================================
 
 .productsPage {
+  width: 100%;
   max-width: 1100px;
   margin: 0 auto;
   padding-top: 2rem;
   padding-bottom: 3rem;
+
+  @media screen and (max-width: 1024px) {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
 }
 
 .productsLayout {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
@@ -61,6 +69,7 @@
 
   .productsLayout {
     flex-direction: column;
+    align-items: stretch;
     gap: 1.5rem;
   }
 }
