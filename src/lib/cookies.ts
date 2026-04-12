@@ -7,3 +7,9 @@ export const getCookie = (name: string): string | null => {
 
     return parts.pop()?.split(";").shift() || null;
 };
+
+export const deleteCookie = (name: string, path = "/"): void => {
+    if (typeof document === "undefined") return;
+
+    document.cookie = `${name}=; Path=${path}; Max-Age=0; SameSite=Lax`;
+};

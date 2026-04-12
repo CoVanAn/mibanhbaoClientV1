@@ -4,11 +4,13 @@ import { useCallback, useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import authApiRequest from "@/src/apiRequests/auth";
-import { getCookie } from "@/src/lib/cookies";
+import { deleteCookie, getCookie } from "@/src/lib/cookies";
 import logger from "@/src/lib/logger";
 import { useMergeGuestCart } from "@/src/queries/useCart";
 import useStore, { UserSlice } from "@/src/store/user";
 import { useToast } from "@/src/components/common/toast";
+
+const GOOGLE_AUTH_FLOW_COOKIE = "googleAuthFlow";
 
 export type UseAuthFlowResult = {
     shouldShowLogin: boolean;
@@ -70,6 +72,7 @@ export default function useAuthFlow(): UseAuthFlowResult {
 
         const processGoogleAuth = async () => {
             if (googleAuthStatus === "error") {
+                deleteCookie(GOOGLE_AUTH_FLOW_COOKIE);
                 setInitialized(true);
                 toast.error("Dang nhap Google that bai. Vui long thu lai.");
                 cleanupQueryParams(["googleAuth"]);
@@ -80,10 +83,17 @@ export default function useAuthFlow(): UseAuthFlowResult {
                 return;
             }
 
+            const hasOAuthFlowMarker = getCookie(GOOGLE_AUTH_FLOW_COOKIE) === "1";
+            if (!hasOAuthFlowMarker) {
+                cleanupQueryParams(["googleAuth"]);
+                return;
+            }
+
             try {
                 const response = await authApiRequest.refreshToken();
 
                 if (!response.success || !response.accessToken) {
+                    deleteCookie(GOOGLE_AUTH_FLOW_COOKIE);
                     setInitialized(true);
                     toast.error("Khong the khoi phuc phien dang nhap Google. Vui long thu lai.");
                     cleanupQueryParams(["googleAuth"]);
@@ -107,10 +117,12 @@ export default function useAuthFlow(): UseAuthFlowResult {
                     queryClient.invalidateQueries({ queryKey: ["account"] }),
                 ]);
 
+                deleteCookie(GOOGLE_AUTH_FLOW_COOKIE);
                 cleanupQueryParams(["googleAuth"]);
                 router.replace("/account");
             } catch (error) {
                 logger.warn("[useAuthFlow] Google auth flow failed", error);
+                deleteCookie(GOOGLE_AUTH_FLOW_COOKIE);
                 setInitialized(true);
                 toast.error("Dang nhap Google that bai. Vui long thu lai.");
                 cleanupQueryParams(["googleAuth"]);

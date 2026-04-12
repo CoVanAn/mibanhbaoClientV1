@@ -13,6 +13,8 @@ interface GoogleExchangeResponse {
   refreshToken?: string;
 }
 
+const GOOGLE_AUTH_FLOW_COOKIE = "googleAuthFlow";
+
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const code = searchParams.get("code");
@@ -71,6 +73,14 @@ export async function GET(request: NextRequest) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 15 * 60,
+      path: "/",
+    });
+
+    // Marker cookie to indicate this is a fresh OAuth callback flow.
+    response.cookies.set(GOOGLE_AUTH_FLOW_COOKIE, "1", {
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 2 * 60,
       path: "/",
     });
 
