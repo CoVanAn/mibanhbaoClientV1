@@ -2,6 +2,14 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Environment Variables
+
+Create `.env.local` from `.env.example` and set backend URL:
+
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:4000
+```
+
 First, run the development server:
 
 ```bash
