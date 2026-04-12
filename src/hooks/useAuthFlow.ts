@@ -1,16 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import authApiRequest from "@/src/apiRequests/auth";
-import { deleteCookie, getCookie } from "@/src/lib/cookies";
-import logger from "@/src/lib/logger";
-import { useMergeGuestCart } from "@/src/queries/useCart";
 import useStore, { UserSlice } from "@/src/store/user";
 import { useToast } from "@/src/components/common/toast";
-
-const GOOGLE_AUTH_FLOW_COOKIE = "googleAuthFlow";
 
 export type UseAuthFlowResult = {
     shouldShowLogin: boolean;
@@ -20,14 +13,11 @@ export type UseAuthFlowResult = {
 export default function useAuthFlow(): UseAuthFlowResult {
     const [showLogin, setShowLoginState] = useState(false);
     const token = useStore((state: UserSlice) => state.token);
-    const setToken = useStore((state: UserSlice) => state.setToken);
     const setInitialized = useStore((state: UserSlice) => state.setInitialized);
 
-    const queryClient = useQueryClient();
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const mergeGuestCart = useMergeGuestCart();
     const toast = useToast();
 
     const isQueryLoginMode = searchParams.get("auth") === "login";
@@ -70,74 +60,21 @@ export default function useAuthFlow(): UseAuthFlowResult {
             return;
         }
 
-        const processGoogleAuth = async () => {
-            if (googleAuthStatus === "error") {
-                deleteCookie(GOOGLE_AUTH_FLOW_COOKIE);
-                setInitialized(true);
-                toast.error("Dang nhap Google that bai. Vui long thu lai.");
-                cleanupQueryParams(["googleAuth"]);
-                return;
-            }
+        if (googleAuthStatus === "error") {
+            setInitialized(true);
+            toast.error("Dang nhap Google that bai. Vui long thu lai.");
+            cleanupQueryParams(["googleAuth"]);
+            return;
+        }
 
-            if (googleAuthStatus !== "success") {
-                return;
-            }
-
-            const hasOAuthFlowMarker = getCookie(GOOGLE_AUTH_FLOW_COOKIE) === "1";
-            if (!hasOAuthFlowMarker) {
-                cleanupQueryParams(["googleAuth"]);
-                return;
-            }
-
-            try {
-                const response = await authApiRequest.refreshToken();
-
-                if (!response.success || !response.accessToken) {
-                    deleteCookie(GOOGLE_AUTH_FLOW_COOKIE);
-                    setInitialized(true);
-                    toast.error("Khong the khoi phuc phien dang nhap Google. Vui long thu lai.");
-                    cleanupQueryParams(["googleAuth"]);
-                    return;
-                }
-
-                setToken(response.accessToken);
-                setInitialized(true);
-
-                const guestToken = getCookie("guestToken");
-                if (guestToken) {
-                    try {
-                        await mergeGuestCart.mutateAsync(guestToken);
-                    } catch (mergeError) {
-                        logger.warn("[useAuthFlow] Guest cart merge failed", mergeError);
-                    }
-                }
-
-                await Promise.all([
-                    queryClient.invalidateQueries({ queryKey: ["cart"] }),
-                    queryClient.invalidateQueries({ queryKey: ["account"] }),
-                ]);
-
-                deleteCookie(GOOGLE_AUTH_FLOW_COOKIE);
-                cleanupQueryParams(["googleAuth"]);
-                router.replace("/account");
-            } catch (error) {
-                logger.warn("[useAuthFlow] Google auth flow failed", error);
-                deleteCookie(GOOGLE_AUTH_FLOW_COOKIE);
-                setInitialized(true);
-                toast.error("Dang nhap Google that bai. Vui long thu lai.");
-                cleanupQueryParams(["googleAuth"]);
-            }
-        };
-
-        void processGoogleAuth();
+        if (googleAuthStatus === "success") {
+            // Legacy query param from older OAuth flow. Just clean it silently.
+            cleanupQueryParams(["googleAuth"]);
+        }
     }, [
         cleanupQueryParams,
         googleAuthStatus,
-        mergeGuestCart,
-        queryClient,
-        router,
         setInitialized,
-        setToken,
         toast,
     ]);
 

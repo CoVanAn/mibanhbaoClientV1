@@ -13,7 +13,7 @@ interface GoogleExchangeResponse {
   refreshToken?: string;
 }
 
-const GOOGLE_AUTH_FLOW_COOKIE = "googleAuthFlow";
+export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -53,9 +53,9 @@ export async function GET(request: NextRequest) {
     const accessToken = data.accessToken;
     const refreshToken = data.refreshToken;
 
-    // Create redirect response
+    // Redirect directly to account page to avoid persisting query params on homepage.
     const response = NextResponse.redirect(
-      new URL("/?googleAuth=success", request.url)
+      new URL("/account/profile", request.url)
     );
 
     // Set refresh token as HttpOnly cookie (30 days)
@@ -73,14 +73,6 @@ export async function GET(request: NextRequest) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 15 * 60,
-      path: "/",
-    });
-
-    // Marker cookie to indicate this is a fresh OAuth callback flow.
-    response.cookies.set(GOOGLE_AUTH_FLOW_COOKIE, "1", {
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 2 * 60,
       path: "/",
     });
 
