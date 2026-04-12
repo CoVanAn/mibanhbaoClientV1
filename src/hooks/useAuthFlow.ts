@@ -33,6 +33,13 @@ export default function useAuthFlow(): UseAuthFlowResult {
 
             const query = params.toString();
             const nextUrl = query ? `${pathname}?${query}` : pathname;
+
+            // Remove query params immediately to avoid transient URL states
+            // that can retrigger auth effects before router navigation settles.
+            if (typeof window !== "undefined") {
+                window.history.replaceState(window.history.state, "", nextUrl);
+            }
+
             router.replace(nextUrl);
         },
         [pathname, router, searchParams],

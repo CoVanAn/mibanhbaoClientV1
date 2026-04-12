@@ -14,6 +14,7 @@ interface GoogleExchangeResponse {
 }
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -36,6 +37,7 @@ export async function GET(request: NextRequest) {
   try {
     const exchangeResponse = await fetch(`${API_URL}/auth/google/exchange`, {
       method: "POST",
+      cache: "no-store",
       headers: {
         "Content-Type": "application/json",
       },
