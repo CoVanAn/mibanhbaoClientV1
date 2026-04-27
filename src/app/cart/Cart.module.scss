@@ -1,16 +1,19 @@
 @use "../../styles/variables" as *;
 
 .cartPage {
-  min-height: 100vh;
+  height: 100%;
+  min-height: 800px;
   background: $color-bg-secondary;
   padding: $spacing-xl $spacing-lg;
+  margin-bottom: -100px;
 }
 
 .container {
+  height: 100%;
   max-width: $container-xl;
   margin: 0 auto;
   padding: 1rem;
-
+  margin-bottom: 0;
   @media (max-width: 750px) {
     padding: 0;
   }
