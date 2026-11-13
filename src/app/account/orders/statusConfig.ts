@@ -8,6 +8,28 @@ export type OrderStatus =
     | "CANCELED"
     | "REFUNDED";
 
+export type StatusFilter = OrderStatus | "ALL";
+
+export const FILTER_OPTIONS: Array<{
+    label: string;
+    value: StatusFilter;
+    href: string;
+}> = [
+    { label: "Tất cả", value: "ALL", href: "/account/orders/all" },
+    { label: "Xác nhận", value: "CONFIRMED", href: "/account/orders/confirmed" },
+    {
+        label: "Đang giao",
+        value: "OUT_FOR_DELIVERY",
+        href: "/account/orders/out-for-delivery",
+    },
+    {
+        label: "Đã hoàn thành",
+        value: "COMPLETED",
+        href: "/account/orders/completed",
+    },
+    { label: "Đã hủy", value: "CANCELED", href: "/account/orders/canceled" },
+];
+
 export const orderStatusConfig: Record<
     OrderStatus,
     { label: string; color: string; bgColor: string }

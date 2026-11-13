@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useOrder, useCancelOrder } from "@/src/queries/useOrder";
 import useStore, { UserSlice } from "@/src/store/user";
 import {
@@ -16,7 +16,11 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { orderStatusConfig, type OrderStatus } from "../statusConfig";
+import {
+  orderStatusConfig,
+  FILTER_OPTIONS,
+  type OrderStatus,
+} from "../statusConfig";
 import { getApiErrorMessage } from "@/src/lib/error";
 import { useToast } from "@/src/components/common/toast";
 import styles from "./page.module.scss";
@@ -43,8 +47,41 @@ const paymentStatusConfig = {
 export default function OrderDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const token = useStore((state: UserSlice) => state.token);
   const orderId = Number(params.id);
+  const fromStatus = searchParams?.get("from");
+
+  const handleBack = () => {
+    if (fromStatus) {
+      const option = FILTER_OPTIONS.find((opt) => opt.value === fromStatus);
+      if (option) {
+        router.push(option.href);
+        return;
+      }
+    }
+    if (typeof window !== "undefined") {
+      const saved = sessionStorage.getItem("account_orders_status");
+      if (saved) {
+        const option = FILTER_OPTIONS.find((opt) => opt.value === saved);
+        if (option) {
+          router.push(option.href);
+          return;
+        }
+      }
+    }
+    router.back();
+  };
+
+  const backListHref =
+    (fromStatus &&
+      FILTER_OPTIONS.find((opt) => opt.value === fromStatus)?.href) ||
+    (typeof window !== "undefined" &&
+      sessionStorage.getItem("account_orders_status") &&
+      FILTER_OPTIONS.find(
+        (opt) => opt.value === sessionStorage.getItem("account_orders_status"),
+      )?.href) ||
+    "/account/orders";
 
   const { data: order, isLoading, error } = useOrder(orderId);
   const cancelOrder = useCancelOrder();
@@ -90,7 +127,7 @@ export default function OrderDetailPage() {
           <div className={styles.errorState}>
             <h2>Không tìm thấy đơn hàng</h2>
             <p>Đơn hàng không tồn tại hoặc bạn không có quyền truy cập.</p>
-            <Link href="/account/orders" className={styles.backButton}>
+            <Link href={backListHref} className={styles.backButton}>
               Quay lại danh sách
             </Link>
           </div>
@@ -138,13 +175,18 @@ export default function OrderDetailPage() {
       <div className={styles.detailWrapper}>
         {/* Header */}
         <div className={styles.header}>
-          <button onClick={() => router.back()} className={styles.backBtn}>
-            <ArrowLeft size={20} />
-            <span>Quay lại</span>
+          <button
+            type="button"
+            onClick={handleBack}
+            className={styles.backBtn}
+            title="Quay lại"
+            aria-label="Quay lại"
+          >
+            <ArrowLeft size={22} strokeWidth={2.75} />
           </button>
 
           <div className={styles.headerInfo}>
-            <h1>Chi tiết đơn hàng</h1>
+            <h1>Chi tiết đơn hàng </h1>
             <span className={styles.orderCode}>#{order.code}</span>
           </div>
         </div>

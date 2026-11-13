@@ -4,8 +4,11 @@
   background-color: #fff;
 }
 
+html,
 body {
   min-height: 100vh;
   margin: 0;
   background-color: #fff;
+  max-width: 100%;
+  overflow-x: hidden;
 }
