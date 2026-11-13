@@ -25,17 +25,17 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({ item }) => {
   const handleUpdateQuantity = async (newQuantity: number) => {
     if (newQuantity < 0 || newQuantity > 999) return;
 
+    if (newQuantity === 0) {
+      handleRemove();
+      return;
+    }
+
     setIsUpdating(true);
     try {
-      if (newQuantity === 0) {
-        await removeItem.mutateAsync(item.id);
-        toast.success("Đã xóa sản phẩm khỏi giỏ hàng");
-      } else {
-        await updateItem.mutateAsync({
-          itemId: item.id,
-          quantity: newQuantity,
-        });
-      }
+      await updateItem.mutateAsync({
+        itemId: item.id,
+        quantity: newQuantity,
+      });
     } catch (error: unknown) {
       const errorMsg = getApiErrorMessage(error, "Không thể cập nhật số lượng");
       toast.error(errorMsg);
@@ -44,16 +44,21 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({ item }) => {
     }
   };
 
-  const handleRemove = async () => {
-    if (confirm("Xóa sản phẩm này khỏi giỏ hàng?")) {
-      try {
-        await removeItem.mutateAsync(item.id);
-        toast.success("Đã xóa sản phẩm khỏi giỏ hàng");
-      } catch (error: unknown) {
-        const errorMsg = getApiErrorMessage(error, "Không thể xóa sản phẩm");
-        toast.error(errorMsg);
-      }
-    }
+  const handleRemove = () => {
+    toast.confirm({
+      message: "Xóa sản phẩm khỏi giỏ hàng",
+      confirmText: "Xóa",
+      cancelText: "Hủy",
+      onConfirm: async () => {
+        try {
+          await removeItem.mutateAsync(item.id);
+          toast.success("Đã xóa sản phẩm khỏi giỏ hàng");
+        } catch (error: unknown) {
+          const errorMsg = getApiErrorMessage(error, "Không thể xóa sản phẩm");
+          toast.error(errorMsg);
+        }
+      },
+    });
   };
 
   const formatPrice = (price: string | number) => {

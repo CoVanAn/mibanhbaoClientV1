@@ -13,16 +13,21 @@ export default function CartPage() {
   const clearCart = useClearCart();
   const toast = useToast();
 
-  const handleClearCart = async () => {
-    if (confirm("Bạn có chắc muốn xóa toàn bộ giỏ hàng?")) {
-      try {
-        await clearCart.mutateAsync();
-        toast.success("Đã xóa toàn bộ giỏ hàng");
-      } catch (error: unknown) {
-        const errorMsg = getApiErrorMessage(error, "Không thể xóa giỏ hàng");
-        toast.error(errorMsg);
-      }
-    }
+  const handleClearCart = () => {
+    toast.confirm({
+      message: "Xóa toàn bộ sản phẩm khỏi giỏ hàng?",
+      confirmText: "Xóa",
+      cancelText: "Hủy",
+      onConfirm: async () => {
+        try {
+          await clearCart.mutateAsync();
+          toast.success("Đã xóa toàn bộ giỏ hàng");
+        } catch (error: unknown) {
+          const errorMsg = getApiErrorMessage(error, "Không thể xóa giỏ hàng");
+          toast.error(errorMsg);
+        }
+      },
+    });
   };
 
   if (isLoading) {
